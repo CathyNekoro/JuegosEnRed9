@@ -53,6 +53,6 @@ El juego está diseñado para ***Ordenadores / PC***.
 ***
 
 #####  Diagrama de Flujo
-![Descripción de la imagen](/Diagrama.png)
+![Descripción de la imagen](./Diagrama.png)
 
 
