@@ -53,7 +53,7 @@ El juego está diseñado para ***Ordenadores / PC***.
 
 
 ####  Diagrama de Flujo
-![Diagrama de Flujo](./DiagramaFinal.png)
+![Diagrama de Flujo](./ImgGDD/DiagramaFinal.png)
 
 ***
 
@@ -75,29 +75,29 @@ Los escenarios se ambientan en lugares comunes de la cocina (que es donde ocurre
 
 Los escenarios se compondrán por la cuadrícula del escenario, menos detallados para priorizar la visibilidad y bordes decorativos temáticos según la ronda.
 
- ![Diseño encimera](./encimera.png)
+ ![Diseño encimera](./ImgGDD/encimera.png)
 
- ![Diseño congelador](./congelador.png)
+ ![Diseño congelador](./ImgGDD/congelador.png)
 
- ![Diseño vitrocerámica](./vitro.png)
+ ![Diseño vitrocerámica](./ImgGDD/vitro.png)
  El escenario estará quemándose por los bordes (animado). Para aumentar la dificultad se pondera la idea de añadir un efecto visual de distorsión por calor.
 
  ##### Pantallas secundarias:
 ***Menú inicial***: Título, iniciar juego, créditos, salir.  
-![alt text](./pantalla3.png)
+![alt text](./ImgGDD/pantalla3.png)
 ***Selección de servidor***: Pantalla básica que mostrará los servidores disponibles o pedirá un código de acceso a la sala, dependiendo del método que usemos. 
 ***Selección de personajes***: Aparecerán los 4 personajes elegibles. El jugador puede pinchar para seleccionar el suyo. Los personajes seleccionados se bloquearán para el resto. 
 
- ![Diseño pantalla1](./personajes.png)
+ ![Diseño pantalla1](./ImgGDD/personajes.png)
 
 ***Cinemática inicial***: estilo tira de comic/ intro de las chicas superpoderosas.  
 
 ***Puntuación entre rondas***: pantalla partida con el número de jugadores que estén participando. Los jugadores muertos aparecerán con un filtro blanco- negro. 
 
- ![Diseño pantalla1](./pantalla1.png)
+ ![Diseño pantalla1](./ImgGDD/pantalla1.png)
 
 ***Puntuación final***: El dibujo del personaje ganador sobrepuesto sobre un fondo de podio.  
-![Diseño pantalla2](./pantalla2.png)
+![Diseño pantalla2](./ImgGDD/pantalla2.png)
 #
 
 #### Logotipo
@@ -105,10 +105,10 @@ El diseño está inspirado en la hermandad que se forma entre los entusiastas de
 
 **Logo con fondo transparente**
 
-![Referencia Womp_womp](./logo1.png)
+![Referencia Womp_womp](./ImgGDD/logo1.png)
 
 **Logo con fondo opaco**
-![Referencia Womp_womp](./logo2.png)
+![Referencia Womp_womp](./ImgGDD/logo2.png)
 
 #### Inspiración
 Páginas Web antiguas basadas en juegos de Adobe Flash, por ejemplo, Friv. 
@@ -116,19 +116,19 @@ Páginas Web antiguas basadas en juegos de Adobe Flash, por ejemplo, Friv.
 ***Juegos de referencia***
 *[Womp-a-thon ](https://www.mariowiki.com/Whomp-a-thon)*  
 
-![Referencia Womp_womp](./Womp.png)
+![Referencia Womp_womp](./ImgGDD/Womp.png)
 
 *[Electriman](https://electricman.fandom.com/wiki/Electric_Man)*  
 
-![Referencia Electriman](./Electriman.png)
+![Referencia Electriman](./ImgGDD/Electriman.png)
 
 *[Minecraft TNT run](https://mcserversminigames.fandom.com/wiki/TNT_Run)*  
 
-![Referencia Minecraft TNT run](./minecraft.png)
+![Referencia Minecraft TNT run](./ImgGDD/minecraft.png)
 
 *[FallGuys Hex-A-Gone](https://fallguysultimateknockout.fandom.com/wiki/Hex-A-Gone)*  
 
-![Referencia FallGuys](./fallguys.png)
+![Referencia FallGuys](./ImgGDD/fallguys.png)
 
 
 ***
@@ -232,7 +232,7 @@ Cada personaje tiene mecánicas únicas además del movimiento básico. Las habi
 
 ***Hab 3 / una por ronda***: En cualquier momento que el jugador no esté muerto, se puede usar la habilidad especial. Esta proyecta en la pantalla de otros jugadores una imagen semitransparente que cubre todo el escenario dificultando la vista. La imagen se mantiene 5-10 seg, dependiendo del balanceo. El uso de esta habilidad no es acumulable entre rondas. 
 
-![Tabla explicativa movimientos y habilidades](./habilidades.png)
+![Tabla explicativa movimientos y habilidades](./ImgGDD/habilidades.png)
 ***
 
 ## Narrativa
