@@ -1,5 +1,25 @@
 ***
- # GYMBRO FRENESI
+***
+***
+# Cabecera
+## Nombre del juego: "GYMBRO FRENESI"
+# Descripción de la temática del juego: 
+Juego *plataformas* y *pvp*. Adopta una temática inspirada en el culturismo y comedia bizarra.
+# Integrantes del equipo de desarollo:
+**KARINA DIANA HINCU** 
+Correo universidad:*kd.hincu.2023@alumnos.urjc.es* 
+Github: *CathyNekoro*
+
+**AXLIN LUENGO ORDÓÑEZ**
+Correo universidad: *a.luengoo.2023@alumnos.urjc.es*
+Github: *CuentaGH*
+**ALEXANDRA ALINA POP**
+Correo universidad:  *aa.pop.2022@alumnos.urjc.es*
+Github:*JediAlex18*
+***
+***
+***
+ # GYMBRO FRENESI (GDD)
 
 **1. [Introducción](#introducción)**
 
