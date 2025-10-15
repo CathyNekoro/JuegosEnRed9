@@ -11,7 +11,7 @@
 
 **4. [Imagen y Diseño Visual](#imagen-y-diseño-visual)**
 - [*Descripción y Estilo Visual*](#descripción-visual) 
-- [Logotipo?](#logotipo) 
+- [Logotipo](#logotipo) 
 - [*Inspiración*](#inspiración) 
 
 **5. [Jugabilidad](#jugabilidad)**
@@ -53,7 +53,7 @@ El juego está diseñado para ***Ordenadores / PC***.
 
 
 ####  Diagrama de Flujo
-![Diagrama de Flujo](./Diagrama.png)
+![Diagrama de Flujo](./DiagramaFinal.png)
 
 ***
 
@@ -63,49 +63,71 @@ Cámara 2D al estilo de “Vista de Pájaro”.
 ***
 ## Imagen y Diseño Visual
 #### Descripción Visual
-El estilo visual es caricaturesco, 2D. Cada apartado contiene sus respectivos bocetos
+El estilo visual es caricaturesco, 2D. Cada apartado contiene sus respectivos bocetos.
 ##### Personajes:
 Los personajes representan parodias de los grupos musculares generalmente entrenados por los culturistas: *Pierna*, *brazo*, *faja abdominal* y un entrenamiento reciente relativamente popular: *postura lingual* (para tener una mandíbula más marcada). 
+Cada personaje tiene un color asociado: *pierna-rojo, brazo-azul, torso-verde, postura lingual- amarillo.*
 
-![Diseño personajes](./juanplaceholder.png)
+*Diseño de los personajes en el menú de selección.*
+
 ##### Escenario: 
 Los escenarios se ambientan en lugares comunes de la cocina (que es donde ocurren las peleas según la historia): *encimera*, *congelador* y *vitrocerámica*. 
 
 Los escenarios se compondrán por la cuadrícula del escenario, menos detallados para priorizar la visibilidad y bordes decorativos temáticos según la ronda.
 
-# PONER IMAGEN
- 
- ##### Pantallas secundarias:
-**Menú inicial**: Título, iniciar juego, créditos.  
-# PONER IMAGEN
-**Selección de servidor**: Pantalla básica que mostrará los servidores disponibles o pedirá un código de acceso a la sala, dependiendo del método que usemos. 
-# PONER IMAGEN
-**Selección de personajes**: Aparecerán los 4 personajes elegibles. El jugador puede pinchar para seleccionar el suyo. Los personajes seleccionados se bloquearán para el resto. 
+ ![Diseño encimera](./encimera.png)
 
-**Cinemática inicial**: estilo tira de comic/ intro de las chicas superpoderosas.  
-# PONER IMAGEN
-**Puntuación entre rondas**: pantalla partida con el número de jugadores que estén participando. Los jugadores muertos aparecerán con un filtro blanco- negro. 
-# PONER IMAGEN
-**Puntuación final**: El dibujo del personaje ganador sobrepuesto sobre un fondo de podio.  
-# PONER IMAGEN
+ ![Diseño congelador](./congelador.png)
+
+ ![Diseño vitrocerámica](./vitro.png)
+ El escenario estará quemándose por los bordes (animado). Para aumentar la dificultad se pondera la idea de añadir un efecto visual de distorsión por calor.
+
+ ##### Pantallas secundarias:
+***Menú inicial***: Título, iniciar juego, créditos, salir.  
+![alt text](./pantalla3.png)
+***Selección de servidor***: Pantalla básica que mostrará los servidores disponibles o pedirá un código de acceso a la sala, dependiendo del método que usemos. 
+***Selección de personajes***: Aparecerán los 4 personajes elegibles. El jugador puede pinchar para seleccionar el suyo. Los personajes seleccionados se bloquearán para el resto. 
+
+ ![Diseño pantalla1](./personajes.png)
+
+***Cinemática inicial***: estilo tira de comic/ intro de las chicas superpoderosas.  
+
+***Puntuación entre rondas***: pantalla partida con el número de jugadores que estén participando. Los jugadores muertos aparecerán con un filtro blanco- negro. 
+
+ ![Diseño pantalla1](./pantalla1.png)
+
+***Puntuación final***: El dibujo del personaje ganador sobrepuesto sobre un fondo de podio.  
+![Diseño pantalla2](./pantalla2.png)
+#
 
 #### Logotipo
-El diseño está inspirado en la hermandad que se forma entre los entusiastas del gimnasio.
+El diseño está inspirado en la hermandad que se forma entre los entusiastas del gimnasio. Las siglas GF coinciden con el nombre del juego.
+
+**Logo con fondo transparente**
+
+![Referencia Womp_womp](./logo1.png)
+
+**Logo con fondo opaco**
+![Referencia Womp_womp](./logo2.png)
 
 #### Inspiración
 Páginas Web antiguas basadas en juegos de Adobe Flash, por ejemplo, Friv. 
 
 ***Juegos de referencia***
-*[Womp-a-thon ](https://www.mariowiki.com/Whomp-a-thon)*
+*[Womp-a-thon ](https://www.mariowiki.com/Whomp-a-thon)*  
+
 ![Referencia Womp_womp](./Womp.png)
 
-*[Electriman](https://electricman.fandom.com/wiki/Electric_Man)*
+*[Electriman](https://electricman.fandom.com/wiki/Electric_Man)*  
+
 ![Referencia Electriman](./Electriman.png)
 
-*[Minecraft TNT run](https://mcserversminigames.fandom.com/wiki/TNT_Run)*
+*[Minecraft TNT run](https://mcserversminigames.fandom.com/wiki/TNT_Run)*  
+
 ![Referencia Minecraft TNT run](./minecraft.png)
 
-*[FallGuys Hex-A-Gone](https://fallguysultimateknockout.fandom.com/wiki/Hex-A-Gone)*
+*[FallGuys Hex-A-Gone](https://fallguysultimateknockout.fandom.com/wiki/Hex-A-Gone)*  
+
 ![Referencia FallGuys](./fallguys.png)
 
 
@@ -193,15 +215,15 @@ Cada personaje tiene mecánicas únicas además del movimiento básico. Las habi
  
 
  
-***Pecho / Abdominales - (defensivo)-***
- No se le empujar.  
+***Jugador 3: Pecho / Abdominales - (defensivo)-***
+ No se le puede empujar.  
 
 ***Hab 1 /  recarga rápida***: El personaje carga en línea recta (hacia donde esté mirando) empujando a personajes hacia los laterales de su trayectoria, pudiendo tirarlos al vacío. Cuando impacta con uno, su impulso se detiene.  
 
 ***Hab 2 / recarga lenta***: El personaje carga en línea recta, hasta que se choque con una pared del escenario. En su trayectoria puede empujar a múltiples personajes al vacío.  Si hay huecos en el recorrido de la trayectoria, el personaje saltará los huecos. Si la casilla del borde es válida, el jugador podrá quedarse ahí. Si la última casilla no es válida, el jugador se caerá al vacío. 
  
  
-***Barbilla / Mentón – (comodín***):
+***Jugador 5: Barbilla / Mentón – (comodín***):
  No tiene habilidades especiales de movimiento, su función es confundir, despistar y parasitar a sus compañeros. 
 
 ***Hab 1 /  recarga rápida***: produce un destello a su alrededor que impide al resto de jugadores ver con claridad las casillas durante un par de segundos.  
@@ -210,7 +232,7 @@ Cada personaje tiene mecánicas únicas además del movimiento básico. Las habi
 
 ***Hab 3 / una por ronda***: En cualquier momento que el jugador no esté muerto, se puede usar la habilidad especial. Esta proyecta en la pantalla de otros jugadores una imagen semitransparente que cubre todo el escenario dificultando la vista. La imagen se mantiene 5-10 seg, dependiendo del balanceo. El uso de esta habilidad no es acumulable entre rondas. 
 
-# IMAGEN EXPLICATIVA 
+![Tabla explicativa movimientos y habilidades](./habilidades.png)
 ***
 
 ## Narrativa
