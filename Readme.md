@@ -165,6 +165,8 @@ Para asegurar la victoria, los jugadores pueden usar sus habilidades para empuja
 #### Controles
 No se permite el movimiento diagonal. El movimiento es por casillas.  
 
+Movimiento general:
+
  **W** – Movimiento hacia arriba 
  **A** – Movimiento hacia la izquierda 
  **S** – Movimiento hacia abajo 
@@ -172,11 +174,29 @@ No se permite el movimiento diagonal. El movimiento es por casillas.
 
 **Espacio** – Salto (Saltar en la dirección en la que está mirando el personaje.) 
 
-**Shift** - Activar habilidad rápida del personaje.  
+**LShift** - Activar habilidad rápida del personaje.  
 **F**- Activar habilidad lenta del personaje. 
 **G**- Activar habilidad especial del personaje 4. 
 
 **Q**- Reaparecer en el mapa. 
+
+En caso de juego local, se plantean 2 opciones de controles para cada jugador:
+
+Teclado: capacidad para 2 jugadores.
+
+Movimiento general (J1)
+
+Movimiento (J2)
+- **⬅⬆⬇⮕** - Movimiento básico.
+- **RShift** - Salto.
+- **-** - Habilidad rápida.
+- **.** - Habilidad lenta.
+- **,** -Habilidad especial personaje 4.
+
+Mando: (según la implementación de la librería se hará el mapeado de una forma u otra para los mandos)
+Movimiento (J3-J4)
+
+Si no hay ningún mando conectado, el máximo de jugadores será de 2. Si se detecta un mando el límite aumenta por cada mando metido. No hace falta que estén el número máximo de jugadores siempre en la partida (por ejemplo uno de los jugadores prefiere usar mando y no teclado)
 
 #### Mecánicas y Físicas
 ##### Físicas del escenario: 
@@ -211,14 +231,11 @@ Si el jugador decide no reaparecer en la ronda podrá observar a sus compañeros
 Los jugadores se moverán en líneas rectas a través del escenario. Según termine resultando más cómodo de jugar, el jugador puede mantener pulsado el botón para moverse múltiples casillas seguidas, o hacer que tenga que moverse casilla a casilla. Salto de una casilla (vacía), si no hay suelo a donde se va a saltar, el jugador se cae. Para evitar que los jugadores se caigan accidentalmente por culpa del movimiento básico (WASD) y no por el mal uso de habilidades, el salto o por el suelo cayéndose debajo de ellos, el personaje no podrá caminar y ponerse en una casilla no válida. 
 
 ##### Elección de personajes: 
-Los jugadores pueden elegir sus personajes desde un menú. Los personajes no elegidos no aparecen en la partida. Los jugadores no pueden repetir personaje. 
+Los jugadores pueden elegir sus personajes desde un menú. Los personajes no elegidos no aparecen en la partida. Los jugadores no pueden repetir personaje. En las partidas locales, el número máximo de jugadores está limitado a 2 (con los controles del teclado). Por cada mando conectado el límite aumenta en 1 (hasta el máximo de 4).
 
 ##### Habilidades personajes: 
 Cada personaje tiene mecánicas únicas además del movimiento básico. Las habilidades se recargan cada cierto tiempo (depende de la habilidad). Habrá recarga rápida (5-7 seg), y recarga lenta (10-15 seg). 
 
- 
-
- 
 
 **Personaje 1: Piernas –(movimiento)–** 
 
