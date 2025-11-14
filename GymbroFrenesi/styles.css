@@ -1,6 +1,85 @@
-@font-face {
+html, body
+{
+    margin : 0;
+    padding : 0;
+    background-color: black;
+    overflow-y: purple;
+    cursor: url('Assets/Img/pene.png'), auto;
+}
+
+
+@font-face 
+{
     font-family: 'something';
     src: url('Assets/Fonts/something-exquisite-caps.otf');
     font-weight: normal;
     font-style: normal;
+}
+
+.headerPrincipal 
+{
+     background: linear-gradient(
+        90deg,
+        #E4263B,
+        #4526E5,
+        #3DA56F,
+        #DEB27C,
+        #E4263B);
+    background-size: 500% 500%;
+    animation: rainbow-shift 12s ease-in-out infinite;
+
+  display: flex;
+  align-items: center;
+  
+
+  
+  padding: 8px 0px;
+  
+}
+
+@keyframes rainbow-shift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Logo */
+.logo {
+    width: clamp(70px, 10vw, 120px);
+    height: clamp(70px, 10vw, 120px);
+    background-image: url('Assets/Img/logo1.png');
+    background-repeat: no-repeat;
+    background-size: contain;
+    border-radius: 40%;
+    outline: 4px solid white;
+    display: block;
+    margin-left: 20px;
+    margin-top: 0px;
+}
+
+.equipo
+{
+    display: inline-block;
+    margin-left: 10px;
+    
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Fondo del rail (la pista) */
+::-webkit-scrollbar-track {
+  background: #1a1a1a;     /* color del fondo */
+}
+
+/* La barra que se mueve */
+::-webkit-scrollbar-thumb {
+  background: #b969ff;      /* color principal */
+  border-radius: 8px;       /* redondeado */
+}
+
+/* Hover en la barra */
+::-webkit-scrollbar-thumb:hover {
+  background: #d919ff;      /* color cuando pasas el ratón */
 }

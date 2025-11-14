@@ -5,7 +5,7 @@ import creditsScene from './Scenes/creditsScene.js';
 let config = {
   type: Phaser.AUTO,
   parent: "juego", //ID del elemento del DOM en el que se anidará el Canvas que genere Phaser, si no, por defecto, irá al final del body
-  width: 2048,
+  width: 2360,
   height: 1423,
   pixelArt: true,
   scale: {
@@ -16,8 +16,8 @@ let config = {
       height: 188,
     },
     max: {
-      width: 1412,
-      height: 852,
+      width: 1560,
+      height: 840,
     },
     zoom: 1,
   },

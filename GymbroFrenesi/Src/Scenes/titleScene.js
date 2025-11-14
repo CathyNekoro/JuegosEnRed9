@@ -6,7 +6,7 @@ export default class pantallaInicio extends Phaser.Scene {
   }
 
   preload() {
-    this.load.image("pantallaInicio", "../Assets/Img/pantallaInicio.png");
+    this.load.image("pantallaInicio", "../Assets/Img/pantallaInicio1.png");
   }
 
   create() {
@@ -17,7 +17,7 @@ export default class pantallaInicio extends Phaser.Scene {
     this.buttonPlay = new titleButton(
         this,
         this.cameras.main.width / 2,
-        this.cameras.main.height / 2 + 150,
+        this.cameras.main.height / 2 + 300,
         "Jugar",
         () => {
             this.scene.launch("charSelection");
