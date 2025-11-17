@@ -4,7 +4,7 @@ html, body
     padding : 0;
     background-color: black;
     overflow-y: purple;
-    cursor: url('Assets/Img/pene.png'), auto;
+    cursor: url('Assets/Img/musculo_raton.png'), auto;
 }
 
 
@@ -14,6 +14,16 @@ html, body
     src: url('Assets/Fonts/something-exquisite-caps.otf');
     font-weight: normal;
     font-style: normal;
+    font-display: block;
+}
+
+@font-face 
+{
+    font-family: 'gunerGrafitti';
+    src: url('Assets/Fonts/GunerGraffiti-Regular.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
 }
 
 .headerPrincipal 
@@ -30,11 +40,7 @@ html, body
 
   display: flex;
   align-items: center;
-  
-
-  
-  padding: 8px 0px;
-  
+  padding: 8px 0px; 
 }
 
 @keyframes rainbow-shift {

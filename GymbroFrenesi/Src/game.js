@@ -1,6 +1,7 @@
 import pantallaInicio from "./Scenes/titleScene.js";
 import charSelection from "./Scenes/charSelection.js";
 import creditsScene from './Scenes/creditsScene.js';
+import level1Scene from "./Scenes/level1Scene.js";
 
 let config = {
   type: Phaser.AUTO,
@@ -21,7 +22,7 @@ let config = {
     },
     zoom: 1,
   },
-  scene: [pantallaInicio, charSelection, creditsScene], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
+  scene: [pantallaInicio, charSelection, creditsScene, level1Scene], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
   physics: {
     default: "arcade", //Tenemos físicas simple, arcade
     arcade: {
@@ -40,3 +41,4 @@ let config = {
 };
 
 new Phaser.Game(config);
+

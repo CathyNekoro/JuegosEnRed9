@@ -1,8 +1,10 @@
+import titleButton from "../Button/titleButton.js";
+
 export default class charSelection extends Phaser.Scene
 {
     constructor()
     {
-        super({key: 'charSelection'});
+        super({key: "charSelection"});
     }
     
     preload()
@@ -13,6 +15,21 @@ export default class charSelection extends Phaser.Scene
     create() 
     {
         this.add.image(0, 0, 'personajes').setOrigin(0, 0);
+        //boton salida (quizas cree un botón salida o retroceder hijo de clase boton AUN no lo se)
+        const buttonSize = 100;
+        const buttonMargin = 20;
+        this.exitButton = new titleButton(
+        this,
+        buttonSize / 2 + buttonMargin,
+        buttonSize / 2 + buttonMargin,
+        "<",
+        () => {
+            this.scene.start("level1Scene");
+            this.scene.stop();
+        },
+        buttonSize,
+        buttonSize
+        );
     }
 
     update(time, dt)
@@ -20,3 +37,4 @@ export default class charSelection extends Phaser.Scene
 
     }
 }
+
