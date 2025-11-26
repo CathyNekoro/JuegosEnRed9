@@ -18,6 +18,7 @@ export default class level_1 extends Phaser.Scene
         this.load.tilemapTiledJSON("tilemap", "Assets/maps/mapTile.json");
 
         this.load.image("player1Sprite", "Assets/Img/pene.png");
+        this.load.image("player2Sprite", "Assets/Img/musculo_raton.png");
     }
 
     create()
@@ -37,6 +38,7 @@ export default class level_1 extends Phaser.Scene
             texture_key: "player1Sprite",
             tileSize: tileSize,
             map: this.map,
+            lives: 3,
 
         }
         this.p1Keys = {
@@ -49,9 +51,10 @@ export default class level_1 extends Phaser.Scene
 
         
         var config = {
-            texture_key: "player1Sprite",
+            texture_key: "player2Sprite",
             tileSize: tileSize,
             map: this.map,
+            lives: 3,
 
         }
         
@@ -93,13 +96,13 @@ export default class level_1 extends Phaser.Scene
                 rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
             }
         });
+
     }
 
     update()
     {
         this.inputMappings.forEach(mapping => {
             const playerNum = this.players.get(mapping.playerId);
-            if (!playerNum) return;
 
             const up    = Phaser.Input.Keyboard.JustDown(mapping.upKeyObj);
             const down  = Phaser.Input.Keyboard.JustDown(mapping.downKeyObj);
@@ -115,7 +118,18 @@ export default class level_1 extends Phaser.Scene
             else if (right) newX += playerNum.tileSize;
 
             if (newX != playerNum.x || newY != playerNum.y) {
-                playerNum.update(newX, newY);
+                const tileSize = playerNum.tileSize;
+                const targetTileX = Math.round(newX + tileSize / 2);
+                const targetTileY = Math.round(newY + tileSize / 2);
+                let occupied = false;
+                this.players.forEach(p => {
+                    const otherTileX = Math.round(p.x + p.tileSize / 2);
+                    const otherTileY = Math.round(p.y + p.tileSize / 2);
+                    if (otherTileX === targetTileX && otherTileY === targetTileY) 
+                        occupied = true;
+                });
+                if (!occupied) 
+                    playerNum.update(newX, newY);
             }
         });
     }

@@ -13,6 +13,9 @@ export default class Player extends Phaser.GameObjects.Sprite
 
             this.isMoving=false;
 
+            this.lives = 3
+            this.isAlive = true;
+
         scene.add.existing(this);
 
     }
@@ -55,4 +58,34 @@ export default class Player extends Phaser.GameObjects.Sprite
             }
         });
     }
+
+    recieveDamage(){
+        this.lives -= 1;
+        
+        if(this.lives <= 0){
+            this.die();
+        } else {
+            this.isAlive = false;
+            this.setVisible(false);
+            this.setActive(false);
+            this.time.delayedCall(10000, () => { // 10 segundos para reaparecer
+                this.respawn();
+            });
+        }
+    }
+
+    die() {
+        this.isAlive = false;
+        this.setVisible(false);
+        this.setActive(false);
+
+        scene.start('titleScene');
+    }
+
+    respawn() {
+        this.isAlive = true;
+        this.setVisible(true);
+        this.setActive(true);
+    }
+
 }
