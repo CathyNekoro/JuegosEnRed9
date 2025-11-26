@@ -31,6 +31,7 @@ export default class level_1 extends Phaser.Scene
         this.tileset = this.map.addTilesetImage("Encimera1", "Encimeratx") 
         var fondo = this.map.createLayer("Capa de patrones 1", this.tileset); 
         var tile = fondo.getTileAt(7,5);
+        var tile2 = fondo.getTileAt(7,7);
 
         var config = {
             texture_key: "player1Sprite",
@@ -44,28 +45,78 @@ export default class level_1 extends Phaser.Scene
             left:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
             right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
         };
-        this.player= new Player(this, tile.x, tile.y, config);
+        this.player1= new Player(this, 'player1', tile.x, tile.y, config);
+
         
+        var config = {
+            texture_key: "player1Sprite",
+            tileSize: tileSize,
+            map: this.map,
+
+        }
+        
+        this.p2Keys = {
+            up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
+            down:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
+            left:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
+            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+        };
+        this.player2= new Player(this, 'player2', tile2.x, tile2.y, config);
+        
+        this.players = new Map();
+        this.players.set('player1', this.player1);
+        this.players.set('player2', this.player2);
+        
+        const InputConfig = [
+            {
+                playerId: 'player1',
+                upKey: 'W',
+                leftKey: 'A',
+                downKey: 'S',
+                rightKey: 'D',
+            },
+            {
+                playerId: 'player2',
+                upKey: 'UP',
+                leftKey: 'LEFT',
+                downKey: 'DOWN',
+                rightKey: 'RIGHT',
+            }
+        ]
+        
+        this.inputMappings = InputConfig.map(config => {
+            return {
+                playerId : config.playerId,
+                upKeyObj : this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.upKey]),
+                leftKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.leftKey]),
+                downKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.downKey]),
+                rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
+            }
+        });
     }
 
     update()
     {
-        let newX = this.player.x;
-        let newY = this.player.y;
+        this.inputMappings.forEach(mapping => {
+            const playerNum = this.players.get(mapping.playerId);
+            if (!playerNum) return;
 
-        const up    = Phaser.Input.Keyboard.JustDown(this.p1Keys.up);
-        
-        const down  = Phaser.Input.Keyboard.JustDown(this.p1Keys.down);
-        const left  = Phaser.Input.Keyboard.JustDown(this.p1Keys.left);
-        const right = Phaser.Input.Keyboard.JustDown(this.p1Keys.right);   
-       
-        if (up)  {newY -= 150;}
-        else if (down)  newY += 150;
-        else if (left)  newX -= 150;
-        else if (right) newX += 150;
+            const up    = Phaser.Input.Keyboard.JustDown(mapping.upKeyObj);
+            const down  = Phaser.Input.Keyboard.JustDown(mapping.downKeyObj);
+            const left  = Phaser.Input.Keyboard.JustDown(mapping.leftKeyObj);
+            const right = Phaser.Input.Keyboard.JustDown(mapping.rightKeyObj);
 
-        if(this.player.x != newX || this.player.y != newY) 
+            let newX = playerNum.x;
+            let newY = playerNum.y;
 
-        this.player.update(newX, newY);    
+            if (up) newY -= playerNum.tileSize;
+            else if (down) newY += playerNum.tileSize;
+            else if (left) newX -= playerNum.tileSize;
+            else if (right) newX += playerNum.tileSize;
+
+            if (newX != playerNum.x || newY != playerNum.y) {
+                playerNum.update(newX, newY);
+            }
+        });
     }
 }

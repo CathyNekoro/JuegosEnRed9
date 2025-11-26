@@ -2,10 +2,11 @@
 
 export default class Player extends Phaser.GameObjects.Sprite
 {
-    constructor(scene, x, y ,config)
+    constructor(scene, id, x, y ,config)
     {
         super(scene, x*config.tileSize-config.tileSize/2, y*config.tileSize-config.tileSize/2, config.texture_key);
-        
+
+            this.id=id;
             this.tileSize = config.tileSize;
             this.map = config.map;
             this.moveDuration = config.moveDuration || 150;
