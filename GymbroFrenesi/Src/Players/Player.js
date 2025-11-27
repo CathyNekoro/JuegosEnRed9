@@ -1,5 +1,4 @@
 
-
 export default class Player extends Phaser.GameObjects.Sprite
 {
     constructor(scene, id, x, y ,config)
@@ -13,8 +12,9 @@ export default class Player extends Phaser.GameObjects.Sprite
 
             this.isMoving=false;
 
-            this.lives = 3
+            this.lives = config.lives || 3;
             this.isAlive = true;
+            this.isDead = false;
 
         scene.add.existing(this);
 
@@ -35,7 +35,9 @@ export default class Player extends Phaser.GameObjects.Sprite
     {
         let targetTile = this.map.getTileAtWorldXY(targetX, targetY);
         if(!targetTile) return false;
-        if(targetTile.properties && targetTile.properties.fallen) return false; //esta gestion se hara diferente cuando haya bloques caidos (no es lo mismo chocarse contra un borde que caerse)
+
+        // esta gestion se hara diferente cuando haya bloques caidos (no es lo mismo chocarse contra un borde que caerse)
+        if(targetTile.properties && targetTile.properties.fallen) return false; 
         return true;
     }
 
@@ -59,27 +61,27 @@ export default class Player extends Phaser.GameObjects.Sprite
         });
     }
 
-    recieveDamage(){
+    receiveDamage(){
         this.lives -= 1;
         
         if(this.lives <= 0){
             this.die();
         } else {
+            
             this.isAlive = false;
             this.setVisible(false);
             this.setActive(false);
-            this.time.delayedCall(10000, () => { // 10 segundos para reaparecer
+            this.scene.time.delayedCall(2000, () => { // 2 segundos para reaparecer
                 this.respawn();
             });
+            
         }
     }
 
     die() {
-        this.isAlive = false;
+        this.isDead = true;
         this.setVisible(false);
         this.setActive(false);
-
-        scene.start('titleScene');
     }
 
     respawn() {
