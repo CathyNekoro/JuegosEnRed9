@@ -177,6 +177,7 @@ export default class level_1 extends Phaser.Scene
 
             if (playerNum.isDead) { // si un jugador ha muerto, volvemos a la pantalla de inicio
                 this.scene.start('titleScene'); // cambiar a pantalla de victioria
+                this.scene.stop();
             }
         });
     }
