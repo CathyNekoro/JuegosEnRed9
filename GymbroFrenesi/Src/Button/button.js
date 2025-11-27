@@ -23,6 +23,7 @@ class Button extends Phaser.GameObjects.Container {
         color = 0xf3d301,
         alpha = 1,
         selectionColor = 0xffffff,
+        selectionAlpha = 1,
         width = 200,
         height = 70,
         radius = 0) 
@@ -86,7 +87,7 @@ class Button extends Phaser.GameObjects.Container {
             {
                 // Limpiar y redibujar
                 this.background.clear();
-                this.background.fillStyle(selectionColor);
+                this.background.fillStyle(selectionColor, selectionAlpha);
                 this.background.fillRoundedRect(
                     -width / 2,
                     -height / 2,

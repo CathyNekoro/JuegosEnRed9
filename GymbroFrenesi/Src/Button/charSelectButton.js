@@ -1,6 +1,6 @@
 import Button from "./button.js";
 
-class titleButton extends Button
+class charSelectButton extends Button
 {
     constructor(
         scene,
@@ -8,14 +8,14 @@ class titleButton extends Button
         y,
         text,
         callback,
-        width = 400,
-        height = 150,
-        color = 0x220e17,
-        alpha = 0.8,
-        selectionColor = 0x220e17,
-        selectionAlpha = 1,
+        width = 430,
+        height = 1100,
+        color = 0x000000,
+        alpha = 0.1,
+        selectionColor = 0x111111,
+        selectionAlpha = 0.3,
         
-        radius = 50
+        radius = 1
     ){
         super(
             scene,
@@ -38,4 +38,4 @@ class titleButton extends Button
     }
     
 }
-export default titleButton;
+export default charSelectButton;
