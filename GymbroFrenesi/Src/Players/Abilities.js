@@ -63,6 +63,7 @@ export default class Abilities
         let newY = this.player.y;
         const direction = this.player.direction;
         const tileSize = this.player.tileSize;
+        let occupied = false;
 
         // moverse 1 casilla en la direccion del jugador
         if (direction === 'up') {
@@ -81,7 +82,6 @@ export default class Abilities
         // comprobar si esta ocupada 
         const targetTileX = Math.round(newX + tileSize / 2);
         const targetTileY = Math.round(newY + tileSize / 2);
-        let occupied = false;
 
         this.scene.players.forEach(p => {
             const otherTileX = Math.round(p.x + p.tileSize / 2);
@@ -104,18 +104,20 @@ export default class Abilities
             newX += this.player.tileSize;
         }
 
+        const targetTileX2 = Math.round(newX + tileSize / 2);
+        const targetTileY2 = Math.round(newY + tileSize / 2);
+
         // comprobar si esta ocupada otra vez
         this.scene.players.forEach(p => {
             const otherTileX = Math.round(p.x + p.tileSize / 2);
             const otherTileY = Math.round(p.y + p.tileSize / 2);
-            if (otherTileX === targetTileX && otherTileY === targetTileY)
+            if (otherTileX === targetTileX2 && otherTileY === targetTileY2)
                 occupied = true;
         });
 
         // mover si no esta ocupada
         if (!occupied) {
-            //this.player.update(newX, newY, direction);
-            this.player.update(newX, newY, this, direction);
+            this.player.update(newX, newY, this.player.map, direction);
         }
 
     }
@@ -157,8 +159,7 @@ export default class Abilities
 
         // mover si no esta ocupada
         if (!occupied) {
-            //this.player.update(newX, newY, direction);
-            this.player.update(newX, newY, this, direction);
+            this.player.update(newX, newY, this.player.map, direction);
         }
         
     }
