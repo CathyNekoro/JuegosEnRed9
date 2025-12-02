@@ -13,17 +13,18 @@ export default class Player extends Phaser.GameObjects.Sprite
             this.isMoving=false;
 
             this.lives = config.lives || 3;
-            this.isAlive = true;
-            this.isDead = false;
+            this.isAlive = true;                //le quedan vidas (no tiene pq estar en la escena)
+            this.isDead = false;               //No le quedan vidas
 
         scene.add.existing(this);
 
     }
 
-    update(newX, newY)
+    update(newX, newY, map)
     {
-        
-        if(this.isMoving) return;
+        this.map = map;
+
+        if(this.isMoving && this.isAlive) return;
 
         if (!this.isWalkable(newX, newY)) return;
         
@@ -33,10 +34,11 @@ export default class Player extends Phaser.GameObjects.Sprite
 
     isWalkable(targetX, targetY)
     {
-        let targetTile = this.map.getTileAtWorldXY(targetX, targetY);
+        let x = Math.floor(targetX/this.tileSize-2);
+        let y = Math.floor(targetY/this.tileSize-2)*13;
+        if(x < 0 || x >= 13 || y < 0) return false;
+        let targetTile = this.map.getChildren()[x+y];
         if(!targetTile) return false;
-
-        // esta gestion se hara diferente cuando haya bloques caidos (no es lo mismo chocarse contra un borde que caerse)
         if(targetTile.properties && targetTile.properties.fallen) return false; 
         return true;
     }
@@ -62,20 +64,22 @@ export default class Player extends Phaser.GameObjects.Sprite
     }
 
     receiveDamage(){
-        this.lives -= 1;
-        
-        if(this.lives <= 0){
-            this.die();
-        } else {
+        if(this.isAlive){
+            this.lives -= 1;
             
-            this.isAlive = false;
-            this.setVisible(false);
-            this.setActive(false);
-            this.scene.time.delayedCall(2000, () => { // 2 segundos para reaparecer
-                this.respawn();
-            });
-            
-        }
+            if(this.lives <= 0){
+                this.die();
+            } else {
+                
+                this.isAlive = false;
+                this.setVisible(false);
+                this.setActive(false);
+                this.scene.time.delayedCall(500, () => { // 2 segundos para reaparecer
+                    this.respawn();
+                });
+                
+            }
+        }return
     }
 
     die() {
@@ -85,9 +89,9 @@ export default class Player extends Phaser.GameObjects.Sprite
     }
 
     respawn() {
+        
         this.isAlive = true;
         this.setVisible(true);
         this.setActive(true);
     }
-
 }

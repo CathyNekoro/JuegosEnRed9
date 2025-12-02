@@ -11,16 +11,30 @@ export default class charSelection extends Phaser.Scene
     
     preload()
     {
-        this.load.image('personajes', '../Assets/Img/personajes.png')
+        this.load.image('fondo', '../Assets/Img/fondoSelecPersonajes.png');
+        this.load.spritesheet('pierna', '../Assets/Img/personajes/legDaySelec.png', {frameWidth:444, frameHeight: 1140});
     }
 
     create() 
     {
-        this.add.image(0, 0, 'personajes').setOrigin(0, 0);
-        //boton salida (quizas cree un botón salida o retroceder hijo de clase boton AUN no lo se)
+        
+        this.add.image(0, 0, 'fondo').setOrigin(0, 0);
+
         const buttonSize = 100;
         const buttonMargin = 20;
         
+        //SETTING player 1
+        this.currentPlayer = 1;
+        this.selected = { p1: null, p2: null };
+
+        // Texto arriba indicando de quién es el turno
+        this.turnText = this.add.text(200, 100, "Jugador 1: elige personaje", 
+        {
+            fontFamily: "something",
+            fontSize: "40px",
+            color: "#ffffff"
+        });
+
         // boton de salida
         this.exitButton = new titleButton(
         this,
@@ -35,53 +49,94 @@ export default class charSelection extends Phaser.Scene
         buttonSize
         );
 
-        // boton de seleccion personaje 1
-        this.exitButton = new charSelectButton(
-        this,
-        325,
-        805,
-        "",
-        () => {
-            this.scene.start("level1Scene");
-            this.scene.stop();
+        this.buttons = [];
+
+        this.buttons.push(this.createCharButton(325, 805, "legDay"));
+        this.buttons.push(this.createCharButton(815, 805, "armDay"));
+        this.buttons.push(this.createCharButton(1292, 805, "coreDay"));
+        this.buttons.push(this.createCharButton(1781, 805, "mewingDay"));
+
+        if(!this.anims.exists("legDaySelec")){
+            this.anims.create({
+                key:'legDaySelec',
+                frames: this.anims.generateFrameNumbers('pierna', {start: 0, end: 7}),
+                frameRate: 7,
+                repeat: 0
+            });
+        }
+         this.previewSprite = this.add.sprite(325, 805, 'pierna');
+          
+         this.buttons[0].on('pointerover', () => {
+            this.previewSprite.setVisible(true);
+            this.previewSprite.play('legDaySelec');
         });
 
-        // boton de seleccion personaje 2
-        this.exitButton = new charSelectButton(
-        this,
-        815,
-        805,
-        "",
-        () => {
-            this.scene.start("level1Scene");
-            this.scene.stop();
+        this.buttons[0].on('pointerdown', () => {
+            this.previewSprite.setVisible(false);
+            this.previewSprite = this.add.sprite(325, 805, 'pierna');
         });
 
-        // boton de seleccion personaje 3
-        this.exitButton = new charSelectButton(
-        this,
-        1292,
-        805,
-        "",
-        () => {
-            this.scene.start("level1Scene");
-            this.scene.stop();
-        });
-
-        // boton de seleccion personaje 4
-        this.exitButton = new charSelectButton(
-        this,
-        1781,
-        805,
-        "",
-        () => {
-            this.scene.start("level1Scene");
-            this.scene.stop();
-        });
-
-        
     }
 
+    createCharButton(x, y, charKey) {
+        const btn = new charSelectButton(
+            this,
+            x,
+            y,
+            "",
+            () => {
+                this.onCharClicked(btn);
+                
+            }
+        );
+
+    // Guardamos info extra en el botón:
+    btn.charKey = charKey;   // quién es (legDay, horus, etc.)
+    btn.locked = false;      // si está bloqueado para el jugador 2
+
+    return btn;
+    }
+
+    //////////////
+    onCharClicked(btn) {
+    // Si está bloqueado (ya elegido por J1), no se puede volver a elegir
+    if (btn.locked) {
+        return;
+    }
+
+    if (this.currentPlayer === 1) {
+        // 🟦 Turno J1
+        this.selected.p1 = btn.charKey;
+
+        // Bloqueamos este botón para que J2 no lo pueda usar
+        btn.locked = true;
+        btn.disableInteractive();
+        btn.setAlpha(0.4); // efecto visual de "grisado"
+
+        // Pasamos al turno del J2
+        this.currentPlayer = 2;
+        this.turnText.setText("Jugador 2: elige personaje");
+    }
+    else {
+        // 🟥 Turno J2
+        this.selected.p2 = btn.charKey;
+
+        // También lo podemos marcar como bloqueado (por estética)
+        btn.locked = true;
+        btn.disableInteractive();
+        btn.setAlpha(0.4);
+
+        // Ya tenemos elección de J1 y J2 → vamos al nivel 1
+        this.scene.start("level1Scene", {
+            player1: this.selected.p1,
+            player2: this.selected.p2
+        });
+        console.log(this.selected);
+        this.scene.stop();
+        
+    }
+}
+    
     update(time, dt)
     {
 

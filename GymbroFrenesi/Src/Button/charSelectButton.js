@@ -1,6 +1,6 @@
 import Button from "./button.js";
 
-class charSelectButton extends Button
+ class charSelectButton extends Button
 {
     constructor(
         scene,
@@ -8,8 +8,8 @@ class charSelectButton extends Button
         y,
         text,
         callback,
-        width = 430,
-        height = 1100,
+        width = 444,
+        height = 1140,
         color = 0x000000,
         alpha = 0.1,
         selectionColor = 0x111111,
