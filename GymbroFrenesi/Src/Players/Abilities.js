@@ -11,9 +11,10 @@ export default class Abilities
         this.id = id; // identificador unico de la habilidad
         this.type = type; // tipo del judador: leg, arm, pec, mog
         this.abilityType = abilityType; // slowAbility o quickAbility
-        this.skillOneCooldown = slowCooldown;
-        this.skillTwoCooldown = quickCooldown;
+        this.skillOneCooldown = quickCooldown;
+        this.skillTwoCooldown = slowCooldown;
         this.isOnCooldown = false;
+        this.cooldownEndTime = 0;
         this.cooldownTimer = null;
     }
 
@@ -21,7 +22,17 @@ export default class Abilities
     useAbility(){
   
         if(!this.player.isAlive) return;
-        if(this.isOnCooldown) return;
+        
+        // comprueba si la habilidad esta en cooldown
+        if (this.isOnCooldown) {
+            const remainingCooldown = this.cooldownEndTime - Date.now(); //con Date.now() para medir el paso del tiempo
+            if (remainingCooldown > 0) {
+                return;
+            } else {
+                // se termina el cooldown
+                this.isOnCooldown = false;
+            }
+        }
 
         if(this.abilityType === "quickAbility"){
             if(this.type === 'legDay'){
@@ -33,6 +44,8 @@ export default class Abilities
             } else if(this.type === 'mewingDay'){
                 this.mewingQuickAbility();
             }
+
+            this.startCooldown(this.skillOneCooldown);
         }
 
         if(this.abilityType === "slowAbility"){
@@ -45,16 +58,31 @@ export default class Abilities
             } else if(this.type === 'mewingDay'){
                 this.mewingSlowAbility();
             }
+
+            this.startCooldown(this.skillTwoCooldown);
         }
-        
+    }
+
+    startCooldown(duration) {
+        this.isOnCooldown = true;
+        this.cooldownEndTime = Date.now() + duration; //con Date.now() para poder medir el paso del tiempo
+
+        // contador para cuando hay que quitar el cooldown
+        this.cooldownTimer = this.scene.time.delayedCall(duration, () => {
+            this.isOnCooldown = false;
+        });
+    }
+
+    getCooldownRemaining() {
+        if (!this.isOnCooldown) return;
+        const remaining = this.cooldownEndTime - Date.now(); //con Date.now() para medir el paso del tiempo
+        return Math.max(0, remaining);
     }
     
     legQuickAbility(){
 
         // saltar 2 casillas en la direccion elegida
-
-        console.log("in legQuickAbility");
-
+        
         let newX = this.player.x;
         let newY = this.player.y;
         const direction = this.player.direction;

@@ -61,19 +61,46 @@ export default class level_1 extends Phaser.Scene
         this.add.image(0, 0, "level_1").setOrigin(0, 0)
 
         // textos vidas
-        this.livesOne = this.add.text(100, 50, '0', {
+        this.livesOne = this.add.text(325, 50, '3', {
             fontSize: '64px',
+            strokeThickness: 20, 
             color: '#ff0000ff'
         });
 
-        this.livesTwo = this.add.text(700, 50, '0', {
+        this.livesTwo = this.add.text(1200, 50, '3', {
             fontSize: '64px',
+            strokeThickness: 20, 
+            color: '#0000ff'
+        });
+
+        this.abilityOnePlayerOne = this.add.text(325, 200, 'J1 - F: L', {
+            fontSize: '64px',
+            strokeThickness: 20, 
             color: '#ff0000ff'
         });
 
-        this.timer = this.add.text(100, 150, '0', {
+        this.abilityTwoPlayerOne = this.add.text(750, 200, 'J1 - G: L', {
             fontSize: '64px',
+            strokeThickness: 20, 
             color: '#ff0000ff'
+        });
+
+        this.abilityOnePlayerTwo = this.add.text(1200, 200, 'J2 - NP1: L', {
+            fontSize: '64px',
+            strokeThickness: 20, 
+            color: '#0000ff'
+        });
+
+        this.abilityTwoPlayerTwo = this.add.text(1725, 200, 'J2 - NP2: L', {
+            fontSize: '64px',
+            strokeThickness: 20, 
+            color: '#0000ff'
+        });
+
+        this.timer = this.add.text(100, 300, '2:00', {
+            fontSize: '64px',     
+            strokeThickness: 20,            
+            color: '#000000'
         });
 
         // tilemap
@@ -278,6 +305,56 @@ export default class level_1 extends Phaser.Scene
             let minutes = Math.floor(remaining / 60);
             let seconds = remaining % 60;
             this.timer.setText(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+        }
+
+        // cooldowns jugador 1
+        if (this.player1.quickAbility) {
+            const remaining = this.player1.quickAbility.getCooldownRemaining();
+            if (remaining > 0) {
+                const seconds = Math.ceil(remaining / 1000);
+                this.abilityOnePlayerOne.setText(`J1 - F: ${seconds}s`);
+                this.abilityOnePlayerOne.setColor('#ff6666');
+            } else {
+                this.abilityOnePlayerOne.setText('J1 - F: L');
+                this.abilityOnePlayerOne.setColor('#ff0000');
+            }
+        }
+        
+        if (this.player1.slowAbility) {
+            const remaining = this.player1.slowAbility.getCooldownRemaining();
+            if (remaining > 0) {
+                const seconds = Math.ceil(remaining / 1000);
+                this.abilityTwoPlayerOne.setText(`J1 - G: ${seconds}s`);
+                this.abilityTwoPlayerOne.setColor('#ff6666');
+            } else {
+                this.abilityTwoPlayerOne.setText('J1 - G: L');
+                this.abilityTwoPlayerOne.setColor('#ff0000');
+            }
+        }
+        
+        // cooldowns jugador 2
+        if (this.player2.quickAbility) {
+            const remaining = this.player2.quickAbility.getCooldownRemaining();
+            if (remaining > 0) {
+                const seconds = Math.ceil(remaining / 1000);
+                this.abilityOnePlayerTwo.setText(`J2 - NP1: ${seconds}s`);
+                this.abilityOnePlayerTwo.setColor('#6666ff');
+            } else {
+                this.abilityOnePlayerTwo.setText('J2 - NP1: L');
+                this.abilityOnePlayerTwo.setColor('#0000ff');
+            }
+        }
+        
+        if (this.player2.slowAbility) {
+            const remaining = this.player2.slowAbility.getCooldownRemaining();
+            if (remaining > 0) {
+                const seconds = Math.ceil(remaining / 1000);
+                this.abilityTwoPlayerTwo.setText(`J2 - NP2: ${seconds}s`);
+                this.abilityTwoPlayerTwo.setColor('#6666ff');
+            } else {
+                this.abilityTwoPlayerTwo.setText('J2 - NP2: L');
+                this.abilityTwoPlayerTwo.setColor('#0000ff');
+            }
         }
 
         this.inputMappings.forEach(mapping => {
