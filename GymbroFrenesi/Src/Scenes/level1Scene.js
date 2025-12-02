@@ -21,9 +21,7 @@ export default class level_1 extends Phaser.Scene
 {
     constructor()
     {
-        super({key: "level1Scene"})
-
-        this.startTime = new Date() / 1000;       
+        super({key: "level1Scene"})    
     }
 
     
@@ -56,6 +54,9 @@ export default class level_1 extends Phaser.Scene
 
     create()
     {  
+
+        this.startTime = Math.round(new Date() / 1000);   
+
         // fondo provisional
         this.add.image(0, 0, "level_1").setOrigin(0, 0)
 
@@ -132,7 +133,7 @@ export default class level_1 extends Phaser.Scene
             texture_key: p1Texture,
             tileSize: tileSize,
             map: this.fallingPlatforms,
-            lives: 330,
+            lives: 3,
         }
         this.p1Keys = {
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -149,7 +150,7 @@ export default class level_1 extends Phaser.Scene
             texture_key: p2Texture,
             tileSize: tileSize,
             map: this.fallingPlatforms,
-            lives: 330,
+            lives: 3,
         }
         this.p2Keys = {
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
@@ -265,18 +266,18 @@ export default class level_1 extends Phaser.Scene
     {   
         if (Math.round(Date.now() / 1000) >= this.startTime + 120) {
             // volver al menu tras que se acabe el tiempo
-            this. scene.start('titleScene'); // cambiar a pantalla de victoria
+            this.scene.start('titleScene'); // cambiar a pantalla de victoria
             this.scene.stop();
         } else {
             // calcular el tiempo restante
-            let currentTime = Math.round(Date. now() / 1000);
+            let currentTime = Math.round(Date.now() / 1000);
             let elapsed = currentTime - this.startTime;
             let remaining = 120 - elapsed;
             
             // actualizar el temporizador en pantalla
             let minutes = Math.floor(remaining / 60);
             let seconds = remaining % 60;
-            this. timer.setText(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+            this.timer.setText(`${minutes}:${seconds.toString().padStart(2, '0')}`);
         }
 
         this.inputMappings.forEach(mapping => {
