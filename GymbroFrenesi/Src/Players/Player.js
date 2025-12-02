@@ -1,3 +1,4 @@
+import Abilities from "./abilities";
 
 export default class Player extends Phaser.GameObjects.Sprite
 {
@@ -11,10 +12,15 @@ export default class Player extends Phaser.GameObjects.Sprite
             this.moveDuration = config.moveDuration || 150;
 
             this.isMoving=false;
+            this.direction = null;
 
             this.lives = config.lives || 3;
             this.isAlive = true;                //le quedan vidas (no tiene pq estar en la escena)
             this.isDead = false;               //No le quedan vidas
+
+            this.type = type;
+            this.slowAbility = new Abilities(this, scene, id, type, "slowAbility");
+            this.quickAbility = new Abilities(this, scene, id, type, "quickAbility");
 
         scene.add.existing(this);
 
@@ -28,6 +34,8 @@ export default class Player extends Phaser.GameObjects.Sprite
 
         if (!this.isWalkable(newX, newY)) return;
         
+        this.direction = direction;
+
         this.moveTo(newX, newY);
         
     }

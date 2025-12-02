@@ -128,7 +128,9 @@ export default class level_1 extends Phaser.Scene
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
             down:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S),
             left:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A),
-            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D)
+            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D),
+            quickAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F),
+            slowAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G),
         };
         this.player1= new Player(this, 'player1', tileSpawn1X, tileSpawn1Y, config);
 
@@ -145,7 +147,9 @@ export default class level_1 extends Phaser.Scene
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
             down:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
             left:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
-            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT)
+            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
+            quickAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE),
+            slowAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO),
         };
         this.player2= new Player(this, 'player2', tileSpawn2X, tileSpawn2Y, config);
         
@@ -166,6 +170,8 @@ export default class level_1 extends Phaser.Scene
                 leftKey: 'A',
                 downKey: 'S',
                 rightKey: 'D',
+                quickAbilityKey: 'F',
+                slowAbilityKey: 'G', 
             },
             {
                 playerId: 'player2',
@@ -173,6 +179,8 @@ export default class level_1 extends Phaser.Scene
                 leftKey: 'LEFT',
                 downKey: 'DOWN',
                 rightKey: 'RIGHT',
+                quickAbilityKey: 'NUMPAD_ONE',
+                slowAbilityKey: 'NUMPAD_TWO',
             }
         ]
            
@@ -183,6 +191,8 @@ export default class level_1 extends Phaser.Scene
                 leftKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.leftKey]),
                 downKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.downKey]),
                 rightKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.rightKey]),
+                quickAbilityKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.quickAbilityKey]),
+                slowAbilityKeyObj: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes[config.slowAbilityKey]),
             }
         });
 
