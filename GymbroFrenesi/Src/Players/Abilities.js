@@ -19,11 +19,7 @@ export default class Abilities
 
 
     useAbility(){
-        
-        console.log(this.player.type);
-        console.log(this.abilityType);
-        console.log("in useAbility");
-
+  
         if(!this.player.isAlive) return;
         if(this.isOnCooldown) return;
 
@@ -33,9 +29,9 @@ export default class Abilities
             } else if(this.type === 'armDay'){
                 this.armQuickAbility();
             } else if(this.type === 'coreDay'){
-                this.pecQuickAbility();
+                this.coreQuickAbility();
             } else if(this.type === 'mewingDay'){
-                this.mogQuickAbility();
+                this.mewingQuickAbility();
             }
         }
 
@@ -45,9 +41,9 @@ export default class Abilities
             } else if(this.type === 'armDay'){
                this.armSlowAbility();
             } else if(this.type === 'coreDay'){
-                this.pecSlowAbility();
+                this.coreSlowAbility();
             } else if(this.type === 'mewingDay'){
-                this.mogSlowAbility();
+                this.mewingSlowAbility();
             }
         }
         
@@ -338,4 +334,106 @@ export default class Abilities
             }
         }
     }
+
+    mewingQuickAbility(){
+        
+        // flashear las 8 casillas adyacentes al enemigo, utilizando el logo1.png para el efecto visual
+
+        const tileSize = this.player.tileSize;
+
+        // encontrar a los enemigos y flashear las casillas adyacentes
+        this.scene.players.forEach(enemy => {
+            if (enemy.id !== this.player.id) {
+                const enemyTileX = Math.round(enemy.x + tileSize / 2);
+                const enemyTileY = Math.round(enemy.y + tileSize / 2);
+
+                // definir las 8 casillas adyacentes
+                const adjacentTiles = [];
+                for (let dx = -1; dx <= 1; dx++) {
+                    for (let dy = -1; dy <= 1; dy++) {
+                        // saltarse la casilla central
+                        if (dx === 0 && dy === 0) continue;
+                        adjacentTiles.push({
+                            x: enemyTileX + dx * tileSize,
+                            y: enemyTileY + dy * tileSize
+                        });
+                    }
+                }
+
+                // flashear las casillas adyacentes
+                adjacentTiles.forEach(tile => {
+
+                    // comprobar que la tile esta dentro de la zona de juego
+                    const tileGridX = Math.round((tile.x) / tileSize);
+                    const tileGridY = Math.round((tile.y) / tileSize);
+                    const targetTile = this.scene.map.getTileAt(tileGridX - 1, tileGridY - 1);
+                    if (!targetTile) return; // saltarse tiles fuera del mapa
+
+                    // crear el efecto de flash
+                    const flashSprite = this.scene.add.sprite(tile.x - tileSize, tile.y - tileSize, "flash");
+                    flashSprite.setOrigin(0, 0);
+                    flashSprite.setScale(tileSize / flashSprite.width, tileSize / flashSprite.height);
+
+                    // destruir el efecto de flash tras 2 segundos
+                    this.scene.time.delayedCall(2000, () => {
+                        flashSprite.destroy();
+                    });
+                });
+
+            }
+        });
+    }
+
+    mewingSlowAbility(){
+
+        // flashear las 24 casillas alrededor del jugador, utilizando el logo1.png para el efecto visual
+
+        const tileSize = this.player.tileSize;
+
+        // encontrar a los enemigos y flashear las casillas adyacentes
+        this.scene.players.forEach(enemy => {
+            if (enemy.id !== this.player.id) {
+                const enemyTileX = Math.round(enemy.x + tileSize / 2);
+                const enemyTileY = Math.round(enemy.y + tileSize / 2);
+
+                // definir las 24 casillas adyacentes
+                const adjacentTiles = [];
+                for (let dx = -2; dx <= 2; dx++) {
+                    for (let dy = -2; dy <= 2; dy++) {
+                        // saltarse la casilla central
+                        if (dx === 0 && dy === 0) continue;
+                        adjacentTiles.push({
+                            x: enemyTileX + dx * tileSize,
+                            y: enemyTileY + dy * tileSize
+                        });
+                    }
+                }
+
+                // flashear las casillas adyacentes
+                adjacentTiles.forEach(tile => {
+
+                    // comprobar que la tile esta dentro de la zona de juego
+                    const tileGridX = Math.round((tile.x) / tileSize);
+                    const tileGridY = Math.round((tile.y) / tileSize);
+                    const targetTile = this.scene.map.getTileAt(tileGridX - 1, tileGridY - 1);
+                    if (!targetTile) return; // saltarse tiles fuera del mapa
+
+                    // crear el efecto de flash
+                    const flashSprite = this.scene.add.sprite(tile.x - tileSize, tile.y - tileSize, "flash");
+                    flashSprite.setOrigin(0, 0);
+                    flashSprite.setScale(tileSize / flashSprite.width, tileSize / flashSprite.height);
+
+                    // destruir el efecto de flash tras 2 segundos
+                    this.scene.time.delayedCall(2000, () => {
+                        flashSprite.destroy();
+                    });
+                });
+            }
+        });
+    }
+
+
+
+
+
 }

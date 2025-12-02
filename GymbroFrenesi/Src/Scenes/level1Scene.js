@@ -45,6 +45,9 @@ export default class level_1 extends Phaser.Scene
         this.load.image("charArmsSprite", "Assets/Img/personajes/armsPlaceholder.png");
         this.load.image("charCoreSprite", "Assets/Img/personajes/corePlaceholder.png");
         this.load.image("charMewingSprite", "Assets/Img/personajes/mewingPlaceholder.png");
+
+        // Cargar habilidades
+        this.load.image("flash", "Assets/Img/flash.png");
     }
 
     create()
