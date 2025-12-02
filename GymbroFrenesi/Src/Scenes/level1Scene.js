@@ -273,6 +273,10 @@ export default class level_1 extends Phaser.Scene
 
             let direction = playerNum.direction;
 
+            if(playerNum.direction == null){
+                playerNum.direction = 'right';
+            }
+
             if (up) {
                 newY -= playerNum.tileSize; // tamaño del movimiento
                 direction = 'up';

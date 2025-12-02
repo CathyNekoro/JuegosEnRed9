@@ -335,6 +335,277 @@ export default class Abilities
         }
     }
 
+    coreQuickAbility(){
+        
+        // carga en linea recta empujando a un jugador que se encuentre hacia los laterales y parandose tras el impacto, pero se cae si hay un agujero
+
+        const direction = this.player.direction;
+        const tileSize = this.player.tileSize;
+
+        // limites reales del mapa
+        const minTileX = tileSize * 2;   
+        const minTileY = tileSize * 2;
+        const maxTileX = (this.scene.map.width - 2)*tileSize;   
+        const maxTileY = (this.scene.map.height - 1)*tileSize; 
+
+        let chargeX = this.player.x;
+        let chargeY = this.player.y;
+        let targetEnemy = null;
+        let enemyOriginalX = null;
+        let enemyOriginalY = null;
+
+        // moverse en linea recta hasta chocar contra un enemigo
+        while (!targetEnemy) {
+
+            let anteriorX = chargeX;
+            let anteriorY = chargeY;
+
+            // calcular la siguiente posicion
+            if (direction === 'up') {
+                chargeY -= tileSize;
+            }
+            else if (direction === 'down') {
+                chargeY += tileSize;
+            }
+            else if (direction === 'left') {
+                chargeX -= tileSize;
+            }
+            else if (direction === 'right') {
+                chargeX += tileSize;
+            }
+
+            const tileX = Math.round(chargeX + tileSize / 2);
+            const tileY = Math.round(chargeY + tileSize / 2);
+
+            // comprobar si hay un enemigo en dicha posicion
+            this.scene.players.forEach(p => {
+                if (p.id !== this.player.id) {
+                    const otherTileX = Math.round(p.x + tileSize / 2);
+                    const otherTileY = Math.round(p.y + tileSize / 2);
+                    if (otherTileX === tileX && otherTileY === tileY) {
+                        targetEnemy = p;
+                        enemyOriginalX = p.x;
+                        enemyOriginalY = p.y;
+                    }
+                }
+            });
+
+            // comprobar si hay un agujero
+            const children = this.scene.fallingPlatforms.getChildren();
+           
+            var unavailableTiles = children.filter(p => p.fallen); // array de tiles ya no válidas
+
+            const badTile = unavailableTiles.find(tile =>
+            Phaser.Math.Within(chargeX, tile.x, tileSize / 2) &&
+            Phaser.Math.Within(chargeY, tile.y, tileSize / 2)
+            );
+
+            if (badTile) { //si hay una casilla caida entre medias
+
+                this.player.receiveDamage(); // recibir daño
+
+                let posicion=this.scene.getRandomSafePlatform(); 
+                chargeX=posicion.x;
+                chargeY=posicion.y;
+                this.player.update(chargeX, chargeY, this.player.map, direction); // reaparecer
+
+                return; // salir de la hablidad       
+            }
+            
+            // prevencion para no salirse del mapa
+            if (!targetEnemy) {
+
+                // si la próxima casilla sale del mapa entonces dejar de cargar 
+                if (chargeX < minTileX || chargeX > maxTileX || chargeY < minTileY || chargeY > maxTileY) {
+                    chargeX = anteriorX;
+                    chargeY = anteriorY; 
+                    break;
+                }
+            }
+        }
+
+        // empujar al enemigo si se encuentra a uno y mover al jugador a la posicion original del enimgo
+        if (targetEnemy) {
+            // determinar la direccion de empuje
+            let pushX = targetEnemy.x;
+            let pushY = targetEnemy.y;
+            let pushDirection = direction;
+
+            if (direction === 'up' || direction === 'down') {
+                // izquierda o derecha
+                if (targetEnemy.x > (minTileX + ((maxTileX - minTileX)/2))){
+                    pushDirection = 'left';
+                    pushX -= tileSize;
+                } else {
+                    pushDirection = 'right';
+                    pushX += tileSize;
+                }
+            }
+            else if (direction === 'left' || direction === 'right') {
+                // arriba o abajo
+                if (targetEnemy.y < (minTileY + ((maxTileY - minTileY)/2))){
+                    pushDirection = 'down';
+                    pushY += tileSize;
+                } else {
+                    pushDirection = 'up';
+                    pushY -= tileSize;
+
+                }
+            }
+
+            // comprobar si la tile a la que se empuja esta ocupada, por si acaso queremos implementar mas jugadores
+            const pushedTileX = Math.round(pushX + tileSize / 2);
+            const pushedTileY = Math.round(pushY + tileSize / 2);
+            let occupied = false;
+
+            this.scene.players.forEach(p => {
+                if (p.id !== targetEnemy.id) {
+                    const otherTileX = Math.round(p.x + tileSize / 2);
+                    const otherTileY = Math.round(p.y + tileSize / 2);
+                    if (otherTileX === pushedTileX && otherTileY === pushedTileY) {
+                        occupied = true;
+                    }
+                }
+            });
+
+            // empujar al enemigo si la tile no esta ocupada
+            if (!occupied) {
+                targetEnemy.update(pushX, pushY, this.player.map, pushDirection);
+            } 
+
+            // mover al jugador a la casilla original del enemigo
+            this.player.update(enemyOriginalX, enemyOriginalY, this.player.map, direction);;
+        } else {
+            // mover al jugado a la posicion final de la carga si no hay enemigo en el camino
+            this.player.update(chargeX, chargeY, this.player.map, direction);
+        }
+
+    }
+
+    coreSlowAbility(){
+
+        // carga en linea recta empujando a un jugador que se encuentre hacia los laterales y parandose tras el impacto, pero no se cae si hay un agujero
+        const direction = this.player.direction;
+        const tileSize = this.player.tileSize;
+
+        // limites reales del mapa
+        const minTileX = tileSize * 2;   
+        const minTileY = tileSize * 2;
+        const maxTileX = (this.scene.map.width - 2)*tileSize;   
+        const maxTileY = (this.scene.map.height - 1)*tileSize; 
+
+        let chargeX = this.player.x;
+        let chargeY = this.player.y;
+        let targetEnemy = null;
+        let enemyOriginalX = null;
+        let enemyOriginalY = null;
+
+        // moverse en linea recta hasta chocar contra un enemigo
+        while (!targetEnemy) {
+
+            let anteriorX = chargeX;
+            let anteriorY = chargeY;
+
+            // calcular la siguiente posicion
+            if (direction === 'up') {
+                chargeY -= tileSize;
+            }
+            else if (direction === 'down') {
+                chargeY += tileSize;
+            }
+            else if (direction === 'left') {
+                chargeX -= tileSize;
+            }
+            else if (direction === 'right') {
+                chargeX += tileSize;
+            }
+
+            const tileX = Math.round(chargeX + tileSize / 2);
+            const tileY = Math.round(chargeY + tileSize / 2);
+
+            // comprobar si hay un enemigo en dicha posicion
+            this.scene.players.forEach(p => {
+                if (p.id !== this.player.id) {
+                    const otherTileX = Math.round(p.x + tileSize / 2);
+                    const otherTileY = Math.round(p.y + tileSize / 2);
+                    if (otherTileX === tileX && otherTileY === tileY) {
+                        targetEnemy = p;
+                        enemyOriginalX = p.x;
+                        enemyOriginalY = p.y;
+                    }
+                }
+            });
+
+            // prevencion para no salirse del mapa
+            if (!targetEnemy) {
+
+                // si la próxima casilla sale del mapa entonces dejar de cargar 
+                if (chargeX < minTileX || chargeX > maxTileX || chargeY < minTileY || chargeY > maxTileY) {
+                    chargeX = anteriorX;
+                    chargeY = anteriorY; 
+                    break;
+                }
+                
+            }
+        }
+
+        // empujar al enemigo si se encuentra a uno y mover al jugador a la posicion original del enimgo
+        if (targetEnemy) {
+
+            // determinar la direccion de empuje
+            let pushX = targetEnemy.x;
+            let pushY = targetEnemy.y;
+            let pushDirection = direction;
+
+            if (direction === 'up' || direction === 'down') {
+                // izquierda o derecha
+                if (targetEnemy.x > (minTileX + ((maxTileX - minTileX)/2))){
+                    pushDirection = 'left';
+                    pushX -= tileSize;
+                } else {
+                    pushDirection = 'right';
+                    pushX += tileSize;
+                }
+            }
+            else if (direction === 'left' || direction === 'right') {
+                // arriba o abajo
+                if (targetEnemy.y < (minTileY + ((maxTileY - minTileY)/2))){
+                    pushDirection = 'down';
+                    pushY += tileSize;
+                } else {
+                    pushDirection = 'up';
+                    pushY -= tileSize;
+                }
+            }
+
+            // comprobar si la tile a la que se empuja esta ocupada, por si acaso queremos implementar mas jugadores
+            const pushedTileX = Math.round(pushX + tileSize / 2);
+            const pushedTileY = Math.round(pushY + tileSize / 2);
+            let occupied = false;
+
+            this.scene.players.forEach(p => {
+                if (p.id !== targetEnemy.id) {
+                    const otherTileX = Math.round(p.x + tileSize / 2);
+                    const otherTileY = Math.round(p.y + tileSize / 2);
+                    if (otherTileX === pushedTileX && otherTileY === pushedTileY) {
+                        occupied = true;
+                    }
+                }
+            });
+            
+            // empujar al enemigo si la tile no esta ocupada
+            if (!occupied) {
+                targetEnemy.update(pushX, pushY, this.player.map, pushDirection);
+            } 
+
+            // mover al jugador a la casilla original del enemigo
+            this.player.update(enemyOriginalX, enemyOriginalY, this.player.map, direction);
+        } else {
+            // mover al jugado a la posicion final de la carga si no hay enemigo en el camino
+            this.player.update(chargeX, chargeY, this.player.map, direction);
+        }
+    }
+
     mewingQuickAbility(){
         
         // flashear las 8 casillas adyacentes al enemigo, utilizando el logo1.png para el efecto visual
