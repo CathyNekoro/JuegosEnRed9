@@ -119,7 +119,6 @@ export default class Abilities
         if (!occupied) {
             this.player.update(newX, newY, this.player.map, direction);
         }
-
     }
 
     legSlowAbility(){
@@ -161,7 +160,182 @@ export default class Abilities
         if (!occupied) {
             this.player.update(newX, newY, this.player.map, direction);
         }
-        
     }
 
+    armQuickAbility(){
+        
+        // empujon de casilla en la direccion elegida al jugador enemigo
+
+        const direction = this.player.direction;
+        const tileSize = this.player.tileSize;
+
+        // calcular la tile delante del jugador
+        let frontTileX = Math.round(this.player.x + tileSize / 2);
+        let frontTileY = Math.round(this.player.y + tileSize / 2);
+
+        if (direction === 'up') {
+            frontTileY -= tileSize;
+        }
+        else if (direction === 'down') {
+            frontTileY += tileSize;
+        }
+        else if (direction === 'left') {
+            frontTileX -= tileSize;
+        }
+        else if (direction === 'right') {
+            frontTileX += tileSize;
+        }
+
+        // ver si hay un enemigo en dicha casilla
+        let targetEnemy = null;
+        this.scene.players.forEach(p => {
+            if (p.id !== this.player.id) { // comprobar que no es el mismo jugador
+                const otherTileX = Math.round(p.x + tileSize / 2);
+                const otherTileY = Math.round(p.y + tileSize / 2);
+                if (otherTileX === frontTileX && otherTileY === frontTileY) {
+                    targetEnemy = p;
+                }
+            }
+        });
+
+        // si hay un enemigo empujarlo
+        if (targetEnemy) {
+            let newX = targetEnemy.x;
+            let newY = targetEnemy.y;
+            let pushDirection = direction;
+
+            // calcular la direccion de empuje basado en las posiciones del jugador y el enemigo
+            const attackerTileX = Math.round(this.player.x + tileSize / 2);
+            const attackerTileY = Math.round(this.player.y + tileSize / 2);
+            const enemyTileX = Math.round(targetEnemy.x + tileSize / 2);
+            const enemyTileY = Math.round(targetEnemy.y + tileSize / 2);
+
+            // determinar la direccion de empuje
+            if (enemyTileY < attackerTileY) {
+                pushDirection = 'up';
+                newY -= tileSize;
+            }
+            else if (enemyTileY > attackerTileY) {
+                pushDirection = 'down';
+                newY += tileSize;
+            }
+            else if (enemyTileX < attackerTileX) {
+                pushDirection = 'left';
+                newX -= tileSize;
+            }
+            else if (enemyTileX > attackerTileX) {
+                pushDirection = 'right';
+                newX += tileSize;
+            }
+
+            // comprobar que la tile a la que se emupja no esta ocupada, por si acaso queremos implementar mas jugadores
+            const pushedTileX = Math.round(newX + tileSize / 2);
+            const pushedTileY = Math.round(newY + tileSize / 2);
+            let occupied = false;
+
+            this.scene.players.forEach(p => {
+                if (p.id !== targetEnemy.id) { // comprobar otros jugadores
+                    const otherTileX = Math.round(p.x + tileSize / 2);
+                    const otherTileY = Math.round(p.y + tileSize / 2);
+                    if (otherTileX === pushedTileX && otherTileY === pushedTileY) {
+                        occupied = true;
+                    }
+                }
+            });
+
+            // empujar al enemigo a dicha tile
+            if (!occupied) {
+                targetEnemy.update(newX, newY, this.player.map, pushDirection);
+            } 
+        }
+
+    }
+
+    armSlowAbility(){
+
+        // empujon de 2 casillas en la direccion elegida al jugador enemigo
+
+        const direction = this.player.direction;
+        const tileSize = this.player.tileSize;
+
+        // calcular la tile delante del jugador
+        let frontTileX = Math.round(this.player.x + tileSize / 2);
+        let frontTileY = Math.round(this.player.y + tileSize / 2);
+
+        if (direction === 'up') {
+            frontTileY -= tileSize;
+        }
+        else if (direction === 'down') {
+            frontTileY += tileSize;
+        }
+        else if (direction === 'left') {
+            frontTileX -= tileSize;
+        }
+        else if (direction === 'right') {
+            frontTileX += tileSize;
+        }
+
+        // ver si hay un enemigo en dicha casilla
+        let targetEnemy = null;
+        this.scene.players.forEach(p => {
+            if (p.id !== this.player.id) { // comprobar que no es el mismo jugador
+                const otherTileX = Math.round(p.x + tileSize / 2);
+                const otherTileY = Math.round(p.y + tileSize / 2);
+                if (otherTileX === frontTileX && otherTileY === frontTileY) {
+                    targetEnemy = p;
+                }
+            }
+        });
+
+        // si hay un enemigo empujarlo
+        if (targetEnemy) {
+            let newX = targetEnemy.x;
+            let newY = targetEnemy.y;
+            let pushDirection = direction;
+
+            // calcular la direccion de empuje basado en las posiciones del jugador y el enemigo
+            const attackerTileX = Math.round(this.player.x + tileSize / 2);
+            const attackerTileY = Math.round(this.player.y + tileSize / 2);
+            const enemyTileX = Math.round(targetEnemy.x + tileSize / 2);
+            const enemyTileY = Math.round(targetEnemy.y + tileSize / 2);
+
+            // determinar la direccion de empuje
+            if (enemyTileY < attackerTileY) {
+                pushDirection = 'up';
+                newY -= tileSize * 2;
+            }
+            else if (enemyTileY > attackerTileY) {
+                pushDirection = 'down';
+                newY += tileSize * 2;
+            }
+            else if (enemyTileX < attackerTileX) {
+                pushDirection = 'left';
+                newX -= tileSize * 2;
+            }
+            else if (enemyTileX > attackerTileX) {
+                pushDirection = 'right';
+                newX += tileSize * 2;
+            }
+
+            // comprobar que la tile a la que se emupja no esta ocupada, por si acaso queremos implementar mas jugadores
+            const pushedTileX = Math.round(newX + tileSize / 2);
+            const pushedTileY = Math.round(newY + tileSize / 2);
+            let occupied = false;
+
+            this.scene.players.forEach(p => {
+                if (p.id !== targetEnemy.id) { // Check other players
+                    const otherTileX = Math.round(p.x + tileSize / 2);
+                    const otherTileY = Math.round(p.y + tileSize / 2);
+                    if (otherTileX === pushedTileX && otherTileY === pushedTileY) {
+                        occupied = true;
+                    }
+                }
+            });
+
+            // empujar al enemigo si la tile no esta ocupada
+            if (!occupied) {
+                targetEnemy.update(newX, newY, this.player.map, pushDirection);
+            }
+        }
+    }
 }
