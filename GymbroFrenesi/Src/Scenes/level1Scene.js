@@ -21,8 +21,12 @@ export default class level_1 extends Phaser.Scene
 {
     constructor()
     {
-       super({key: "level1Scene"})
+        super({key: "level1Scene"})
+
+        this.startTime = new Date() / 1000;       
     }
+
+    
 
     init(data) {
         this.player1Key = data.player1;
@@ -62,6 +66,11 @@ export default class level_1 extends Phaser.Scene
         });
 
         this.livesTwo = this.add.text(700, 50, '0', {
+            fontSize: '64px',
+            color: '#ff0000ff'
+        });
+
+        this.timer = this.add.text(100, 150, '0', {
             fontSize: '64px',
             color: '#ff0000ff'
         });
@@ -124,7 +133,6 @@ export default class level_1 extends Phaser.Scene
             tileSize: tileSize,
             map: this.fallingPlatforms,
             lives: 330,
-
         }
         this.p1Keys = {
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -142,13 +150,11 @@ export default class level_1 extends Phaser.Scene
             tileSize: tileSize,
             map: this.fallingPlatforms,
             lives: 330,
-
         }
-        
         this.p2Keys = {
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
             down:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
-            left:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT),
+            left:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT), 
             right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
             quickAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE),
             slowAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO),
@@ -159,7 +165,7 @@ export default class level_1 extends Phaser.Scene
         this.players = new Map();
         this.players.set('player1', this.player1);
         this.players.set('player2', this.player2);
-
+        
         // inicializacion de vidas
         this.scoreLivesOne();
         this.scoreLivesTwo();
@@ -198,7 +204,6 @@ export default class level_1 extends Phaser.Scene
             }
         });
 
-        
         //contador
         this.time.addEvent({
             delay: 2000,          // 2000 ms = 2 segundos
@@ -228,7 +233,6 @@ export default class level_1 extends Phaser.Scene
         return Phaser.Utils.Array.GetRandom(candidates);
     }
 
-
     dropRandomTile() {
         const candidates = this.fallingPlatforms.getChildren().filter(p => !p.fallen);
         if (candidates.length === 0) return;
@@ -243,7 +247,6 @@ export default class level_1 extends Phaser.Scene
         chosen.body.checkCollision.none = true;
     }
 
-
     // actualizacion de vidas en pantalla
     scoreLivesOne() {
         const playerOne = this.players.get('player1');
@@ -255,9 +258,27 @@ export default class level_1 extends Phaser.Scene
         this.livesTwo.setText(playerTwo.lives.toString());
     }
 
+    
+
     //deteccion de movimiento sin importar el jugador
     update()
-    {
+    {   
+        if (Math.round(Date.now() / 1000) >= this.startTime + 120) {
+            // volver al menu tras que se acabe el tiempo
+            this. scene.start('titleScene'); // cambiar a pantalla de victoria
+            this.scene.stop();
+        } else {
+            // calcular el tiempo restante
+            let currentTime = Math.round(Date. now() / 1000);
+            let elapsed = currentTime - this.startTime;
+            let remaining = 120 - elapsed;
+            
+            // actualizar el temporizador en pantalla
+            let minutes = Math.floor(remaining / 60);
+            let seconds = remaining % 60;
+            this. timer.setText(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+        }
+
         this.inputMappings.forEach(mapping => {
             var playerNum = this.players.get(mapping.playerId);
 

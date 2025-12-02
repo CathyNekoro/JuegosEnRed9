@@ -37,7 +37,6 @@ export default class Player extends Phaser.GameObjects.Sprite
         this.direction = direction;
 
         this.moveTo(newX, newY);
-        
     }
 
     isWalkable(targetX, targetY)
