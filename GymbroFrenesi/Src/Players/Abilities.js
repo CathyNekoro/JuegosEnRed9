@@ -19,30 +19,148 @@ export default class Abilities
 
 
     useAbility(){
+        
+        console.log(this.player.type);
+        console.log(this.abilityType);
+        console.log("in useAbility");
+
+        if(!this.player.isAlive) return;
+        if(this.isOnCooldown) return;
 
         if(this.abilityType === "quickAbility"){
-            if(this.type === 'leg'){
+            if(this.type === 'legDay'){
                 this.legQuickAbility();
-            } else if(this.type === 'arm'){
+            } else if(this.type === 'armDay'){
                 this.armQuickAbility();
-            } else if(this.type === 'pec'){
+            } else if(this.type === 'coreDay'){
                 this.pecQuickAbility();
-            } else if(this.type === 'mog'){
+            } else if(this.type === 'mewingDay'){
                 this.mogQuickAbility();
             }
         }
 
         if(this.abilityType === "slowAbility"){
-            if(this.type === 'leg'){
+            if(this.type === 'legDay'){
               this.legSlowAbility();
-            } else if(this.type === 'arm'){
+            } else if(this.type === 'armDay'){
                this.armSlowAbility();
-            } else if(this.type === 'pec'){
+            } else if(this.type === 'coreDay'){
                 this.pecSlowAbility();
-            } else if(this.type === 'mog'){
+            } else if(this.type === 'mewingDay'){
                 this.mogSlowAbility();
             }
         }
         
-    }    
+    }
+    
+    legQuickAbility(){
+
+        // saltar 2 casillas en la direccion elegida
+
+        console.log("in legQuickAbility");
+
+        let newX = this.player.x;
+        let newY = this.player.y;
+        const direction = this.player.direction;
+        const tileSize = this.player.tileSize;
+
+        // moverse 1 casilla en la direccion del jugador
+        if (direction === 'up') {
+            newY -= this.player.tileSize; // 1 tile de movimiento
+        }
+        else if (direction === 'down') {
+            newY += this.player.tileSize;
+        }
+        else if (direction === 'left') {
+            newX -= this.player.tileSize;
+        }
+        else if (direction === 'right') {
+            newX += this.player.tileSize;
+        }
+
+        // comprobar si esta ocupada 
+        const targetTileX = Math.round(newX + tileSize / 2);
+        const targetTileY = Math.round(newY + tileSize / 2);
+        let occupied = false;
+
+        this.scene.players.forEach(p => {
+            const otherTileX = Math.round(p.x + p.tileSize / 2);
+            const otherTileY = Math.round(p.y + p.tileSize / 2);
+            if (otherTileX === targetTileX && otherTileY === targetTileY)
+                occupied = true;
+        });
+
+	    // moverse 1 casilla en la direccion del jugador
+        if (direction === 'up') {
+            newY -= this.player.tileSize; // 2 tiles de movimiento en total
+        }
+        else if (direction === 'down') {
+            newY += this.player.tileSize;
+        }
+        else if (direction === 'left') {
+            newX -= this.player.tileSize;
+        }
+        else if (direction === 'right') {
+            newX += this.player.tileSize;
+        }
+
+        // comprobar si esta ocupada otra vez
+        this.scene.players.forEach(p => {
+            const otherTileX = Math.round(p.x + p.tileSize / 2);
+            const otherTileY = Math.round(p.y + p.tileSize / 2);
+            if (otherTileX === targetTileX && otherTileY === targetTileY)
+                occupied = true;
+        });
+
+        // mover si no esta ocupada
+        if (!occupied) {
+            //this.player.update(newX, newY, direction);
+            this.player.update(newX, newY, this, direction);
+        }
+
+    }
+
+    legSlowAbility(){
+
+        // saltar 2 por encima de jugadores
+
+        let newX = this.player.x;
+        let newY = this.player.y;
+        const direction = this.player.direction;
+
+        // moverse 2 casillas en la direccion del jugador
+        if (direction === 'up') {
+            newY -= this.player.tileSize * 2; // 2 tiles de movimiento
+        }
+        else if (direction === 'down') {
+            newY += this.player.tileSize * 2;
+        }
+        else if (direction === 'left') {
+            newX -= this.player.tileSize * 2;
+        }
+        else if (direction === 'right') {
+            newX += this.player.tileSize * 2;
+        }
+
+        // comprobar si esta ocupada 
+        const tileSize = this.player.tileSize;
+        const targetTileX = Math.round(newX + tileSize / 2);
+        const targetTileY = Math.round(newY + tileSize / 2);
+        let occupied = false;
+
+        this.scene.players.forEach(p => {
+            const otherTileX = Math.round(p.x + p.tileSize / 2);
+            const otherTileY = Math.round(p.y + p.tileSize / 2);
+            if (otherTileX === targetTileX && otherTileY === targetTileY)
+                occupied = true;
+        });
+
+        // mover si no esta ocupada
+        if (!occupied) {
+            //this.player.update(newX, newY, direction);
+            this.player.update(newX, newY, this, direction);
+        }
+        
+    }
+
 }

@@ -24,8 +24,7 @@ export default class level_1 extends Phaser.Scene
        super({key: "level1Scene"})
     }
 
-     init(data) {
-    
+    init(data) {
         this.player1Key = data.player1;
         this.player2Key = data.player2; 
     }
@@ -132,8 +131,8 @@ export default class level_1 extends Phaser.Scene
             quickAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F),
             slowAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G),
         };
-        this.player1= new Player(this, 'player1', tileSpawn1X, tileSpawn1Y, config);
-
+        this.player1= new Player(this, 'player1', this.player1Key, tileSpawn1X, tileSpawn1Y, config);
+        
         // definicion y creacion del jugador dos
         var config = {
             texture_key: p2Texture,
@@ -151,7 +150,7 @@ export default class level_1 extends Phaser.Scene
             quickAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE),
             slowAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO),
         };
-        this.player2= new Player(this, 'player2', tileSpawn2X, tileSpawn2Y, config);
+        this.player2= new Player(this, 'player2', this.player2Key, tileSpawn2X, tileSpawn2Y, config);
         
         // mapa de jugadores
         this.players = new Map();
@@ -263,15 +262,38 @@ export default class level_1 extends Phaser.Scene
             const down  = Phaser.Input.Keyboard.JustDown(mapping.downKeyObj);
             const left  = Phaser.Input.Keyboard.JustDown(mapping.leftKeyObj);
             const right = Phaser.Input.Keyboard.JustDown(mapping.rightKeyObj);
+            const quickAbility = Phaser.Input.Keyboard.JustDown(mapping.quickAbilityKeyObj);
+            const slowAbility = Phaser.Input.Keyboard.JustDown(mapping.slowAbilityKeyObj);
 
             var newX = playerNum.x;
             var newY = playerNum.y;
 
+            let direction = playerNum.direction;
 
-            if (up) newY -= playerNum.tileSize; // tamaño del movimiento
-            else if (down) newY += playerNum.tileSize;
-            else if (left) newX -= playerNum.tileSize;
-            else if (right) newX += playerNum.tileSize;
+            if (up) {
+                newY -= playerNum.tileSize; // tamaño del movimiento
+                direction = 'up';
+            }    
+            else if (down) {
+                newY += playerNum.tileSize;
+                direction = 'down';
+            }
+            else if (left) {
+                newX -= playerNum.tileSize;
+                direction = 'left';
+            }
+            else if (right) {
+                newX += playerNum.tileSize;
+                direction = 'right';
+            }
+
+            if (quickAbility) {
+                playerNum.quickAbility.useAbility();
+            }
+
+            if (slowAbility) {
+                playerNum.slowAbility.useAbility();
+            }            
 
             // Array de sprites del grupo
             const children = this.fallingPlatforms.getChildren();
@@ -280,65 +302,62 @@ export default class level_1 extends Phaser.Scene
             var unavailableTiles = children.filter(p => p.fallen); // array de tiles ya no válidas
             var availableTiles= children.filter(p => !p.fallen)     //arr de tiles válidas
 
-              const badTile = unavailableTiles.find(tile =>
+            const badTile = unavailableTiles.find(tile =>
             Phaser.Math.Within(playerNum.x, tile.x, playerNum.tileSize / 2) &&
             Phaser.Math.Within(playerNum.y, tile.y, playerNum.tileSize / 2)
         );
 
 
-           if ((newX != playerNum.x  || newY != playerNum.y) && playerNum.isAlive) {
+        if ((newX != playerNum.x  || newY != playerNum.y) && playerNum.isAlive) {
 
-                let occupied = false;
-                const tileSize = playerNum.tileSize;
+            let occupied = false;
+            const tileSize = playerNum.tileSize;
 
-                this.players.forEach(p => {
-                    if (p === playerNum) return; // ignorar al propio jugador
+            this.players.forEach(p => {
+                if (p === playerNum) return; // ignorar al propio jugador
 
-                    const otherTileX = Math.round(p.x + p.tileSize / 2);
-                    const otherTileY = Math.round(p.y + p.tileSize / 2);
-                    const targetTileX = Math.round(newX + tileSize / 2);
-                    const targetTileY = Math.round(newY + tileSize / 2);
+                const otherTileX = Math.round(p.x + p.tileSize / 2);
+                const otherTileY = Math.round(p.y + p.tileSize / 2);
+                const targetTileX = Math.round(newX + tileSize / 2);
+                const targetTileY = Math.round(newY + tileSize / 2);
 
-                    if (otherTileX === targetTileX && otherTileY === targetTileY) {
-                        occupied = true;
-                    }
-                });
-
-                if (!occupied) {
-                    playerNum.update(newX, newY, this.fallingPlatforms);
+                if (otherTileX === targetTileX && otherTileY === targetTileY) {
+                    occupied = true;
                 }
+            });
+
+            if (!occupied) {
+                playerNum.update(newX, newY, this.fallingPlatforms, direction);
             }
-                
+        }
+            
+        // comprobar si el jugador está encima
+        if (badTile && playerNum.isAlive) {
+            const randomTile = Phaser.Utils.Array.GetRandom(availableTiles);
+            playerNum.receiveDamage(); // si la tile esta ocupada, el jugador recibe daño
+            if (unavailableTiles.length < 91) {
                 
 
-                // comprobar si el jugador está encima
-                if (badTile && playerNum.isAlive) {
-                    const randomTile = Phaser.Utils.Array.GetRandom(availableTiles);
-                    playerNum.receiveDamage(); // si la tile esta ocupada, el jugador recibe daño
-                    if (unavailableTiles.length < 91) {
-                        
-
-                        // posición real en píxeles
-                        const respawnX = randomTile.x;
-                        const respawnY = randomTile.y;
+                // posición real en píxeles
+                const respawnX = randomTile.x;
+                const respawnY = randomTile.y;
+            
+                playerNum.update(respawnX, respawnY, this.fallingPlatforms, direction);
                     
-                        
-                            playerNum.update(respawnX, respawnY, this.fallingPlatforms);
-                            
-                    }   
-                    return;
-                }
-           
-       
-if (playerNum.id === 'player1') {
-                        this.scoreLivesOne();
-                    } else if (playerNum.id === 'player2') {
-                        this.scoreLivesTwo();
-                    }
-            if (playerNum.isDead) { // si un jugador ha muerto, volvemos a la pantalla de inicio
-                this.scene.start('titleScene'); // cambiar a pantalla de victioria
-                this.scene.stop();
-            }
+            }   
+            return;
+        }
+    
+        if (playerNum.id === 'player1') {
+            this.scoreLivesOne();
+        } else if (playerNum.id === 'player2') {
+            this.scoreLivesTwo();
+        }
+
+        if (playerNum.isDead) { // si un jugador ha muerto, volvemos a la pantalla de inicio
+            this.scene.start('titleScene'); // cambiar a pantalla de victioria
+            this.scene.stop();
+        }
         });
     }
 }
