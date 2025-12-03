@@ -22,6 +22,15 @@ export default class Player extends Phaser.GameObjects.Sprite
             this.quickAbility = new Abilities(this, scene, id, type, "quickAbility");
             this.slowAbility = new Abilities(this, scene, id, type, "slowAbility");
 
+            this.walkingKey = config.animationKeys.walk;
+            this.jumpingKey = config.animationKeys.jump;
+            this.fallingKey = config.animationKeys.fall;
+            this.idleingKey = config.animationKeys.idle;
+
+            this.setScale(0.5);
+
+            this.play(this.idleingKey);
+
         scene.add.existing(this);
 
     }
@@ -59,6 +68,10 @@ export default class Player extends Phaser.GameObjects.Sprite
         let worldX = this.x;
         let worldY = this.y;
 
+        if(this.scene.anims.exists(this.walkingKey)){
+            this.play(this.walkingKey);
+        }
+
         this.scene.tweens.add({
             targets: this,
             x: worldX,
@@ -66,6 +79,7 @@ export default class Player extends Phaser.GameObjects.Sprite
             duration: this.moveDuration,
             onComplete: () => {
                 this.isMoving = false;
+                this.stop();
             }
         });
     }
@@ -73,7 +87,12 @@ export default class Player extends Phaser.GameObjects.Sprite
     receiveDamage(){
         if(this.isAlive){
             this.lives -= 1;
+
+            if(this.scene.anims.exists(this.fallingKey)){
+            this.play(this.fallingKey);
+        }
             
+
             if(this.lives <= 0){
                 this.die();
             } else {

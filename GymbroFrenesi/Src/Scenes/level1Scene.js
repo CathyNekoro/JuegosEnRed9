@@ -50,6 +50,56 @@ export default class level_1 extends Phaser.Scene
 
         // Cargar habilidades
         this.load.image("flash", "Assets/Img/flash.png");
+
+        // Cargar spritesheets
+        this.load.spritesheet('PiernaWalk', 'Assets/Img/personajes/Pierna/WalkRojo.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('PiernaSalto', 'Assets/Img/personajes/Pierna/JumpRojo.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('PiernaRIP', 'Assets/Img/personajes/Pierna/RojoFall.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('BrazoWalk', 'Assets/Img/personajes/Brazo/WalkAzul.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('BrazoSalto', 'Assets/Img/personajes/Brazo/JumpAzul.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('BrazoRIP', 'Assets/Img/personajes/Brazo/AzulFall.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('MewingWalk', 'Assets/Img/personajes/Mewing/walkAmarillo.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('MewingSalto', 'Assets/Img/personajes/Mewing/jumpAmarillo.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('MewingRIP', 'Assets/Img/personajes/Mewing/fallAmarillo.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('CoreWalk', 'Assets/Img/personajes/Core/walkGreen.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('CoreSalto', 'Assets/Img/personajes/Core/jumpGreen.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
+        this.load.spritesheet('CoreRIP', 'Assets/Img/personajes/Core/fallGreen.png', {
+            frameWidth: 500,
+            frameHeight: 500
+        });
     }
 
     create()
@@ -59,6 +109,161 @@ export default class level_1 extends Phaser.Scene
 
         // fondo provisional
         this.add.image(0, 0, "level_1").setOrigin(0, 0)
+
+        // personajes
+        if(!this.anims.exists("AndarPierna")){
+            this.anims.create({
+            key: 'AndarPierna',
+            frames: this.anims.generateFrameNumbers('PiernaWalk', { start: 0, end: 3 }),
+            frameRate: 8,
+            repeat: -1
+            });
+        }
+        if(!this.anims.exists("SaltarPierna")){
+            this.anims.create({
+            key: 'SaltarPierna',
+            frames: this.anims.generateFrameNumbers('PiernaSalto', { start: 0, end: 1 }),
+            frameRate: 4,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("CaerPierna")){
+            this.anims.create({
+            key: 'CaerPierna',
+            frames: this.anims.generateFrameNumbers('PiernaRIP', { start: 0, end: 0 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("IdlePierna")){
+            this.anims.create({
+            key: 'IdlePierna',
+            frames: this.anims.generateFrameNumbers('PiernaWalk', { start: 0, end: 0 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("AndarBrazo")){
+            this.anims.create({
+            key: 'AndarBrazo',
+            frames: this.anims.generateFrameNumbers('BrazoWalk', { start: 0, end: 3 }),
+            frameRate: 8,
+            repeat: -1
+            });
+        }
+        if(!this.anims.exists("SaltarBrazo")){
+            this.anims.create({
+            key: 'SaltarBrazo',
+            frames: this.anims.generateFrameNumbers('BrazoJump', { start: 0, end: 1 }),
+            frameRate: 4,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("CaerBrazo")){
+            this.anims.create({
+            key: 'CaerBrazo',
+            frames: this.anims.generateFrameNumbers('BrazoRIP', { start: 0, end: 1 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("IdleBrazo")){
+            this.anims.create({
+            key: 'IdleBrazo',
+            frames: this.anims.generateFrameNumbers('BrazoWalk', { start: 0, end: 0 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("AndarMewing")){
+            this.anims.create({
+            key: 'AndarMewing',
+            frames: this.anims.generateFrameNumbers('MewingWalk', { start: 0, end: 3 }),
+            frameRate: 8,
+            repeat: -1
+            });
+        }
+        if(!this.anims.exists("SaltarMewing")){
+            this.anims.create({
+            key: 'SaltarMewing',
+            frames: this.anims.generateFrameNumbers('MewingSalto', { start: 0, end: 1 }),
+            frameRate: 4,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("CaerMewing")){
+            this.anims.create({
+            key: 'CaerMewing',
+            frames: this.anims.generateFrameNumbers('MewingRIP', { start: 0, end: 0 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("IdleMewing")){
+            this.anims.create({
+            key: 'IdleMewing',
+            frames: this.anims.generateFrameNumbers('MewingWalk', { start: 0, end: 0 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("AndarCore")){
+            this.anims.create({
+            key: 'AndarCore',
+            frames: this.anims.generateFrameNumbers('CoreWalk', { start: 0, end: 3 }),
+            frameRate: 8,
+            repeat: -1
+            });
+        }
+        if(!this.anims.exists("SaltarCore")){
+            this.anims.create({
+            key: 'SaltarCore',
+            frames: this.anims.generateFrameNumbers('CoreSalto', { start: 0, end: 1 }),
+            frameRate: 4,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("CaerCore")){
+            this.anims.create({
+            key: 'CaerCore',
+            frames: this.anims.generateFrameNumbers('CoreWalk', { start: 0, end: 0 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        if(!this.anims.exists("IdleCore")){
+            this.anims.create({
+            key: 'IdleCore',
+            frames: this.anims.generateFrameNumbers('CoreWalk', { start: 0, end: 0 }),
+            frameRate: 1,
+            repeat: 0
+            });
+        }
+        // configuraciones de animaciones
+        const animationKeysLegs = {
+            walk: "AndarPierna", 
+            jump: "SaltarPierna",
+            fall: "CaerPierna",
+            idle: "IdlePierna",
+        }
+        const animationKeysArms = {
+            walk: "AndarBrazo", 
+            jump: "SaltarBrazo",
+            fall: "CaerBrazo",
+            idle: "IdleBrazo",
+        }
+        const animationKeysCore = {
+            walk: "AndarCore", 
+            jump: "SaltarCore",
+            fall: "CaerCore",
+            idle: "IdleCore",
+        }
+        const animationKeysMewing = {
+            walk: "AndarMewing", 
+            jump: "SaltarMewing",
+            fall: "CaerMewing",
+            idle: "IdleMewing",
+        }
 
         // textos vidas
         this.livesOne = this.add.text(325, 50, '3', {
@@ -155,12 +360,30 @@ export default class level_1 extends Phaser.Scene
         const p1Texture = CHARACTER_CONFIG[this.player1Key].texture;
         const p2Texture = CHARACTER_CONFIG[this.player2Key].texture;
         
+        let p1AnimationKeys = "";
+        switch (this.player1Key){
+            case "legDay":
+                p1AnimationKeys = animationKeysLegs;
+                break;
+            case "armDay":
+                p1AnimationKeys = animationKeysArms;
+                break;
+            case "coreDay":
+                p1AnimationKeys = animationKeysCore;
+                break;
+            case "mewingDay":
+                p1AnimationKeys = animationKeysMewing;
+                break;
+        }
+        
+        
         // definicion y creacion del jugador uno
         var config = {
             texture_key: p1Texture,
             tileSize: tileSize,
             map: this.fallingPlatforms,
             lives: 3,
+            animationKeys: p1AnimationKeys
         }
         this.p1Keys = {
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -172,12 +395,29 @@ export default class level_1 extends Phaser.Scene
         };
         this.player1= new Player(this, 'player1', this.player1Key, tileSpawn1X, tileSpawn1Y, config);
         
+        let p2AnimationKeys = "";
+        switch (this.player2Key){
+            case "legDay":
+                p2AnimationKeys = animationKeysLegs;
+                break;
+            case "armDay":
+                p2AnimationKeys = animationKeysArms;
+                break;
+            case "coreDay":
+                p2AnimationKeys = animationKeysCore;
+                break;
+            case "mewingDay":
+                p2AnimationKeys = animationKeysMewing;
+                break;
+        }
+
         // definicion y creacion del jugador dos
         var config = {
             texture_key: p2Texture,
             tileSize: tileSize,
             map: this.fallingPlatforms,
             lives: 3,
+            animationKeys: p2AnimationKeys
         }
         this.p2Keys = {
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
@@ -379,18 +619,22 @@ export default class level_1 extends Phaser.Scene
             if (up) {
                 newY -= playerNum.tileSize; // tamaño del movimiento
                 direction = 'up';
+                playerNum.setAngle(180);
             }    
             else if (down) {
                 newY += playerNum.tileSize;
                 direction = 'down';
+                playerNum.setAngle(0);
             }
             else if (left) {
                 newX -= playerNum.tileSize;
                 direction = 'left';
+                playerNum.setAngle(90);
             }
             else if (right) {
                 newX += playerNum.tileSize;
                 direction = 'right';
+                playerNum.setAngle(270);
             }
 
             if (quickAbility) {
