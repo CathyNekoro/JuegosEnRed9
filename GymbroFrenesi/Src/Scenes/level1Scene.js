@@ -215,8 +215,8 @@ export default class level_1 extends Phaser.Scene
                 leftKey: 'LEFT',
                 downKey: 'DOWN',
                 rightKey: 'RIGHT',
-                quickAbilityKey: 'NUMPAD_ONE',
-                slowAbilityKey: 'NUMPAD_TWO',
+                quickAbilityKey: 'COMMA',
+                slowAbilityKey: 'PERIOD',
             }
         ]
            

@@ -13,6 +13,7 @@ export default class charSelection extends Phaser.Scene
     {
         this.load.image('fondo', '../Assets/Img/fondoSelecPersonajes.png');
         this.load.spritesheet('pierna', '../Assets/Img/personajes/legDaySelec.png', {frameWidth:444, frameHeight: 1140});
+        this.load.spritesheet('brazo', '../Assets/Img/personajes/armDaySelec.png', {frameWidth:444, frameHeight: 1140});
     }
 
     create() 
@@ -56,27 +57,56 @@ export default class charSelection extends Phaser.Scene
         this.buttons.push(this.createCharButton(1292, 805, "coreDay"));
         this.buttons.push(this.createCharButton(1781, 805, "mewingDay"));
 
-        if(!this.anims.exists("legDaySelec")){
+
+         if(!this.anims.exists("legDaySelec")){
             this.anims.create({
                 key:'legDaySelec',
-                frames: this.anims.generateFrameNumbers('pierna', {start: 0, end: 7}),
+                frames: this.anims.generateFrameNumbers('pierna', {start: 0, end: 8}),
                 frameRate: 7,
                 repeat: 0
             });
-        }
-         this.previewSprite = this.add.sprite(325, 805, 'pierna');
+        
+         this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
           
          this.buttons[0].on('pointerover', () => {
-            this.previewSprite.setVisible(true);
-            this.previewSprite.play('legDaySelec');
+            this.previewSprite1.setVisible(true);
+            this.previewSprite1.play('legDaySelec');
         });
 
         this.buttons[0].on('pointerdown', () => {
-            this.previewSprite.setVisible(false);
-            this.previewSprite = this.add.sprite(325, 805, 'pierna');
+            this.previewSprite1.setVisible(false);
+            this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
         });
 
     }
+
+        if(!this.anims.exists("armDaySelec")){
+            this.anims.create({
+                key:'armDaySelec',
+                frames: this.anims.generateFrameNumbers('brazo', {start: 0, end: 6}),
+                frameRate: 7,
+                repeat: 0
+            });
+       
+            this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
+            
+            this.buttons[1].on('pointerover', () => {
+                this.previewSprite2.setVisible(true);
+                this.previewSprite2.play('armDaySelec');
+            });
+
+            this.buttons[1].on('pointerdown', () => {
+                this.previewSprite2.setVisible(false);
+                this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
+                
+            });
+        }
+    }
+//
+
+//////////
+
+       
 
     createCharButton(x, y, charKey) {
         const btn = new charSelectButton(
@@ -118,28 +148,25 @@ export default class charSelection extends Phaser.Scene
         this.turnText.setText("Jugador 2: elige personaje");
     }
     else {
-        // 🟥 Turno J2
+      
         this.selected.p2 = btn.charKey;
 
-        // También lo podemos marcar como bloqueado (por estética)
+        
         btn.locked = true;
         btn.disableInteractive();
         btn.setAlpha(0.4);
 
-        // Ya tenemos elección de J1 y J2 → vamos al nivel 1
+        
         this.scene.start("level1Scene", {
             player1: this.selected.p1,
             player2: this.selected.p2
         });
-        console.log(this.selected);
+        
         this.scene.stop();
         
     }
 }
     
-    update(time, dt)
-    {
-
-    }
+   
 }
 

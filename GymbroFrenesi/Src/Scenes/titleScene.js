@@ -21,7 +21,7 @@ export default class pantallaInicio extends Phaser.Scene
     ////botón JUGAR//// 
     this.buttonPlay = new titleButton(
       this,
-      this.cameras.main.width / 2,
+      this.cameras.main.width / 2-150,
       this.cameras.main.height / 2 + 300,
       "Jugar",
       () => {
@@ -32,7 +32,7 @@ export default class pantallaInicio extends Phaser.Scene
 
     this.buttonCredits = new titleButton(
       this,
-      this.cameras.main.width / 2,
+      this.cameras.main.width / 2 -150,
       this.buttonPlay.y + SPACING_BUTTONS,
       "Créditos",
       () => {

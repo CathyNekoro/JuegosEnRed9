@@ -51,8 +51,8 @@ html, body
 
 /* Logo */
 .logo {
-    width: clamp(70px, 10vw, 120px);
-    height: clamp(70px, 10vw, 120px);
+    width: clamp(100px, 10vw, 200px);
+    height: clamp(100px, 10vw, 200px);
     background-image: url('Assets/Img/logo1.png');
     background-repeat: no-repeat;
     background-size: contain;
@@ -66,7 +66,9 @@ html, body
 .equipo
 {
     display: inline-block;
-    margin-left: 10px;
+    font-size: 500%;
+    margin-left: 2%;
+    font-family: 'something';
     
 }
 

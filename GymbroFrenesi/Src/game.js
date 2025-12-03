@@ -6,8 +6,8 @@ import level1Scene from "./Scenes/level1Scene.js";
 let config = {
   type: Phaser.AUTO,
   parent: "juego", //ID del elemento del DOM en el que se anidará el Canvas que genere Phaser, si no, por defecto, irá al final del body
-  width: 2360,
-  height: 1423,
+  width: 2550,
+  height: 1500,
   pixelArt: true,
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
@@ -17,8 +17,8 @@ let config = {
       height: 188,
     },
     max: {
-      width: 1560,
-      height: 840,
+      width: 2550,
+      height: 1500,
     },
     zoom: 1,
   },
