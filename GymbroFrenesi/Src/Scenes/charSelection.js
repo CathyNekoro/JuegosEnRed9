@@ -14,6 +14,8 @@ export default class charSelection extends Phaser.Scene
         this.load.image('fondo', '../Assets/Img/fondoSelecPersonajes.png');
         this.load.spritesheet('pierna', '../Assets/Img/personajes/legDaySelec.png', {frameWidth:444, frameHeight: 1140});
         this.load.spritesheet('brazo', '../Assets/Img/personajes/armDaySelec.png', {frameWidth:444, frameHeight: 1140});
+        this.load.spritesheet('core', '../Assets/Img/personajes/coreDaySelec.png', {frameWidth:444, frameHeight: 1140});
+        this.load.spritesheet('mewing', '../Assets/Img/personajes/mewingDaySelec.png', {frameWidth:444, frameHeight: 1140});
     }
 
     create() 
@@ -58,11 +60,12 @@ export default class charSelection extends Phaser.Scene
         this.buttons.push(this.createCharButton(1781, 805, "mewingDay"));
 
 
+        //ANIMACION PIERNAS
          if(!this.anims.exists("legDaySelec")){
             this.anims.create({
                 key:'legDaySelec',
                 frames: this.anims.generateFrameNumbers('pierna', {start: 0, end: 8}),
-                frameRate: 7,
+                frameRate: 6,
                 repeat: 0
             });
         }
@@ -79,12 +82,12 @@ export default class charSelection extends Phaser.Scene
         });
 
     
-
+        //ANIMACION BRAZOS
         if(!this.anims.exists("armDaySelec")){
             this.anims.create({
                 key:'armDaySelec',
-                frames: this.anims.generateFrameNumbers('brazo', {start: 0, end: 6}),
-                frameRate: 7,
+                frames: this.anims.generateFrameNumbers('brazo', {start: 0, end: 4}),
+                frameRate: 6,
                 repeat: 0
             });
        }
@@ -101,8 +104,52 @@ export default class charSelection extends Phaser.Scene
                 
             });
         
+        //ANIMACION CORE
+        if(!this.anims.exists("coreDaySelec")){
+            this.anims.create({
+                key:'coreDaySelec',
+                frames: this.anims.generateFrameNumbers('core', {start: 0, end: 4}),
+                frameRate: 8,
+                repeat: 0
+            });
+        }
+            this.previewSprite3 = this.add.sprite(1292, 805, 'core');
+            
+            this.buttons[2].on('pointerover', () => {
+                this.previewSprite3.setVisible(true);
+                this.previewSprite3.play('coreDaySelec');
+            });
+
+            this.buttons[2].on('pointerdown', () => {
+                this.previewSprite3.setVisible(false);
+                this.previewSprite3 = this.add.sprite(1292, 805, 'core');
+                
+            });
+
+        //ANIMACION MEWING
+         if(!this.anims.exists("mewingDaySelec")){
+            this.anims.create({
+                key:'mewingDaySelec',
+                frames: this.anims.generateFrameNumbers('mewing', {start: 0, end: 13}),
+                frameRate: 7,
+                repeat: 0
+            });
+        }
+            this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
+            
+            this.buttons[3].on('pointerover', () => {
+                this.previewSprite4.setVisible(true);
+                this.previewSprite4.play('mewingDaySelec');
+            });
+
+            this.buttons[3].on('pointerdown', () => {
+                this.previewSprite4.setVisible(false);
+                this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
+                
+            });
+
     }
-//
+        
 
 //////////
 

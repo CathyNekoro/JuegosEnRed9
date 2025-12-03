@@ -7,30 +7,31 @@ export default class endScene extends Phaser.Scene
 
     init(data) {
         this.winner = data.winner;
-        this.loser = data.loser;
+        
     }
 
     preload(){
-        this.load.image('fondo', '../Assets/Img/fondoSelecPersonajes.png');
+        this.load.image("final", "Assets/Img/escenarios/victoryScreen.png");
     }
 
     create() 
     {
-        this.add.image(0, 0, 'fondo').setOrigin(0, 0);
+        const fondo = this.add.image(0, 0, "final").setOrigin(0, 0);
 
         // poner el ganador y perdedor en pantalla
         let winnerText  = this.winner;
-        let loserText  = this.loser;
         
-        this.textEnd = this.add.text(325, 50, `Ganador: ${winnerText}\nPerdedor: ${loserText}`, {
-            fontSize: '64px',     
-            strokeThickness: 20,            
-            color: '#000000',
+        
+        this.textEnd = this.add.text(170 ,600, `Ganador: ${winnerText}`, {
+            fontSize: '200px',     
+            fontStroke: 2,           
+            color: '#FCFEB4',
             align: 'center',
+            fontFamily: "curiosness"
         });
 
         // boton para volver al menu principal
-        const returnButton = this.add.text(600, 500, 'Volver al Menú', {
+        const returnButton = this.add.text(100, 1300, 'Volver al Menú', {
             fontSize: '48px',
             color: '#ffffff',
             backgroundColor: '#000000',

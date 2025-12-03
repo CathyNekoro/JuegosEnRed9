@@ -43,10 +43,7 @@ export default class level_1 extends Phaser.Scene
         // Cargar mapa JSON
         this.load.tilemapTiledJSON("tilemap", "Assets/maps/mapTile2.json");
 
-        this.load.image("charLegsSprite", "Assets/Img/personajes/legsPlaceholder.png");
-        this.load.image("charArmsSprite", "Assets/Img/personajes/armsPlaceholder.png");
-        this.load.image("charCoreSprite", "Assets/Img/personajes/corePlaceholder.png");
-        this.load.image("charMewingSprite", "Assets/Img/personajes/mewingPlaceholder.png");
+        
 
         // Cargar habilidades
         this.load.image("flash", "Assets/Img/flash.png");
@@ -266,44 +263,44 @@ export default class level_1 extends Phaser.Scene
         }
 
         // textos vidas
-        this.livesOne = this.add.text(325, 50, '3', {
+        this.livesOne = this.add.text(140, 80, '3', {
+            fontSize: '120px',
+            strokeThickness: 20, 
+            color: '#ff0000ff'
+        });
+
+        this.livesTwo = this.add.text(2300, 80, '3', {
+            fontSize: '120px',
+            strokeThickness: 20, 
+            color: '#0000ff'
+        });
+
+        this.abilityOnePlayerOne = this.add.text(325, 50, 'J1 - F: L', {
             fontSize: '64px',
             strokeThickness: 20, 
             color: '#ff0000ff'
         });
 
-        this.livesTwo = this.add.text(1200, 50, '3', {
-            fontSize: '64px',
-            strokeThickness: 20, 
-            color: '#0000ff'
-        });
-
-        this.abilityOnePlayerOne = this.add.text(325, 200, 'J1 - F: L', {
+        this.abilityTwoPlayerOne = this.add.text(320, 140, 'J1 - G: L', {
             fontSize: '64px',
             strokeThickness: 20, 
             color: '#ff0000ff'
         });
 
-        this.abilityTwoPlayerOne = this.add.text(750, 200, 'J1 - G: L', {
-            fontSize: '64px',
-            strokeThickness: 20, 
-            color: '#ff0000ff'
-        });
-
-        this.abilityOnePlayerTwo = this.add.text(1200, 200, 'J2 - NP1: L', {
+        this.abilityOnePlayerTwo = this.add.text(1800, 50, 'J2 - NP1: L', {
             fontSize: '64px',
             strokeThickness: 20, 
             color: '#0000ff'
         });
 
-        this.abilityTwoPlayerTwo = this.add.text(1725, 200, 'J2 - NP2: L', {
+        this.abilityTwoPlayerTwo = this.add.text(1800, 140, 'J2 - NP2: L', {
             fontSize: '64px',
             strokeThickness: 20, 
             color: '#0000ff'
         });
 
-        this.timer = this.add.text(100, 300, '2:00', {
-            fontSize: '64px',     
+        this.timer = this.add.text(1000, 50, '2:00', {
+            fontSize: '200px',     
             strokeThickness: 20,            
             color: '#000000'
         });
@@ -719,10 +716,10 @@ export default class level_1 extends Phaser.Scene
             
             if(playerNum.id === 'player1') {
                 this.scene.start('endScene', 
-                { winner: this.player2Key, loser: this.player1Key }); // cambiar a pantalla de victoria
+                { winner: 'Jugador 2' }); // cambiar a pantalla de victoria
             } else {
                 this.scene.start('endScene', 
-                { winner: this.player1Key, loser: this.player2Key }); // cambiar a pantalla de victoria
+                { winner: "Jugador 1" }); // cambiar a pantalla de victoria
             }
             
             this.scene.stop();
