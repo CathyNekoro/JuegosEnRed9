@@ -93,6 +93,7 @@ Cada personaje tiene un color asociado: *pierna-rojo, brazo-azul, torso-verde, p
 
 ##### Escenario: 
 Los escenarios se ambientan en lugares comunes de la cocina (que es donde ocurren las peleas según la historia): *encimera*, *congelador* y *vitrocerámica*. 
+(Los multiples escenarios serán implementados a la hora de implementar el servicio de multijugador a través de un servidor).
 
 Los escenarios se compondrán por la cuadrícula del escenario, menos detallados para priorizar la visibilidad y bordes decorativos temáticos según la ronda.
 
@@ -114,6 +115,7 @@ Los escenarios se compondrán por la cuadrícula del escenario, menos detallados
 ***Cinemática inicial***: estilo tira de comic/ intro de las chicas superpoderosas.  
 
 ***Puntuación entre rondas***: pantalla partida con el número de jugadores que estén participando. Los jugadores muertos aparecerán con un filtro blanco- negro. 
+(La pantalla de puntuación entre rondas será implementada a la hora de implementar el servicio de multijugador a través de un servidor).
 
  ![Diseño pantalla1](./ImgGDD/pantalla1.png)
 
@@ -135,6 +137,7 @@ El diseño está inspirado en la hermandad que se forma entre los entusiastas de
 Páginas Web antiguas basadas en juegos de Adobe Flash, por ejemplo, Friv. 
 
 ***Juegos de referencia***
+
 *[Womp-a-thon ](https://www.mariowiki.com/Whomp-a-thon)*  
 
 ![Referencia Womp_womp](./ImgGDD/Womp.png)
@@ -155,7 +158,7 @@ Páginas Web antiguas basadas en juegos de Adobe Flash, por ejemplo, Friv.
 ***
 ## Jugabilidad
 #### Objetivo del juego
-El objetivo del juego consta en **sobrevivir las tres rondas con la mayor cantidad de vidas**. 
+El objetivo del juego consta en **sobrevivir la rondas con la mayor cantidad de vidas**. 
 *El jugador con más vidas restantes que consiga llegar al final gana.* 
 Para asegurar la victoria, los jugadores pueden usar sus habilidades para empujar a otros jugadores fuera del mapa y quitarles vida.  
 
@@ -163,23 +166,24 @@ Para asegurar la victoria, los jugadores pueden usar sus habilidades para empuja
 
 *Si varios jugadores llegan al final con el mismo número de vidas, habrá un empate.*
 
+(La jugabilidad de multiples rondas será implementada a la hora de implementar el servicio de multijugador a través de un servidor).
+
 #### Controles
 No se permite el movimiento diagonal. El movimiento es por casillas.  
 
 Movimiento general:
 
  **W** – Movimiento hacia arriba 
+
  **A** – Movimiento hacia la izquierda 
+
  **S** – Movimiento hacia abajo 
+
  **D** – Movimiento hacia la derecha  
 
-**Espacio** – Salto (Saltar en la dirección en la que está mirando el personaje.) 
+**F**- Activar habilidad rápida del personaje. 
 
-**LShift** - Activar habilidad rápida del personaje.  
-**F**- Activar habilidad lenta del personaje. 
-**G**- Activar habilidad especial del personaje 4. 
-
-**Q**- Reaparecer en el mapa. 
+**G**- Activar habilidad lenta del personaje. 
 
 En caso de juego local, se plantean 2 opciones de controles para cada jugador:
 
@@ -189,15 +193,15 @@ Movimiento general (J1)
 
 Movimiento (J2)
 - **⬅⬆⬇⮕** - Movimiento básico.
-- **RShift** - Salto.
-- **-** - Habilidad rápida.
+- **,** - Habilidad rápida.
 - **.** - Habilidad lenta.
-- **,** -Habilidad especial personaje 4.
+
+Movimiento (J3-J4)
+(Los jugadores 3 y 4 serán implementados a la hora de implementar el servicio de multijugador a través de un servidor).
 
 Mando: (según la implementación de la librería se hará el mapeado de una forma u otra para los mandos)
-Movimiento (J3-J4)
-
 Si no hay ningún mando conectado, el máximo de jugadores será de 2. Si se detecta un mando el límite aumenta por cada mando metido. No hace falta que estén el número máximo de jugadores siempre en la partida (por ejemplo uno de los jugadores prefiere usar mando y no teclado)
+(La implementación del uso de uno o varios mandos aun no es definitiva, en caso de abordarla su implementación vendra a la hora de implementar el servicio de multijugador a través de un servidor).
 
 #### Mecánicas y Físicas
 ##### Físicas del escenario: 
@@ -205,7 +209,7 @@ El escenario está compuesto por una *cuadrícula cuyo tamaño variará según e
 Las baldosas de la cuadrícula irán desapareciendo poco a poco durante la partida, creando agujeros por los que los jugadores se podrán caer, lo que les hará perder. Antes de caerse, la baldosa temblará unos segundos para avisar al jugador. 
 
 ##### Tiempo límite:
-Cada ronda tiene un tiempo máximo de duración de *1:30* minutos. Cuando este tiempo se termina, el escenario cambiará a uno más desafiante. 
+Cada ronda tiene un tiempo máximo de duración de *2:00* minutos. Cuando este tiempo se termina, el escenario cambiará a uno más desafiante. 
 
 ##### Diferentes escenarios:
 Cada ronda consta de un escenario diferente.	
@@ -215,60 +219,57 @@ Cada ronda consta de un escenario diferente.
 
 ***Ronda 3***:  Vitrocerámica. Si el jugador se queda quieto más de 5 segundos se quema y pierde una vida. 
 
+(Como se menciona anteriormente, la jugabilidad de multiples rondas será implementada a la hora de implementar el servicio de multijugador a través de un servidor).
+
 ##### Vidas: 
 Cada jugador tiene *tres vidas* al principio de la partida. Estas vidas no se pueden recuperar. 
 Cuando un jugador pierde todas sus vidas, no podrá reaparecer en las siguientes rondas. El número de vidas restantes al final de la partida determinarán la victoria. 
 
 ##### Reaparición de personajes:
-Al principio de cada nivel, si el jugador aún tiene vidas, aparecerá en el mapa en una casilla válida (sin agujero y no ocupada por un jugador). Si durante la ronda muere, el jugador puede elegir reaparecer o esperar a la siguiente ronda.  
+Al principio de cada nivel, si el jugador aún tiene vidas, aparecerá en el mapa en una casilla válida (sin agujero y no ocupada por un jugador). 
 
 El jugador reaparecerá en una posición aleatoria del mapa. Para asegurar que el jugador no queda atrapado, se creará una plataforma cuadrada alrededor del lugar donde ha aparecido. 
 
-El jugador puede reaparecer hasta 10 segundos antes de que acabe la ronda.  
-
-Si el jugador decide no reaparecer en la ronda podrá observar a sus compañeros. 
-
 ##### Movimiento básico:
-Los jugadores se moverán en líneas rectas a través del escenario. Según termine resultando más cómodo de jugar, el jugador puede mantener pulsado el botón para moverse múltiples casillas seguidas, o hacer que tenga que moverse casilla a casilla. Salto de una casilla (vacía), si no hay suelo a donde se va a saltar, el jugador se cae. Para evitar que los jugadores se caigan accidentalmente por culpa del movimiento básico (WASD) y no por el mal uso de habilidades, el salto o por el suelo cayéndose debajo de ellos, el personaje no podrá caminar y ponerse en una casilla no válida. 
+Los jugadores se moverán en líneas rectas a través del escenario. Moviendose de casilla a casilla.
 
 ##### Elección de personajes: 
 Los jugadores pueden elegir sus personajes desde un menú. Los personajes no elegidos no aparecen en la partida. Los jugadores no pueden repetir personaje. En las partidas locales, el número máximo de jugadores está limitado a 2 (con los controles del teclado). Por cada mando conectado el límite aumenta en 1 (hasta el máximo de 4).
+(Como se menciona anteriormente, la implementación del uso de uno o varios mandos aun no es definitiva, en caso de abordarla su implementación vendra a la hora de implementar el servicio de multijugador a través de un servidor).
 
 ##### Habilidades personajes: 
-Cada personaje tiene mecánicas únicas además del movimiento básico. Las habilidades se recargan cada cierto tiempo (depende de la habilidad). Habrá recarga rápida (5-7 seg), y recarga lenta (10-15 seg). 
+Cada personaje tiene mecánicas únicas además del movimiento básico. Las habilidades se recargan cada cierto tiempo (depende de la habilidad). Habrá recarga rápida (6 seg), y recarga lenta (12 seg). 
 
 
 **Personaje 1: Piernas –(movimiento)–** 
 
-***Hab 1 / recarga rápida***: El jugador podrá saltar una mayor distancia (2 casillas vacías) en la dirección en la que está mirando.  
+***Hab 1 / recarga rápida***: El jugador podrá saltar una distancia de dos casillas en la dirección en la que está mirando.  
 
-***Hab 2 /recarga lenta***: El jugador podrá saltar por encima de otros jugadores (excepto el personaje 3) en la dirección en la que está mirando. 
+***Hab 2 /recarga lenta***: El jugador podrá saltar por encima de otros jugadores una distancia de dos casillas en la dirección en la que está mirando. 
  
 
 **Personaje 2: Brazos –(atacante)–**  
 
-***Hab 1 /  recarga rápida***: Empuja a los enemigos una casilla en la dirección en la que avanza el personaje, haciendo que puedan tirar a otros jugadores cualquier agujero que haya entre medias si se da el caso. El personaje jugador no se mueve de su posición. 
+***Hab 1 /  recarga rápida***: Empuja a los enemigos una casilla en la dirección en la que avanza el personaje, haciendo que pueda tirar a otros jugadores a cualquier agujero que haya entre medias si se da el caso. El personaje jugador no se mueve de su posición. 
 
-***Hab 2 / recarga lenta***: lo mismo, pero puede empujar 2 casillas. 
+***Hab 2 / recarga lenta***: Lo mismo que la rápida, pero el empuje es de 2 casillas en vez de 1 casilla. 
  
 
  
-***Jugador 3: Pecho / Abdominales - (defensivo)-***
- No se le puede empujar.  
+***Jugador 3: Pecho / Abdominales - (defensivo)-***  
 
-***Hab 1 /  recarga rápida***: El personaje carga en línea recta (hacia donde esté mirando) empujando a personajes hacia los laterales de su trayectoria, pudiendo tirarlos al vacío. Cuando impacta con uno, su impulso se detiene.  
+***Hab 1 /  recarga rápida***: El personaje carga en línea recta (hacia donde esté mirando) empujando a un personaje hacia los laterales de su trayectoria, pudiendo tirarlo al vacío, o chocandose con una pared del escenario si no hay otro jugador en su camino. Cuando impacta con dicho otro jugador, su impulso se detiene. Sin embargo, se caera si hay un agujero en su camino.
 
-***Hab 2 / recarga lenta***: El personaje carga en línea recta, hasta que se choque con una pared del escenario. En su trayectoria puede empujar a múltiples personajes al vacío.  Si hay huecos en el recorrido de la trayectoria, el personaje saltará los huecos. Si la casilla del borde es válida, el jugador podrá quedarse ahí. Si la última casilla no es válida, el jugador se caerá al vacío. 
+***Hab 2 / recarga lenta***: El personaje carga en línea recta (hacia donde esté mirando) empujando a un personaje hacia los laterales de su trayectoria, pudiendo tirarlo al vacío, o chocandose con una pared del escenario si no hay otro jugador en su camino. Cuando impacta con dicho otro jugador, su impulso se detiene. Pero no se caera si hay un agujero en su camino, excepto si la última casilla no es valida, en cuyo caso el jugador se caerá al vacío. 
  
- 
-***Jugador 5: Barbilla / Mentón – (comodín***):
+***Jugador 4: Barbilla / Mentón – (comodín***):
  No tiene habilidades especiales de movimiento, su función es confundir, despistar y parasitar a sus compañeros. 
 
-***Hab 1 /  recarga rápida***: produce un destello a su alrededor que impide al resto de jugadores ver con claridad las casillas durante un par de segundos.  
+***Hab 1 /  recarga rápida***: produce un destello alrededor del otro jugador que le impide ver con claridad las 8 casillas adyacentes a sí durante un par de segundos.  
 
-***Hab 2 / recarga lenta***: Le roba durante 5 segundos una de las habilidades (lenta o rápida) a uno de los compañeros. La habilidad recibida es aleatoria. El jugador a quien se le ha robado la habilidad se le reiniciara el contador de recarga para esa habilidad. 
+***Hab 2 / recarga lenta***: produce un destello alrededor del otro jugador que le impide ver con claridad las 24 casillas adyacentes a sí durante un par de segundos.
 
-***Hab 3 / una por ronda***: En cualquier momento que el jugador no esté muerto, se puede usar la habilidad especial. Esta proyecta en la pantalla de otros jugadores una imagen semitransparente que cubre todo el escenario dificultando la vista. La imagen se mantiene 5-10 seg, dependiendo del balanceo. El uso de esta habilidad no es acumulable entre rondas. 
+(La siguiente tabla explicativa se encuentra desactualizada, pero se deja por la comodidad del lector y para ayudar a entender las habilidades).
 
 ![Tabla explicativa movimientos y habilidades](./ImgGDD/habilidades.png)
 ***
@@ -294,6 +295,8 @@ La banda sonora será dinámica, adaptada a la acción y combates pertenecientes
 - Uso de habilidades
 - Obstáculos que pasan por pantalla
 - La desaparición o caída del escenario
+
+(La música y efectos sonoros serán implementados a la hora de implementar el servicio de multijugador a través de un servidor).
 
 ***
 ## Marketing
