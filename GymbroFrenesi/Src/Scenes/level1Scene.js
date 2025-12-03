@@ -532,9 +532,20 @@ export default class level_1 extends Phaser.Scene
     update()
     {   
         if (Math.round(Date.now() / 1000) >= this.startTime + 120) {
-            // volver al menu tras que se acabe el tiempo
-            this.scene.start('titleScene'); // cambiar a pantalla de victoria
+
+            if(this.player1.lives > this.player2.lives) {
+                this.scene.start('endScene', 
+                { winner: this.player1Key, loser: this.player2Key }); // cambiar a pantalla de victoria
+            } else if(this.player1.lives < this.player2.lives) {
+                this.scene.start('endScene', 
+                { winner: this.player2Key, loser: this.player1Key }); // cambiar a pantalla de victoria
+            } else {
+                this.scene.start('endScene', 
+                { winner: this.player1Key, loser: this.player2Key }); // cambiar a pantalla de victoria
+            } 
+
             this.scene.stop();
+
         } else {
             // calcular el tiempo restante
             let currentTime = Math.round(Date.now() / 1000);
@@ -577,10 +588,10 @@ export default class level_1 extends Phaser.Scene
             const remaining = this.player2.quickAbility.getCooldownRemaining();
             if (remaining > 0) {
                 const seconds = Math.ceil(remaining / 1000);
-                this.abilityOnePlayerTwo.setText(`J2 - NP1: ${seconds}s`);
+                this.abilityOnePlayerTwo.setText(`J2 - , : ${seconds}s`);
                 this.abilityOnePlayerTwo.setColor('#6666ff');
             } else {
-                this.abilityOnePlayerTwo.setText('J2 - NP1: L');
+                this.abilityOnePlayerTwo.setText('J2 - , : L');
                 this.abilityOnePlayerTwo.setColor('#0000ff');
             }
         }
@@ -589,10 +600,10 @@ export default class level_1 extends Phaser.Scene
             const remaining = this.player2.slowAbility.getCooldownRemaining();
             if (remaining > 0) {
                 const seconds = Math.ceil(remaining / 1000);
-                this.abilityTwoPlayerTwo.setText(`J2 - NP2: ${seconds}s`);
+                this.abilityTwoPlayerTwo.setText(`J2 - . : ${seconds}s`);
                 this.abilityTwoPlayerTwo.setColor('#6666ff');
             } else {
-                this.abilityTwoPlayerTwo.setText('J2 - NP2: L');
+                this.abilityTwoPlayerTwo.setText('J2 - . : L');
                 this.abilityTwoPlayerTwo.setColor('#0000ff');
             }
         }
@@ -704,9 +715,18 @@ export default class level_1 extends Phaser.Scene
             this.scoreLivesTwo();
         }
 
-        if (playerNum.isDead) { // si un jugador ha muerto, volvemos a la pantalla de inicio
-            this.scene.start('titleScene'); // cambiar a pantalla de victioria
+        if (playerNum.isDead) { // si un jugador ha muerto, vamos a la pantalla de victoria
+            
+            if(playerNum.id === 'player1') {
+                this.scene.start('endScene', 
+                { winner: this.player2Key, loser: this.player1Key }); // cambiar a pantalla de victoria
+            } else {
+                this.scene.start('endScene', 
+                { winner: this.player1Key, loser: this.player2Key }); // cambiar a pantalla de victoria
+            }
+            
             this.scene.stop();
+
         }
         });
     }
