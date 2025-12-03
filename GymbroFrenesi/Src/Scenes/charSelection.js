@@ -65,7 +65,7 @@ export default class charSelection extends Phaser.Scene
                 frameRate: 7,
                 repeat: 0
             });
-        
+        }
          this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
           
          this.buttons[0].on('pointerover', () => {
@@ -78,7 +78,7 @@ export default class charSelection extends Phaser.Scene
             this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
         });
 
-    }
+    
 
         if(!this.anims.exists("armDaySelec")){
             this.anims.create({
@@ -87,7 +87,7 @@ export default class charSelection extends Phaser.Scene
                 frameRate: 7,
                 repeat: 0
             });
-       
+       }
             this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
             
             this.buttons[1].on('pointerover', () => {
@@ -100,7 +100,7 @@ export default class charSelection extends Phaser.Scene
                 this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
                 
             });
-        }
+        
     }
 //
 
