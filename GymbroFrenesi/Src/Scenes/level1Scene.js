@@ -15,7 +15,7 @@ const CHARACTER_CONFIG = {
     }
 };
 const tileSize = 150;
-
+   
 
 export default class level_1 extends Phaser.Scene 
 {
@@ -416,14 +416,7 @@ export default class level_1 extends Phaser.Scene
             lives: 3,
             animationKeys: p2AnimationKeys
         }
-        this.p2Keys = {
-            up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP),
-            down:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN),
-            left:  this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT), 
-            right: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT),
-            quickAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_ONE),
-            slowAbility: this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NUMPAD_TWO),
-        };
+        
         this.player2= new Player(this, 'player2', this.player2Key, tileSpawn2X, tileSpawn2Y, config);
         
         // mapa de jugadores
@@ -604,7 +597,11 @@ export default class level_1 extends Phaser.Scene
                 this.abilityTwoPlayerTwo.setColor('#0000ff');
             }
         }
-
+        
+            // Array de sprites del grupo
+            const children = this.fallingPlatforms.getChildren();
+           let unavailableTiles = children.filter(p => p.fallen); // array de tiles ya no válidas
+            let availableTiles= children.filter(p => !p.fallen)     //arr de tiles válidas
         this.inputMappings.forEach(mapping => {
             var playerNum = this.players.get(mapping.playerId);
 
@@ -644,6 +641,7 @@ export default class level_1 extends Phaser.Scene
                 direction = 'right';
                 playerNum.setAngle(270);
             }
+            playerNum.direction = direction;
 
             if (quickAbility) {
                 playerNum.quickAbility.useAbility();
@@ -653,18 +651,15 @@ export default class level_1 extends Phaser.Scene
                 playerNum.slowAbility.useAbility();
             }            
 
-            // Array de sprites del grupo
-            const children = this.fallingPlatforms.getChildren();
 
            
-            var unavailableTiles = children.filter(p => p.fallen); // array de tiles ya no válidas
-            var availableTiles= children.filter(p => !p.fallen)     //arr de tiles válidas
+            
 
             const badTile = unavailableTiles.find(tile =>
             Phaser.Math.Within(playerNum.x, tile.x, playerNum.tileSize / 2) &&
             Phaser.Math.Within(playerNum.y, tile.y, playerNum.tileSize / 2)
         );
-
+         
 
         if ((newX != playerNum.x  || newY != playerNum.y) && playerNum.isAlive) {
 
@@ -722,7 +717,7 @@ export default class level_1 extends Phaser.Scene
                 { winner: "Jugador 1" }); // cambiar a pantalla de victoria
             }
             
-            this.scene.stop();
+        
 
         }
         });

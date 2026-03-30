@@ -57,7 +57,7 @@ export default class Player extends Phaser.GameObjects.Sprite
         if(!targetTile) return false;
         if(targetTile.properties && targetTile.properties.fallen) return false; 
         return true;
-    }
+    }   
 
     moveTo(targetX, targetY)
     {
@@ -85,6 +85,7 @@ export default class Player extends Phaser.GameObjects.Sprite
     }
 
     receiveDamage(){
+        console.log("sdsfdfsdf");
         if(this.isAlive){
             this.lives -= 1;
 
@@ -110,6 +111,7 @@ export default class Player extends Phaser.GameObjects.Sprite
 
     die() {
         this.isDead = true;
+        this.isAlive = false;
         this.setVisible(false);
         this.setActive(false);
     }
