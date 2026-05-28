@@ -35,6 +35,15 @@ html, body
     font-display: block;
 }
 
+@font-face 
+{
+    font-family: 'Bubble';
+    src: url('Assets/Fonts/BubbleBobble.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+
 .headerPrincipal 
 {
      background: linear-gradient(

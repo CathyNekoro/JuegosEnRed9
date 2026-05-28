@@ -34,7 +34,7 @@ import Button from "./button.js";
         
         this.label.setFontFamily("something");
 
-        super.gradient(0, "#B64E8B", 0.5, "#7A52A0");
+        //super.gradient(0, "#B64E8B", 0.5, "#7A52A0");
     }
     
 }

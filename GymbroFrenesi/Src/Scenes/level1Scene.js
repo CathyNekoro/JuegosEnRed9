@@ -43,8 +43,6 @@ export default class level_1 extends Phaser.Scene
         // Cargar mapa JSON
         this.load.tilemapTiledJSON("tilemap", "Assets/maps/mapTile2.json");
 
-        
-
         // Cargar habilidades
         this.load.image("flash", "Assets/Img/flash.png");
 
@@ -151,7 +149,7 @@ export default class level_1 extends Phaser.Scene
         if(!this.anims.exists("SaltarBrazo")){
             this.anims.create({
             key: 'SaltarBrazo',
-            frames: this.anims.generateFrameNumbers('BrazoJump', { start: 0, end: 1 }),
+            frames: this.anims.generateFrameNumbers('BrazoSalto', { start: 0, end: 1 }),
             frameRate: 4,
             repeat: 0
             });

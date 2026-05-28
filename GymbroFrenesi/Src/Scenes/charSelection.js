@@ -11,17 +11,17 @@ export default class charSelection extends Phaser.Scene
     
     preload()
     {
-        this.load.image('fondo', '../Assets/Img/fondoSelecPersonajes.png');
         this.load.spritesheet('pierna', '../Assets/Img/personajes/legDaySelec.png', {frameWidth:444, frameHeight: 1140});
         this.load.spritesheet('brazo', '../Assets/Img/personajes/armDaySelec.png', {frameWidth:444, frameHeight: 1140});
         this.load.spritesheet('core', '../Assets/Img/personajes/coreDaySelec.png', {frameWidth:444, frameHeight: 1140});
         this.load.spritesheet('mewing', '../Assets/Img/personajes/mewingDaySelec.png', {frameWidth:444, frameHeight: 1140});
+        document.fonts.load('1em "Bubble"');
     }
 
     create() 
     {
         
-        this.add.image(0, 0, 'fondo').setOrigin(0, 0);
+        document.body.style.backgroundColor = "black";
 
         const buttonSize = 100;
         const buttonMargin = 20;
@@ -31,11 +31,12 @@ export default class charSelection extends Phaser.Scene
         this.selected = { p1: null, p2: null };
 
         // Texto arriba indicando de quién es el turno
-        this.turnText = this.add.text(200, 100, "Jugador 1: elige personaje", 
+        this.turnText = this.add.text(200, 110, "Jugador 1: elige personaje", 
         {
-            fontFamily: "something",
-            fontSize: "40px",
-            color: "#ffffff"
+            fontFamily: "Bubble",
+            fontSize: "70px",
+          
+            
         });
 
         // boton de salida
@@ -52,13 +53,13 @@ export default class charSelection extends Phaser.Scene
         buttonSize
         );
 
+        // crear un array de botones vacío y pushear los correspondentes a cada personaje
         this.buttons = [];
 
         this.buttons.push(this.createCharButton(325, 805, "legDay"));
         this.buttons.push(this.createCharButton(815, 805, "armDay"));
         this.buttons.push(this.createCharButton(1292, 805, "coreDay"));
         this.buttons.push(this.createCharButton(1781, 805, "mewingDay"));
-
 
         //ANIMACION PIERNAS
          if(!this.anims.exists("legDaySelec")){
@@ -77,8 +78,9 @@ export default class charSelection extends Phaser.Scene
         });
 
         this.buttons[0].on('pointerdown', () => {
-            this.previewSprite1.setVisible(false);
+            
             this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
+            this.previewSprite1.setTint(0x6E6E6E)
         });
 
     
@@ -87,7 +89,7 @@ export default class charSelection extends Phaser.Scene
             this.anims.create({
                 key:'armDaySelec',
                 frames: this.anims.generateFrameNumbers('brazo', {start: 0, end: 4}),
-                frameRate: 6,
+                frameRate: 5,
                 repeat: 0
             });
        }
@@ -99,8 +101,8 @@ export default class charSelection extends Phaser.Scene
             });
 
             this.buttons[1].on('pointerdown', () => {
-                this.previewSprite2.setVisible(false);
                 this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
+                this.previewSprite2.setTint(0x6E6E6E)
                 
             });
         
@@ -121,8 +123,8 @@ export default class charSelection extends Phaser.Scene
             });
 
             this.buttons[2].on('pointerdown', () => {
-                this.previewSprite3.setVisible(false);
                 this.previewSprite3 = this.add.sprite(1292, 805, 'core');
+                this.previewSprite3.setTint(0x6E6E6E)
                 
             });
 
@@ -143,17 +145,14 @@ export default class charSelection extends Phaser.Scene
             });
 
             this.buttons[3].on('pointerdown', () => {
-                this.previewSprite4.setVisible(false);
+               
                 this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
+                this.previewSprite4.setTint(0x6E6E6E)
                 
             });
 
     }
-        
-
-//////////
-
-       
+////////// 
 
     createCharButton(x, y, charKey) {
         const btn = new charSelectButton(
@@ -168,7 +167,7 @@ export default class charSelection extends Phaser.Scene
         );
 
     // Guardamos info extra en el botón:
-    btn.charKey = charKey;   // quién es (legDay, horus, etc.)
+    btn.charKey = charKey;   // guardar qué personaje has seleccionado
     btn.locked = false;      // si está bloqueado para el jugador 2
 
     return btn;
@@ -181,14 +180,14 @@ export default class charSelection extends Phaser.Scene
         return;
     }
 
+    //gestionar turno
     if (this.currentPlayer === 1) {
         // 🟦 Turno J1
         this.selected.p1 = btn.charKey;
 
         // Bloqueamos este botón para que J2 no lo pueda usar
         btn.locked = true;
-        btn.disableInteractive();
-        btn.setAlpha(0.4); // efecto visual de "grisado"
+        btn.disableInteractive(); 
 
         // Pasamos al turno del J2
         this.currentPlayer = 2;
@@ -197,23 +196,20 @@ export default class charSelection extends Phaser.Scene
     else {
       
         this.selected.p2 = btn.charKey;
-
-        
         btn.locked = true;
         btn.disableInteractive();
-        btn.setAlpha(0.4);
 
-        
+//implementar contador?
+
         this.scene.start("level1Scene", {
             player1: this.selected.p1,
             player2: this.selected.p2
         });
         
+        
         this.scene.stop();
         
     }
-}
-    
-   
+}  
 }
 

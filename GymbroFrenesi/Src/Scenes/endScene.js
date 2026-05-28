@@ -12,6 +12,7 @@ export default class endScene extends Phaser.Scene
 
     preload(){
         this.load.image("final", "Assets/Img/escenarios/victoryScreen.png");
+        document.fonts.load('1em "curiosness"');
     }
 
     create() 
