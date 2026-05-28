@@ -1,19 +1,6 @@
 import Player from "../Players/Player.js"
+import { CHARACTER_CONFIG, registerAnimations } from "../Utils/AnimatorManager.js";
 
-const CHARACTER_CONFIG = {
-    legDay: {
-        texture: "charLegsSprite",   
-    },
-    armDay: {
-        texture: "charArmsSprite",
-    },
-    coreDay: {
-        texture: "charCoreSprite",
-    },
-    mewingDay: {
-        texture: "charMewingSprite",
-    }
-};
 const tileSize = 150;
    
 
@@ -99,166 +86,10 @@ export default class level_1 extends Phaser.Scene
 
     create()
     {  
-
         this.startTime = Math.round(new Date() / 1000);   
 
         // fondo provisional
         this.add.image(0, 0, "level_1").setOrigin(0, 0)
-
-        // personajes
-        if(!this.anims.exists("AndarPierna")){
-            this.anims.create({
-            key: 'AndarPierna',
-            frames: this.anims.generateFrameNumbers('PiernaWalk', { start: 0, end: 3 }),
-            frameRate: 8,
-            repeat: -1
-            });
-        }
-        if(!this.anims.exists("SaltarPierna")){
-            this.anims.create({
-            key: 'SaltarPierna',
-            frames: this.anims.generateFrameNumbers('PiernaSalto', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("CaerPierna")){
-            this.anims.create({
-            key: 'CaerPierna',
-            frames: this.anims.generateFrameNumbers('PiernaRIP', { start: 0, end: 0 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("IdlePierna")){
-            this.anims.create({
-            key: 'IdlePierna',
-            frames: this.anims.generateFrameNumbers('PiernaWalk', { start: 0, end: 0 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("AndarBrazo")){
-            this.anims.create({
-            key: 'AndarBrazo',
-            frames: this.anims.generateFrameNumbers('BrazoWalk', { start: 0, end: 3 }),
-            frameRate: 8,
-            repeat: -1
-            });
-        }
-        if(!this.anims.exists("SaltarBrazo")){
-            this.anims.create({
-            key: 'SaltarBrazo',
-            frames: this.anims.generateFrameNumbers('BrazoSalto', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("CaerBrazo")){
-            this.anims.create({
-            key: 'CaerBrazo',
-            frames: this.anims.generateFrameNumbers('BrazoRIP', { start: 0, end: 1 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("IdleBrazo")){
-            this.anims.create({
-            key: 'IdleBrazo',
-            frames: this.anims.generateFrameNumbers('BrazoWalk', { start: 0, end: 0 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("AndarMewing")){
-            this.anims.create({
-            key: 'AndarMewing',
-            frames: this.anims.generateFrameNumbers('MewingWalk', { start: 0, end: 3 }),
-            frameRate: 8,
-            repeat: -1
-            });
-        }
-        if(!this.anims.exists("SaltarMewing")){
-            this.anims.create({
-            key: 'SaltarMewing',
-            frames: this.anims.generateFrameNumbers('MewingSalto', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("CaerMewing")){
-            this.anims.create({
-            key: 'CaerMewing',
-            frames: this.anims.generateFrameNumbers('MewingRIP', { start: 0, end: 0 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("IdleMewing")){
-            this.anims.create({
-            key: 'IdleMewing',
-            frames: this.anims.generateFrameNumbers('MewingWalk', { start: 0, end: 0 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("AndarCore")){
-            this.anims.create({
-            key: 'AndarCore',
-            frames: this.anims.generateFrameNumbers('CoreWalk', { start: 0, end: 3 }),
-            frameRate: 8,
-            repeat: -1
-            });
-        }
-        if(!this.anims.exists("SaltarCore")){
-            this.anims.create({
-            key: 'SaltarCore',
-            frames: this.anims.generateFrameNumbers('CoreSalto', { start: 0, end: 1 }),
-            frameRate: 4,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("CaerCore")){
-            this.anims.create({
-            key: 'CaerCore',
-            frames: this.anims.generateFrameNumbers('CoreWalk', { start: 0, end: 0 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        if(!this.anims.exists("IdleCore")){
-            this.anims.create({
-            key: 'IdleCore',
-            frames: this.anims.generateFrameNumbers('CoreWalk', { start: 0, end: 0 }),
-            frameRate: 1,
-            repeat: 0
-            });
-        }
-        // configuraciones de animaciones
-        const animationKeysLegs = {
-            walk: "AndarPierna", 
-            jump: "SaltarPierna",
-            fall: "CaerPierna",
-            idle: "IdlePierna",
-        }
-        const animationKeysArms = {
-            walk: "AndarBrazo", 
-            jump: "SaltarBrazo",
-            fall: "CaerBrazo",
-            idle: "IdleBrazo",
-        }
-        const animationKeysCore = {
-            walk: "AndarCore", 
-            jump: "SaltarCore",
-            fall: "CaerCore",
-            idle: "IdleCore",
-        }
-        const animationKeysMewing = {
-            walk: "AndarMewing", 
-            jump: "SaltarMewing",
-            fall: "CaerMewing",
-            idle: "IdleMewing",
-        }
 
         // textos vidas
         this.livesOne = this.add.text(140, 80, '3', {
@@ -352,33 +183,18 @@ export default class level_1 extends Phaser.Scene
         let tileSpawn2X =  Math.floor(posSpawnP2.x / tileSize+1);
         let tileSpawn2Y =  Math.floor(posSpawnP2.y / tileSize);
 
-        const p1Texture = CHARACTER_CONFIG[this.player1Key].texture;
-        const p2Texture = CHARACTER_CONFIG[this.player2Key].texture;
+        //const p1Texture = CHARACTER_CONFIG[this.player1Key].texture;
+        //const p2Texture = CHARACTER_CONFIG[this.player2Key].texture;
         
-        let p1AnimationKeys = "";
-        switch (this.player1Key){
-            case "legDay":
-                p1AnimationKeys = animationKeysLegs;
-                break;
-            case "armDay":
-                p1AnimationKeys = animationKeysArms;
-                break;
-            case "coreDay":
-                p1AnimationKeys = animationKeysCore;
-                break;
-            case "mewingDay":
-                p1AnimationKeys = animationKeysMewing;
-                break;
-        }
-        
-        
+        const p1AnimKeys = registerAnimations(this, this.player1Key);
+
         // definicion y creacion del jugador uno
         var config = {
-            texture_key: p1Texture,
+            texture_key: CHARACTER_CONFIG[this.player1Key].texture,
             tileSize: tileSize,
             map: this.fallingPlatforms,
             lives: 3,
-            animationKeys: p1AnimationKeys
+            animationKeys: p1AnimKeys
         }
         this.p1Keys = {
             up:    this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W),
@@ -390,29 +206,15 @@ export default class level_1 extends Phaser.Scene
         };
         this.player1= new Player(this, 'player1', this.player1Key, tileSpawn1X, tileSpawn1Y, config);
         
-        let p2AnimationKeys = "";
-        switch (this.player2Key){
-            case "legDay":
-                p2AnimationKeys = animationKeysLegs;
-                break;
-            case "armDay":
-                p2AnimationKeys = animationKeysArms;
-                break;
-            case "coreDay":
-                p2AnimationKeys = animationKeysCore;
-                break;
-            case "mewingDay":
-                p2AnimationKeys = animationKeysMewing;
-                break;
-        }
+        const p2AnimKeys = registerAnimations(this, this.player2Key);
 
         // definicion y creacion del jugador dos
         var config = {
-            texture_key: p2Texture,
+            texture_key: CHARACTER_CONFIG[this.player2Key].texture,
             tileSize: tileSize,
             map: this.fallingPlatforms,
             lives: 3,
-            animationKeys: p2AnimationKeys
+            animationKeys: p2AnimKeys
         }
         
         this.player2= new Player(this, 'player2', this.player2Key, tileSpawn2X, tileSpawn2Y, config);
@@ -490,17 +292,41 @@ export default class level_1 extends Phaser.Scene
     }
 
     dropRandomTile() {
-        const candidates = this.fallingPlatforms.getChildren().filter(p => !p.fallen);
-        if (candidates.length === 0) return;
+       const candidates = this.fallingPlatforms.getChildren()
+        .filter(p => !p.fallen && !p.isFalling);
+    if (candidates.length === 0) return;
 
-        const chosen = Phaser.Utils.Array.GetRandom(candidates);
+    const chosen = Phaser.Utils.Array.GetRandom(candidates);
+    chosen.isFalling = true;  // para que no la elija otra vez
 
-        // Marcamos estado
-        chosen.fallen = true;
+    // Paso 1: temblar durante 1.5 segundos
+    const originalX = chosen.x;
+    this.tweens.add({
+        targets: chosen,
+        x: originalX + 4,     // se mueve 4px a la derecha
+        duration: 50,          // muy rápido
+        yoyo: true,            // vuelve a la posición original
+        repeat: 14,            // 15 sacudidas ≈ 1.5 segundos
+        onComplete: () => {
+            chosen.x = originalX;  // por si queda desplazada
 
-        // Efecto visible / colisión
-        chosen.setVisible(false);
-        chosen.body.checkCollision.none = true;
+            // Paso 2: caer con fade-out
+            this.tweens.add({
+                targets: chosen,
+                y: chosen.y + 150,
+                alpha: 0,
+                duration: 300,
+                y: chosen.y,
+                onComplete: () => {
+                    chosen.isFalling=false; 
+                    chosen.fallen = true;
+                    
+                    chosen.setVisible(false);
+                    chosen.body.checkCollision.none = true;
+                }
+            });
+        }
+    });
     }
 
     // actualizacion de vidas en pantalla

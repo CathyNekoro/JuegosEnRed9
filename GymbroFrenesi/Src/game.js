@@ -4,6 +4,7 @@ import creditsScene from './Scenes/creditsScene.js';
 import level1Scene from "./Scenes/level1Scene.js";
 import endScene from "./Scenes/endScene.js";
 
+
 let config = {
   type: Phaser.AUTO,
   parent: "juego", //ID del elemento del DOM en el que se anidará el Canvas que genere Phaser, si no, por defecto, irá al final del body
