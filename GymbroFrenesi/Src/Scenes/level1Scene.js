@@ -82,6 +82,8 @@ export default class level_1 extends Phaser.Scene
             frameWidth: 500,
             frameHeight: 500
         });
+
+        this.load.image('VidasMarco', 'Assets/Img/vidasMarco.png');
     }
 
     create()
@@ -89,19 +91,29 @@ export default class level_1 extends Phaser.Scene
         this.startTime = Math.round(new Date() / 1000);   
 
         // fondo provisional
-        this.add.image(0, 0, "level_1").setOrigin(0, 0)
+        this.add.image(0, 0, "level_1").setOrigin(0, 0);
 
-        // textos vidas
+        //colores cambiados para el fondo
+        const baseColor = CHARACTER_CONFIG[this.player1Key].color;
+        const colorObj = Phaser.Display.Color.ValueToColor(baseColor);
+        this.add.rectangle(0, 0, 950,300, colorObj.darken(25).color).setOrigin(0,0);
+        
+        const baseColor2 = CHARACTER_CONFIG[this.player2Key].color;
+        const colorObj2 = Phaser.Display.Color.ValueToColor(baseColor2);
+        this.add.rectangle(1600, 0, 950,300, colorObj2.darken(25).color).setOrigin(0,0)
+
+
+
         this.livesOne = this.add.text(140, 80, '3', {
             fontSize: '120px',
             strokeThickness: 20, 
-            color: '#ff0000ff'
+            color: CHARACTER_CONFIG[this.player1Key].colorHex
         });
 
         this.livesTwo = this.add.text(2300, 80, '3', {
             fontSize: '120px',
             strokeThickness: 20, 
-            color: '#0000ff'
+            color: CHARACTER_CONFIG[this.player2Key].colorHex
         });
 
         this.abilityOnePlayerOne = this.add.text(325, 50, 'J1 - F: L', {
@@ -128,7 +140,7 @@ export default class level_1 extends Phaser.Scene
             color: '#0000ff'
         });
 
-        this.timer = this.add.text(1000, 50, '2:00', {
+        this.timer = this.add.text(1030, 50, '2:00', {
             fontSize: '200px',     
             strokeThickness: 20,            
             color: '#000000'
@@ -182,9 +194,6 @@ export default class level_1 extends Phaser.Scene
         let tileSpawn1Y =  Math.floor(posSpawnP1.y / tileSize);
         let tileSpawn2X =  Math.floor(posSpawnP2.x / tileSize+1);
         let tileSpawn2Y =  Math.floor(posSpawnP2.y / tileSize);
-
-        //const p1Texture = CHARACTER_CONFIG[this.player1Key].texture;
-        //const p2Texture = CHARACTER_CONFIG[this.player2Key].texture;
         
         const p1AnimKeys = registerAnimations(this, this.player1Key);
 

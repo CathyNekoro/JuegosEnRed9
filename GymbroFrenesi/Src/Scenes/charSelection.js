@@ -1,6 +1,6 @@
 import titleButton from "../Button/titleButton.js";
 import charSelectButton from "../Button/charSelectButton.js";
-//import level_1 from "./level1Scene.js";
+import { CHARACTER_CONFIG, registerAnimations } from "../Utils/AnimatorManager.js";
 
 export default class charSelection extends Phaser.Scene
 {
@@ -61,20 +61,22 @@ export default class charSelection extends Phaser.Scene
         this.buttons.push(this.createCharButton(1292, 805, "coreDay"));
         this.buttons.push(this.createCharButton(1781, 805, "mewingDay"));
 
-        //ANIMACION PIERNAS
-         if(!this.anims.exists("legDaySelec")){
-            this.anims.create({
-                key:'legDaySelec',
-                frames: this.anims.generateFrameNumbers('pierna', {start: 0, end: 8}),
-                frameRate: 6,
-                repeat: 0
-            });
-        }
-         this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
-          
+        //
+        const charKeys = ['legDay', 'armDay', 'coreDay', 'mewingDay'];
+        this.selectionAnimKeys = {};
+
+        charKeys.forEach(key => {
+            
+            this.selectionAnimKeys[key] = registerAnimations(this, key, 'selectionAnims');
+            console.log("coño", key, this.selectionAnimKeys[key])
+        });
+        
+        //Animación pierna
+        this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
+    
          this.buttons[0].on('pointerover', () => {
             this.previewSprite1.setVisible(true);
-            this.previewSprite1.play('legDaySelec');
+            this.previewSprite1.play(this.selectionAnimKeys['legDay'].preview);
         });
 
         this.buttons[0].on('pointerdown', () => {
@@ -83,21 +85,13 @@ export default class charSelection extends Phaser.Scene
             this.previewSprite1.setTint(0x6E6E6E)
         });
 
-    
-        //ANIMACION BRAZOS
-        if(!this.anims.exists("armDaySelec")){
-            this.anims.create({
-                key:'armDaySelec',
-                frames: this.anims.generateFrameNumbers('brazo', {start: 0, end: 4}),
-                frameRate: 5,
-                repeat: 0
-            });
-       }
+     
+        //ANIMACION BRAZOS armDaySelec
             this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
             
             this.buttons[1].on('pointerover', () => {
                 this.previewSprite2.setVisible(true);
-                this.previewSprite2.play('armDaySelec');
+                this.previewSprite2.play(this.selectionAnimKeys['armDay'].preview)
             });
 
             this.buttons[1].on('pointerdown', () => {
@@ -107,19 +101,11 @@ export default class charSelection extends Phaser.Scene
             });
         
         //ANIMACION CORE
-        if(!this.anims.exists("coreDaySelec")){
-            this.anims.create({
-                key:'coreDaySelec',
-                frames: this.anims.generateFrameNumbers('core', {start: 0, end: 4}),
-                frameRate: 8,
-                repeat: 0
-            });
-        }
             this.previewSprite3 = this.add.sprite(1292, 805, 'core');
             
             this.buttons[2].on('pointerover', () => {
                 this.previewSprite3.setVisible(true);
-                this.previewSprite3.play('coreDaySelec');
+                this.previewSprite3.play(this.selectionAnimKeys['coreDay'].preview);
             });
 
             this.buttons[2].on('pointerdown', () => {
@@ -128,20 +114,12 @@ export default class charSelection extends Phaser.Scene
                 
             });
 
-        //ANIMACION MEWING
-         if(!this.anims.exists("mewingDaySelec")){
-            this.anims.create({
-                key:'mewingDaySelec',
-                frames: this.anims.generateFrameNumbers('mewing', {start: 0, end: 13}),
-                frameRate: 7,
-                repeat: 0
-            });
-        }
+            //Mewing animations
             this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
             
             this.buttons[3].on('pointerover', () => {
                 this.previewSprite4.setVisible(true);
-                this.previewSprite4.play('mewingDaySelec');
+                this.previewSprite4.play(this.selectionAnimKeys['mewingDay'].preview);
             });
 
             this.buttons[3].on('pointerdown', () => {
