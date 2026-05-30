@@ -90,6 +90,7 @@ export default class Player extends Phaser.GameObjects.Sprite
             if(this.scene.anims.exists(this.fallingKey)){
                 
             this.play(this.fallingKey);
+            this.scene.sound.play('fallSound', { volume: 0.8 });
             this.scene.time.delayedCall(250, () => {
                 this.deathSpin();
             });
@@ -130,20 +131,19 @@ export default class Player extends Phaser.GameObjects.Sprite
     }
     
     deathSpin() {
-    this.scene.tweens.add({
-        targets: this,
-        angle: 360,
-        scale: 0,
-        alpha: 0,
-        duration: 800,
-        ease: 'Power2',
-        onComplete: () => {
-            this.angle = 0;
-            this.scale = 0.5;
-            this.alpha = 1;
-        
-        }
-    });
-}
+        this.scene.tweens.add({
+            targets: this,
+            angle: 360,
+            scale: 0,
+            alpha: 0,
+            duration: 800,
+            ease: 'Power2',
+            onComplete: () => {
+                this.angle = 0;
+                this.scale = 0.5;
+                this.alpha = 1;
+            }
+        });
+    }
 }
 

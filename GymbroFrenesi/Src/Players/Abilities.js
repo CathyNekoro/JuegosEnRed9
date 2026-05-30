@@ -33,8 +33,10 @@ export default class Abilities
                 this.isOnCooldown = false;
             }
         }
+       this.scene.sound.play(`sfx_${this.type}`, { volume: 0.6 });
 
         if(this.abilityType === "quickAbility"){
+            
             if(this.type === 'legDay'){
                 this.legQuickAbility();
             } else if(this.type === 'armDay'){
@@ -366,6 +368,7 @@ export default class Abilities
     coreQuickAbility(){
         
         // carga en linea recta empujando a un jugador que se encuentre hacia los laterales y parandose tras el impacto, pero se cae si hay un agujero
+         
 
         const direction = this.player.direction;
         const tileSize = this.player.tileSize;

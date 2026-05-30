@@ -85,6 +85,12 @@ export default class level_1 extends Phaser.Scene
         });
 
         this.load.image('VidasMarco', 'Assets/Img/vidasMarco.png');
+        this.load.audio('fallSound', 'Assets/sounds/goofy-yell.mp3')
+
+        this.load.audio('sfx_coreDay', 'Assets/sounds/goku-teleport-sound.mp3')
+        this.load.audio('sfx_legDay', 'Assets/sounds/maro-jump-sound-effect_1.mp3')
+        this.load.audio('sfx_mewingDay', 'Assets/sounds/lobotomy-sound-effect.mp3')
+        this.load.audio('sfx_armDay', 'Assets/sounds/villager.mp3')
     }
 
     create()
@@ -425,6 +431,7 @@ export default class level_1 extends Phaser.Scene
 
             if (quickAbility) {
                 playerNum.quickAbility.useAbility();
+                this.play
             }
 
             if (slowAbility) {
