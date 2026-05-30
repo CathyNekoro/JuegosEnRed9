@@ -1,4 +1,4 @@
-import titleButton from "../Button/titleButton.js";
+import titleButton from "../UI/titleButton.js";
 
 export default class creditsScene extends Phaser.Scene 
 {

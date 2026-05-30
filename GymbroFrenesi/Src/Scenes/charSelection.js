@@ -1,5 +1,5 @@
-import titleButton from "../Button/titleButton.js";
-import charSelectButton from "../Button/charSelectButton.js";
+import titleButton from "../UI/titleButton.js";
+import charSelectButton from "../UI/charSelectButton.js";
 import { CHARACTER_CONFIG, registerAnimations } from "../Utils/AnimatorManager.js";
 
 export default class charSelection extends Phaser.Scene
@@ -61,14 +61,12 @@ export default class charSelection extends Phaser.Scene
         this.buttons.push(this.createCharButton(1292, 805, "coreDay"));
         this.buttons.push(this.createCharButton(1781, 805, "mewingDay"));
 
-        //
+        //keys de las animaciones de selección
         const charKeys = ['legDay', 'armDay', 'coreDay', 'mewingDay'];
         this.selectionAnimKeys = {};
 
-        charKeys.forEach(key => {
-            
+        charKeys.forEach(key => { 
             this.selectionAnimKeys[key] = registerAnimations(this, key, 'selectionAnims');
-            console.log("coño", key, this.selectionAnimKeys[key])
         });
         
         //Animación pierna
@@ -114,7 +112,7 @@ export default class charSelection extends Phaser.Scene
                 
             });
 
-            //Mewing animations
+            //Mewing animation
             this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
             
             this.buttons[3].on('pointerover', () => {

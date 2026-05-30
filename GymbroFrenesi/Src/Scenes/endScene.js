@@ -7,7 +7,6 @@ export default class endScene extends Phaser.Scene
 
     init(data) {
         this.winner = data.winner;
-        
     }
 
     preload(){
@@ -23,7 +22,7 @@ export default class endScene extends Phaser.Scene
         let winnerText  = this.winner;
         
         
-        this.textEnd = this.add.text(170 ,600, `Ganador: ${winnerText}`, {
+        this.textEnd = this.add.text(100 ,400, winnerText, {
             fontSize: '200px',     
             fontStroke: 2,           
             color: '#FCFEB4',

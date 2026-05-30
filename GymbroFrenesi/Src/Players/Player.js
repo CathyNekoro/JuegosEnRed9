@@ -85,10 +85,8 @@ export default class Player extends Phaser.GameObjects.Sprite
     }
 
     receiveDamage(){
-        console.log("sdsfdfsdf");
         if(this.isAlive){
             this.lives -= 1;
-
             if(this.scene.anims.exists(this.fallingKey)){
             this.play(this.fallingKey);
         }

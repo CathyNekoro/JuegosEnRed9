@@ -1,4 +1,4 @@
-import titleButton from "../Button/titleButton.js";
+import titleButton from "../UI/titleButton.js";
 const SPACING_BUTTONS=200+30;
 
 export default class pantallaInicio extends Phaser.Scene 

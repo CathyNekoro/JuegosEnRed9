@@ -1,5 +1,6 @@
 import Player from "../Players/Player.js"
 import { CHARACTER_CONFIG, registerAnimations } from "../Utils/AnimatorManager.js";
+import HUD from "../UI/HUD.js";
 
 const tileSize = 150;
    
@@ -93,6 +94,7 @@ export default class level_1 extends Phaser.Scene
         // fondo provisional
         this.add.image(0, 0, "level_1").setOrigin(0, 0);
 
+    //UI mirar a ver si se puede desplazar////
         //colores cambiados para el fondo
         const baseColor = CHARACTER_CONFIG[this.player1Key].color;
         const colorObj = Phaser.Display.Color.ValueToColor(baseColor);
@@ -103,49 +105,36 @@ export default class level_1 extends Phaser.Scene
         this.add.rectangle(1600, 0, 950,300, colorObj2.darken(25).color).setOrigin(0,0)
 
 
-
-        this.livesOne = this.add.text(140, 80, '3', {
+        this.livesOne = this.add.text(30, 80, '3x', {
+            fontFamily: "Bubble",
             fontSize: '120px',
-            strokeThickness: 20, 
+            strokeThickness: 10, 
             color: CHARACTER_CONFIG[this.player1Key].colorHex
         });
+        this.add.rectangle(185, 30, 95,240, baseColor).setOrigin(0,0)
+        this.add.image(170, 10,'VidasMarco').setScale(0.56).setOrigin(0,0)
 
-        this.livesTwo = this.add.text(2300, 80, '3', {
+
+        this.livesTwo = this.add.text(2400, 80, 'x3', {
+            fontFamily: "Bubble",
             fontSize: '120px',
-            strokeThickness: 20, 
+            strokeThickness: 10, 
             color: CHARACTER_CONFIG[this.player2Key].colorHex
         });
+        this.add.rectangle(2275, 30, 95,240, baseColor2).setOrigin(0,0)
+        this.add.image(2260, 10,'VidasMarco').setScale(0.56).setOrigin(0,0);
 
-        this.abilityOnePlayerOne = this.add.text(325, 50, 'J1 - F: L', {
-            fontSize: '64px',
-            strokeThickness: 20, 
-            color: '#ff0000ff'
-        });
-
-        this.abilityTwoPlayerOne = this.add.text(320, 140, 'J1 - G: L', {
-            fontSize: '64px',
-            strokeThickness: 20, 
-            color: '#ff0000ff'
-        });
-
-        this.abilityOnePlayerTwo = this.add.text(1800, 50, 'J2 - NP1: L', {
-            fontSize: '64px',
-            strokeThickness: 20, 
-            color: '#0000ff'
-        });
-
-        this.abilityTwoPlayerTwo = this.add.text(1800, 140, 'J2 - NP2: L', {
-            fontSize: '64px',
-            strokeThickness: 20, 
-            color: '#0000ff'
-        });
-
-        this.timer = this.add.text(1030, 50, '2:00', {
+        this.hud = new HUD(this, this.player1Key, this.player2Key);
+       
+        
+        this.timer = this.add.text(1080, 50, '120', {
             fontSize: '200px',     
             strokeThickness: 20,            
             color: '#000000'
         });
 
+    //Fin UI////
+    
         // tilemap
         const tileSize = 150;
         this.map = this.make.tilemap({ key: "tilemap", tileHeight: tileSize, tileWidth: tileSize });
@@ -341,12 +330,12 @@ export default class level_1 extends Phaser.Scene
     // actualizacion de vidas en pantalla
     scoreLivesOne() {
         const playerOne = this.players.get('player1');
-        this.livesOne.setText(playerOne.lives.toString());
+        this.livesOne.setText(playerOne.lives.toString()+'x');
     }
 
     scoreLivesTwo() {
         const playerTwo = this.players.get('player2');
-        this.livesTwo.setText(playerTwo.lives.toString());
+        this.livesTwo.setText('x'+ playerTwo.lives.toString());
     }
 
     
@@ -354,17 +343,19 @@ export default class level_1 extends Phaser.Scene
     //deteccion de movimiento sin importar el jugador
     update()
     {   
+        this.hud.update(this.player1, this.player2, this.startTime);
+        
         if (Math.round(Date.now() / 1000) >= this.startTime + 120) {
 
             if(this.player1.lives > this.player2.lives) {
                 this.scene.start('endScene', 
-                { winner: this.player1Key, loser: this.player2Key }); // cambiar a pantalla de victoria
+                { winner: '             Player 1'}); // cambiar a pantalla de victoria
             } else if(this.player1.lives < this.player2.lives) {
                 this.scene.start('endScene', 
-                { winner: this.player2Key, loser: this.player1Key }); // cambiar a pantalla de victoria
+                { winner: '             Player 2'}); // cambiar a pantalla de victoria
             } else {
                 this.scene.start('endScene', 
-                { winner: this.player1Key, loser: this.player2Key }); // cambiar a pantalla de victoria
+                { winner: 'Empate. \n A la proxima \n jugad mejor (o peor)', loser: this.player2Key }); // cambiar a pantalla de victoria
             } 
 
             this.scene.stop();
@@ -378,58 +369,9 @@ export default class level_1 extends Phaser.Scene
             // actualizar el temporizador en pantalla
             let minutes = Math.floor(remaining / 60);
             let seconds = remaining % 60;
-            this.timer.setText(`${minutes}:${seconds.toString().padStart(2, '0')}`);
+            this.timer.setText(`${remaining.toString().padStart(3, '0')}`);
         }
 
-        // cooldowns jugador 1
-        if (this.player1.quickAbility) {
-            const remaining = this.player1.quickAbility.getCooldownRemaining();
-            if (remaining > 0) {
-                const seconds = Math.ceil(remaining / 1000);
-                this.abilityOnePlayerOne.setText(`J1 - F: ${seconds}s`);
-                this.abilityOnePlayerOne.setColor('#ff6666');
-            } else {
-                this.abilityOnePlayerOne.setText('J1 - F: L');
-                this.abilityOnePlayerOne.setColor('#ff0000');
-            }
-        }
-        
-        if (this.player1.slowAbility) {
-            const remaining = this.player1.slowAbility.getCooldownRemaining();
-            if (remaining > 0) {
-                const seconds = Math.ceil(remaining / 1000);
-                this.abilityTwoPlayerOne.setText(`J1 - G: ${seconds}s`);
-                this.abilityTwoPlayerOne.setColor('#ff6666');
-            } else {
-                this.abilityTwoPlayerOne.setText('J1 - G: L');
-                this.abilityTwoPlayerOne.setColor('#ff0000');
-            }
-        }
-        
-        // cooldowns jugador 2
-        if (this.player2.quickAbility) {
-            const remaining = this.player2.quickAbility.getCooldownRemaining();
-            if (remaining > 0) {
-                const seconds = Math.ceil(remaining / 1000);
-                this.abilityOnePlayerTwo.setText(`J2 - , : ${seconds}s`);
-                this.abilityOnePlayerTwo.setColor('#6666ff');
-            } else {
-                this.abilityOnePlayerTwo.setText('J2 - , : L');
-                this.abilityOnePlayerTwo.setColor('#0000ff');
-            }
-        }
-        
-        if (this.player2.slowAbility) {
-            const remaining = this.player2.slowAbility.getCooldownRemaining();
-            if (remaining > 0) {
-                const seconds = Math.ceil(remaining / 1000);
-                this.abilityTwoPlayerTwo.setText(`J2 - . : ${seconds}s`);
-                this.abilityTwoPlayerTwo.setColor('#6666ff');
-            } else {
-                this.abilityTwoPlayerTwo.setText('J2 - . : L');
-                this.abilityTwoPlayerTwo.setColor('#0000ff');
-            }
-        }
         
             // Array de sprites del grupo
             const children = this.fallingPlatforms.getChildren();
@@ -544,10 +486,10 @@ export default class level_1 extends Phaser.Scene
             
             if(playerNum.id === 'player1') {
                 this.scene.start('endScene', 
-                { winner: 'Jugador 2' }); // cambiar a pantalla de victoria
+                { winner: '            Jugador 2' }); // cambiar a pantalla de victoria
             } else {
                 this.scene.start('endScene', 
-                { winner: "Jugador 1" }); // cambiar a pantalla de victoria
+                { winner: "            Jugador 1" }); // cambiar a pantalla de victoria
             }
             
         
