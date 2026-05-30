@@ -84,11 +84,16 @@ export default class Player extends Phaser.GameObjects.Sprite
         });
     }
 
-    receiveDamage(){
+    receiveDamage(x,y){
         if(this.isAlive){
             this.lives -= 1;
             if(this.scene.anims.exists(this.fallingKey)){
+                
             this.play(this.fallingKey);
+            this.scene.time.delayedCall(250, () => {
+                this.deathSpin();
+            });
+            
         }
             
 
@@ -97,10 +102,11 @@ export default class Player extends Phaser.GameObjects.Sprite
             } else {
                 
                 this.isAlive = false;
-                this.setVisible(false);
-                this.setActive(false);
-                this.scene.time.delayedCall(500, () => { // 2 segundos para reaparecer
-                    this.respawn();
+                
+                this.scene.time.delayedCall(1046, () => { // 2 segundos para reaparecer
+                    this.setVisible(false);
+                    this.setActive(false);
+                    this.respawn(x,y);
                 });
                 
             }
@@ -114,10 +120,30 @@ export default class Player extends Phaser.GameObjects.Sprite
         this.setActive(false);
     }
 
-    respawn() {
-        
+    respawn(x, y) {
+        this.x=x;
+        this.y=y;
         this.isAlive = true;
         this.setVisible(true);
-        this.setActive(true);
+        this.setActive(true);   
+        this.play(this.idleingKey);
     }
+    
+    deathSpin() {
+    this.scene.tweens.add({
+        targets: this,
+        angle: 360,
+        scale: 0,
+        alpha: 0,
+        duration: 800,
+        ease: 'Power2',
+        onComplete: () => {
+            this.angle = 0;
+            this.scale = 0.5;
+            this.alpha = 1;
+        
+        }
+    });
 }
+}
+

@@ -89,7 +89,7 @@ export default class level_1 extends Phaser.Scene
 
     create()
     {  
-        this.startTime = Math.round(new Date() / 1000);   
+        this.elapsed = 0;  
 
         // fondo provisional
         this.add.image(0, 0, "level_1").setOrigin(0, 0);
@@ -185,6 +185,12 @@ export default class level_1 extends Phaser.Scene
         let tileSpawn2Y =  Math.floor(posSpawnP2.y / tileSize);
         
         const p1AnimKeys = registerAnimations(this, this.player1Key);
+        // console.log('Anim keys:', p1AnimKeys);
+        // console.log('Jump existe:', this.anims.exists(p1AnimKeys.jump));
+        // console.log('Textura cargada:', this.textures.exists('PiernaSalto'));
+        // console.log('Frames:', this.textures.get('PiernaSalto').getFrameNames());
+
+       
 
         // definicion y creacion del jugador uno
         var config = {
@@ -204,6 +210,7 @@ export default class level_1 extends Phaser.Scene
         };
         this.player1= new Player(this, 'player1', this.player1Key, tileSpawn1X, tileSpawn1Y, config);
         
+         
         const p2AnimKeys = registerAnimations(this, this.player2Key);
 
         // definicion y creacion del jugador dos
@@ -341,11 +348,15 @@ export default class level_1 extends Phaser.Scene
     
 
     //deteccion de movimiento sin importar el jugador
-    update()
+    update(time,delta)
     {   
-        this.hud.update(this.player1, this.player2, this.startTime);
         
-        if (Math.round(Date.now() / 1000) >= this.startTime + 120) {
+        this.elapsed += delta; // delta viene en milisegundos
+        const totalTime = 120000; // 2 minutos en ms
+        const remaining = totalTime - this.elapsed;
+        this.hud.update(this.player1, this.player2, this.elapsed);
+        
+        if (remaining <= 0) {
 
             if(this.player1.lives > this.player2.lives) {
                 this.scene.start('endScene', 
@@ -362,13 +373,7 @@ export default class level_1 extends Phaser.Scene
 
         } else {
             // calcular el tiempo restante
-            let currentTime = Math.round(Date.now() / 1000);
-            let elapsed = currentTime - this.startTime;
-            let remaining = 120 - elapsed;
-            
-            // actualizar el temporizador en pantalla
-            let minutes = Math.floor(remaining / 60);
-            let seconds = remaining % 60;
+            const remaining = Math.ceil((totalTime - this.elapsed) / 1000);
             this.timer.setText(`${remaining.toString().padStart(3, '0')}`);
         }
 
@@ -462,17 +467,12 @@ export default class level_1 extends Phaser.Scene
         // comprobar si el jugador está encima
         if (badTile && playerNum.isAlive) {
             const randomTile = Phaser.Utils.Array.GetRandom(availableTiles);
-            playerNum.receiveDamage(); // si la tile esta ocupada, el jugador recibe daño
-            if (unavailableTiles.length < 91) {
-                
-
-                // posición real en píxeles
-                const respawnX = randomTile.x;
-                const respawnY = randomTile.y;
-            
-                playerNum.update(respawnX, respawnY, this.fallingPlatforms, direction);
-                    
-            }   
+            playerNum.receiveDamage(randomTile.x, randomTile.y); // si la tile esta ocupada, el jugador recibe daño
+            // if (unavailableTiles.length < 91) {
+            //     // posición real en píxeles
+            //     const respawnX = randomTile.x;
+            //     const respawnY = randomTile.y;     
+            // }   
             return;
         }
     
@@ -492,8 +492,6 @@ export default class level_1 extends Phaser.Scene
                 { winner: "            Jugador 1" }); // cambiar a pantalla de victoria
             }
             
-        
-
         }
         });
     }
