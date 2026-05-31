@@ -385,7 +385,7 @@ export default class level_1 extends Phaser.Scene
         this.hud.update(this.player1, this.player2, this.elapsed);
         
         if (remaining <= 0) {
-
+            this.music.stop();
             if(this.player1.lives > this.player2.lives) {
                 this.scene.start('endScene', 
                 { winner: '             Player 1'}); // cambiar a pantalla de victoria
