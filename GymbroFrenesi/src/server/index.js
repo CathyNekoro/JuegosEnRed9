@@ -1,0 +1,47 @@
+import express from 'express';
+import path from 'path';
+import http from 'http';
+import { Server } from 'socket.io';
+import { fileURLToPath } from 'url';
+
+import { createConnectionService } from './services/connectionService.js';
+import { createConnectionController } from './controllers/connectionController.js';
+import { createConnectionsRouter } from './routes/connections.js';
+
+// Recrear __dirname en ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
+const PORT = process.env.PORT || 3000;
+
+// === Instanciamos los services y controllers (inyección de dependencias) ===
+const connectionService = createConnectionService();
+const connectionController = createConnectionController(connectionService);
+
+// === Estáticos del cliente ===
+app.use(express.static(path.join(__dirname, '..', 'client')));
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'client', 'index.html'));
+});
+
+// === Routers REST ===
+app.use('/', createConnectionsRouter(connectionController));
+
+// === Sockets (Fase 4, lo dejamos como estaba) ===
+io.on('connection', (socket) => {
+  console.log('Nuevo cliente conectado:', socket.id);
+  socket.on('ping-servidor', () => {
+    console.log('Ping recibido de', socket.id);
+    socket.emit('pong-cliente');
+  });
+  socket.on('disconnect', () => {
+    console.log('Cliente desconectado:', socket.id);
+  });
+});
+
+server.listen(PORT, () => {
+  console.log(`Servidor escuchando en http://localhost:${PORT}`);
+});

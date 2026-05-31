@@ -2,15 +2,15 @@
   "name": "gymbrofrenesi",
   "version": "1.0.0",
   "description": "Juego del equipo 9: Gymbro Frénesi",
-  "main": "Server/server.js",
+  "main": "src/srver/index.js",
   "scripts": {
-    "start": "node Server/server.js",
-    "dev": "nodemon Server/server.js"
+    "start": "node src/server/index.js",
+    "dev": "nodemon src/server/index.js"
   },
   "keywords": [],
   "author": "",
   "license": "Apache-2.0",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
     "express": "^4.19.0",
     "socket.io": "^4.8.0"
