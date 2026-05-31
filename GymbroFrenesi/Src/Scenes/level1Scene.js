@@ -86,7 +86,8 @@ export default class level_1 extends Phaser.Scene
         });
 
         this.load.image('VidasMarco', 'Assets/Img/vidasMarco.png');
-        this.load.audio('fallSound', 'Assets/sounds/goofy-yell.mp3')
+        this.load.audio('fallSound', 'Assets/sounds/goofy-yell.mp3');
+        this.load.audio('ingameSound', 'Assets/sounds/mondamusic-retro-arcade-game-music-512837.mp3');
 
         this.load.audio('sfx_coreDay', 'Assets/sounds/goku-teleport-sound.mp3')
         this.load.audio('sfx_legDay', 'Assets/sounds/maro-jump-sound-effect_1.mp3')
@@ -100,6 +101,9 @@ export default class level_1 extends Phaser.Scene
 
         // fondo provisional
         this.add.image(0, 0, "level_1").setOrigin(0, 0);
+
+        this.music = this.sound.add('ingameSound', { loop: true, volume: 0.4 });
+        this.music.play();
 
     //UI mirar a ver si se puede desplazar////
         //colores cambiados para el fondo
@@ -149,7 +153,7 @@ export default class level_1 extends Phaser.Scene
             this.cameras.main.height-150,
             "||",
             () => {
-                this.time.paused = true;
+                
                 this.sound.pauseAll();
                 this.scene.launch("pauseScene");
                 this.scene.pause();
@@ -518,7 +522,9 @@ export default class level_1 extends Phaser.Scene
         }
 
         if (playerNum.isDead) { // si un jugador ha muerto, vamos a la pantalla de victoria
-            
+            this.music.stop();
+            this.scene.stop();
+
             if(playerNum.id === 'player1') {
                 this.scene.start('endScene', 
                 { winner: '            Jugador 2' }); // cambiar a pantalla de victoria

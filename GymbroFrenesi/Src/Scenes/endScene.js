@@ -10,7 +10,7 @@ export default class endScene extends Phaser.Scene
     }
 
     preload(){
-        this.load.image("final", "Assets/Img/escenarios/victoryScreen.png");
+        this.load.image('final', 'Assets/Img/escenarios/victoryScreen.png');
         document.fonts.load('1em "curiosness"');
         this.load.audio('endMusic', 'Assets/sounds/FinalMemeSong.mp3');
     }
@@ -19,7 +19,8 @@ export default class endScene extends Phaser.Scene
     {
         
         const fondo = this.add.image(0, 0, "final").setOrigin(0, 0);
-
+        this.music = this.sound.add('endMusic', { loop: true, volume: 0.4 });
+        this.music.play();
         // poner el ganador y perdedor en pantalla
         let winnerText  = this.winner;
         
@@ -41,7 +42,9 @@ export default class endScene extends Phaser.Scene
         })
         .setInteractive()
         .on('pointerdown', () => {
+            this.music.stop();
             this.scene.start('titleScene');
+            this.scene.stop();
         });
     }
 

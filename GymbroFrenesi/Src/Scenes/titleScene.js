@@ -11,12 +11,17 @@ export default class pantallaInicio extends Phaser.Scene
   preload() 
   {
     this.load.image("pantallaInicio", "../Assets/Img/pantallaInicio1.png");
+    this.load.audio('selecMusic', 'Assets/sounds/djartmusic-i-love-my-8-bit-game-console-301272.mp3');
   }
 
   create() 
   {
     //fondo
     this.add.image(0, 0, "pantallaInicio").setOrigin(0, 0);
+
+    if(!this.music|| !this.music.isPlaying){
+    this.music = this.sound.add('selecMusic', { loop: true, volume: 0.4 });
+    this.music.play();}
 
     ////botón JUGAR//// 
     this.buttonPlay = new titleButton(

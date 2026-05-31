@@ -21,7 +21,7 @@ export default class pauseScene extends Phaser.Scene
         this.cameras.main.height / 2-150,
         "Continuar",
         () => {
-            this.time.paused = false;
+            
             this.sound.resumeAll("level1Scene");
             this.scene.resume("level1Scene");
             this.scene.stop();
@@ -37,6 +37,8 @@ export default class pauseScene extends Phaser.Scene
         this.cameras.main.height / 2 + buttonMargin,
         "Salir",
         () => {
+            
+            
             this.scene.start("titleScene");
             this.scene.stop();
             this.scene.stop('level1Scene'); 

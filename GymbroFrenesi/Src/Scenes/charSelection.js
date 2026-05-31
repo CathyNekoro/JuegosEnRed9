@@ -16,12 +16,14 @@ export default class charSelection extends Phaser.Scene
         this.load.spritesheet('core', '../Assets/Img/personajes/coreDaySelec.png', {frameWidth:444, frameHeight: 1140});
         this.load.spritesheet('mewing', '../Assets/Img/personajes/mewingDaySelec.png', {frameWidth:444, frameHeight: 1140});
         document.fonts.load('1em "Bubble"');
+        
     }
 
     create() 
     {
         
         document.body.style.backgroundColor = "black";
+        
 
         const buttonSize = 100;
         const buttonMargin = 20;
@@ -47,7 +49,7 @@ export default class charSelection extends Phaser.Scene
         "<",
         () => {
             this.scene.start("titleScene");
-            this.scene.stop();
+            //this.music.stop();
         },
         buttonSize,
         buttonSize
@@ -174,7 +176,7 @@ export default class charSelection extends Phaser.Scene
         this.selected.p2 = btn.charKey;
         btn.locked = true;
         btn.disableInteractive();
-
+        this.sound.stopByKey('selecMusic');
 //implementar contador?
 
         this.scene.start("level1Scene", {
