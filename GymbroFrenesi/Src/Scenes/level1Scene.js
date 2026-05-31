@@ -1,6 +1,7 @@
 import Player from "../Players/Player.js"
 import { CHARACTER_CONFIG, registerAnimations } from "../Utils/AnimatorManager.js";
 import HUD from "../UI/HUD.js";
+import titleButton from "../UI/titleButton.js";
 
 const tileSize = 150;
    
@@ -39,7 +40,7 @@ export default class level_1 extends Phaser.Scene
             frameWidth: 500,
             frameHeight: 500
         });
-        this.load.spritesheet('PiernaSalto', 'Assets/Img/personajes/Pierna/JumpRojo.png', {
+        this.load.spritesheet('PiernaHab', 'Assets/Img/personajes/Pierna/abilityRed.png', {
             frameWidth: 500,
             frameHeight: 500
         });
@@ -51,7 +52,7 @@ export default class level_1 extends Phaser.Scene
             frameWidth: 500,
             frameHeight: 500
         });
-        this.load.spritesheet('BrazoSalto', 'Assets/Img/personajes/Brazo/JumpAzul.png', {
+        this.load.spritesheet('BrazoHab', 'Assets/Img/personajes/Brazo/abilityBlue.png', {
             frameWidth: 500,
             frameHeight: 500
         });
@@ -63,7 +64,7 @@ export default class level_1 extends Phaser.Scene
             frameWidth: 500,
             frameHeight: 500
         });
-        this.load.spritesheet('MewingSalto', 'Assets/Img/personajes/Mewing/jumpAmarillo.png', {
+        this.load.spritesheet('MewingHab', 'Assets/Img/personajes/Mewing/abilityYellow.png', {
             frameWidth: 500,
             frameHeight: 500
         });
@@ -75,7 +76,7 @@ export default class level_1 extends Phaser.Scene
             frameWidth: 500,
             frameHeight: 500
         });
-        this.load.spritesheet('CoreSalto', 'Assets/Img/personajes/Core/jumpGreen.png', {
+        this.load.spritesheet('CoreHab', 'Assets/Img/personajes/Core/abilityGreen.png', {
             frameWidth: 500,
             frameHeight: 500
         });
@@ -138,7 +139,24 @@ export default class level_1 extends Phaser.Scene
             strokeThickness: 20,            
             color: '#000000'
         });
-
+        
+        //botón de pausa
+        const buttonSize = 200;
+        const buttonH = 40;
+        this.exitButton = new titleButton(
+            this,
+            buttonSize / 2 + buttonH,
+            this.cameras.main.height-150,
+            "||",
+            () => {
+                this.time.paused = true;
+                this.sound.pauseAll();
+                this.scene.launch("pauseScene");
+                this.scene.pause();
+            },
+            buttonSize,
+            buttonSize
+        )
     //Fin UI////
     
         // tilemap
@@ -482,7 +500,17 @@ export default class level_1 extends Phaser.Scene
             // }   
             return;
         }
-    
+        
+        if (this.pendingDestroys) {
+        this.pendingDestroys = this.pendingDestroys.filter(sprite => {
+            if (this.elapsed >= sprite.destroyAt) {
+                sprite.destroy();
+                return false;
+            }
+        return true;
+    });
+}
+
         if (playerNum.id === 'player1') {
             this.scoreLivesOne();
         } else if (playerNum.id === 'player2') {

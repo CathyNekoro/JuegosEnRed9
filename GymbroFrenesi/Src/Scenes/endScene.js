@@ -12,10 +12,12 @@ export default class endScene extends Phaser.Scene
     preload(){
         this.load.image("final", "Assets/Img/escenarios/victoryScreen.png");
         document.fonts.load('1em "curiosness"');
+        this.load.audio('endMusic', 'Assets/sounds/FinalMemeSong.mp3');
     }
 
     create() 
     {
+        
         const fondo = this.add.image(0, 0, "final").setOrigin(0, 0);
 
         // poner el ganador y perdedor en pantalla

@@ -19,67 +19,50 @@ export default class Abilities
     }
 
 
-    useAbility(){
-  
-        if(!this.player.isAlive) return;
-        
-        // comprueba si la habilidad esta en cooldown
-        if (this.isOnCooldown) {
-            const remainingCooldown = this.cooldownEndTime - Date.now(); //con Date.now() para medir el paso del tiempo
-            if (remainingCooldown > 0) {
-                return;
-            } else {
-                // se termina el cooldown
-                this.isOnCooldown = false;
-            }
-        }
-       this.scene.sound.play(`sfx_${this.type}`, { volume: 0.6 });
+    useAbility() {
+    if (!this.player.isAlive) return;
 
-        if(this.abilityType === "quickAbility"){
-            
-            if(this.type === 'legDay'){
-                this.legQuickAbility();
-            } else if(this.type === 'armDay'){
-                this.armQuickAbility();
-            } else if(this.type === 'coreDay'){
-                this.coreQuickAbility();
-            } else if(this.type === 'mewingDay'){
-                this.mewingQuickAbility();
-            }
-
-            this.startCooldown(this.skillOneCooldown);
-        }
-
-        if(this.abilityType === "slowAbility"){
-            if(this.type === 'legDay'){
-              this.legSlowAbility();
-            } else if(this.type === 'armDay'){
-               this.armSlowAbility();
-            } else if(this.type === 'coreDay'){
-                this.coreSlowAbility();
-            } else if(this.type === 'mewingDay'){
-                this.mewingSlowAbility();
-            }
-
-            this.startCooldown(this.skillTwoCooldown);
-        }
+    if (this.isOnCooldown) {
+        const remaining = this.getCooldownRemaining();
+        if (remaining > 0) return;
+        this.isOnCooldown = false;
     }
+
+    
+    this.scene.sound.play(`sfx_${this.type}`, { volume: 0.8 });
+
+    if (this.abilityType === "quickAbility") {
+        if (this.type === 'legDay') this.legQuickAbility();
+        else if (this.type === 'armDay') this.armQuickAbility();
+        else if (this.type === 'coreDay') this.coreQuickAbility();
+        else if (this.type === 'mewingDay') this.mewingQuickAbility();
+        this.startCooldown(this.skillOneCooldown);
+    }
+
+    if (this.abilityType === "slowAbility") {
+        if (this.type === 'legDay') this.legSlowAbility();
+        else if (this.type === 'armDay') this.armSlowAbility();
+        else if (this.type === 'coreDay') this.coreSlowAbility();
+        else if (this.type === 'mewingDay') this.mewingSlowAbility();
+        this.startCooldown(this.skillTwoCooldown);
+    }
+}
 
     startCooldown(duration) {
-        this.isOnCooldown = true;
-        this.cooldownEndTime = Date.now() + duration; //con Date.now() para poder medir el paso del tiempo
+    this.isOnCooldown = true;
+    this.cooldownStartElapsed = this.scene.elapsed;
+    this.cooldownDuration = duration;
 
-        // contador para cuando hay que quitar el cooldown
-        this.cooldownTimer = this.scene.time.delayedCall(duration, () => {
-            this.isOnCooldown = false;
-        });
-    }
+    this.cooldownTimer = this.scene.time.delayedCall(duration, () => {
+        this.isOnCooldown = false;
+    });
+}
 
     getCooldownRemaining() {
-        if (!this.isOnCooldown) return;
-        const remaining = this.cooldownEndTime - Date.now(); //con Date.now() para medir el paso del tiempo
-        return Math.max(0, remaining);
-    }
+    if (!this.isOnCooldown) return 0;
+    const passed = this.scene.elapsed - this.cooldownStartElapsed;
+    return Math.max(0, this.cooldownDuration - passed);
+}
     
     legQuickAbility(){
 
@@ -386,7 +369,7 @@ export default class Abilities
         let enemyOriginalY = null;
 
         // moverse en linea recta hasta chocar contra un enemigo
-        while (!targetEnemy) {
+        while (!targetEnemy && this.player.isAlive) {
 
             let anteriorX = chargeX;
             let anteriorY = chargeY;
@@ -433,13 +416,7 @@ export default class Abilities
 
             if (badTile) { //si hay una casilla caida entre medias
 
-                this.player.receiveDamage(); // recibir daño
-
-                let posicion=this.scene.getRandomSafePlatform(); 
-                chargeX=posicion.x;
-                chargeY=posicion.y;
-                this.player.update(chargeX, chargeY, this.player.map, direction); // reaparecer
-
+                this.player.update(chargeX, chargeY, this.player.map, direction);
                 return; // salir de la hablidad       
             }
             
@@ -677,9 +654,9 @@ export default class Abilities
                     flashSprite.setScale(tileSize / flashSprite.width, tileSize / flashSprite.height);
 
                     // destruir el efecto de flash tras 2 segundos
-                    this.scene.time.delayedCall(2000, () => {
-                        flashSprite.destroy();
-                    });
+                    flashSprite.destroyAt = this.scene.elapsed + 2000;
+                    if (!this.scene.pendingDestroys) this.scene.pendingDestroys = [];
+                    this.scene.pendingDestroys.push(flashSprite);
                 });
 
             }
@@ -726,9 +703,9 @@ export default class Abilities
                     flashSprite.setScale(tileSize / flashSprite.width, tileSize / flashSprite.height);
 
                     // destruir el efecto de flash tras 2 segundos
-                    this.scene.time.delayedCall(2000, () => {
-                        flashSprite.destroy();
-                    });
+                     flashSprite.destroyAt = this.scene.elapsed + 2000;
+                    if (!this.scene.pendingDestroys) this.scene.pendingDestroys = [];
+                    this.scene.pendingDestroys.push(flashSprite);
                 });
             }
         });

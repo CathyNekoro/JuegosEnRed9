@@ -27,8 +27,6 @@ export default class creditsScene extends Phaser.Scene
         },
         buttonSize,
         buttonSize
-
-        
         );
 
         const Karina = this.add.text(100,300, "KARINA DIANA HINCU Correo \n universidad:kd.hincu.2023@alumnos.urjc.es Github: CathyNekoro").setScale(2).setFontFamily("curiosness").setColor("#5B0073");
