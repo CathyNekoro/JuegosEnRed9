@@ -6,6 +6,7 @@ import endScene from "./Scenes/endScene.js";
 import pauseScene from "./Scenes/pauseScene.js";
 import tutorialIntroScene from "./Scenes/tutorialIntroScene.js";
 import tutorialCharacterScene from "./Scenes/tutorialCharacterScene.js";
+import accountRegScene from "./Scenes/accountRegScene.js";
 
 let config = {
   type: Phaser.AUTO,
@@ -26,7 +27,7 @@ let config = {
     },
     zoom: 1,
   },
-  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
+  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene, accountRegScene], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
   physics: {
     default: "arcade", //Tenemos físicas simple, arcade
     arcade: {
@@ -39,6 +40,9 @@ let config = {
       left: true,
       right: true,
     },
+  },
+  dom: {
+    createContainer: true,
   },
   title: "Gymbro Frenesi",
   version: "1.0.0",

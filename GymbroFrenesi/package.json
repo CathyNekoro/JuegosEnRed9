@@ -5,9 +5,9 @@
   "main": "src/srver/index.js",
   "scripts": {
     "server": "nodemon src/server/index.js",
-  "watch": "webpack --watch",
-  "build": "webpack",
-  "start": "node src/server/index.js"
+    "watch": "webpack --watch",
+    "build": "webpack",
+    "start": "node src/server/index.js"
   },
   "keywords": [],
   "author": "",

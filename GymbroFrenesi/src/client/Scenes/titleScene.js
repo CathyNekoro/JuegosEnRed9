@@ -30,12 +30,12 @@ export default class pantallaInicio extends Phaser.Scene
       this.cameras.main.height / 2 + 250,
       "Jugar",
       () => {
-        this.scene.launch("charSelection");
+        this.scene.launch("accountRegScene");
         this.scene.stop();
       },
     );
 
-    this.buttonPlay = new titleButton(
+    this.buttonTutorial = new titleButton(
       this,
       this.cameras.main.width / 2-150,
       this.buttonPlay.y + SPACING_BUTTONS,
@@ -49,7 +49,7 @@ export default class pantallaInicio extends Phaser.Scene
     this.buttonCredits = new titleButton(
       this,
       this.cameras.main.width / 2 -150,
-      this.buttonPlay.y + SPACING_BUTTONS,
+      this.buttonTutorial.y + SPACING_BUTTONS,
       "Créditos",
       () => {
           this.scene.launch("creditsScene");
