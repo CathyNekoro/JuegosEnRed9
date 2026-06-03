@@ -4,37 +4,26 @@
  * y utiliza el userService para las operaciones de datos
  *
  * Patrón: Inyección de dependencias - recibe el servicio como parámetro
- */
+**/
 
-export function createUserController(userService) {
-  /**
-   * POST /api/users - Crear nuevo usuario
-   */
-  async function create(req, res, next) {
-    try {
-      // 1. Extraer datos del body: email, name, avatar, level
-      const { email, name, avatar, level } = req.body;
 
-      // 2. Validar que los campos requeridos estén presentes (email, name)
-      if (!email || !name) {
-        return res.status(400).json({
-          error: 'Los campos email y name son obligatorios'
-        });
-      }
+  export function createUserController(userService) {
+    return {
+        // POST /users
+        register(req, res) {
+            const { nickName, password, favoriteChar } = req.body;
 
-      // 3. Llamar a userService.createUser()
-      const newUser = userService.createUser({ email, name, avatar, level });
+            try {
+                const user = userService.createUser({ nickName, password, favoriteChar });
+                console.log(`Usuario registrado: ${user.nickName}`);
+                res.status(201).json({ ok: true, user });
+            } catch (err) {
+                // Errores de validación o duplicado: 400 Bad Request
+                res.status(400).json({ ok: false, error: err.message });
+            }
+        }
+    };
 
-      // 4. Retornar 201 con el usuario creado
-      res.status(201).json(newUser);
-    } catch (error) {
-      // 5. Si hay error (ej: email duplicado), retornar 400
-      if (error.message === 'El email ya está registrado') {
-        return res.status(400).json({ error: error.message });
-      }
-      next(error);
-    }
-  }
 
   /**
    * GET /api/users - Obtener todos los usuarios

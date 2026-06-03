@@ -3,110 +3,105 @@
  * Este servicio mantiene el estado de los usuarios en memoria
  * y proporciona métodos para realizar operaciones CRUD
  */
+import crypto from 'crypto';
 
 export function createUserService() {
-  // Estado privado: almacén de usuarios
-  let users = [];
-  let nextId = 1;
+    // Estado privado
+    let users = [];
+    let nextId = 1;
 
-  /**
-   * Crea un nuevo usuario
-   * @param {Object} userData - { nickname, winningRounds}
-   * @returns {Object} Usuario creado
-   */
-  function createUser(userData) {
-    // 1. Validar que el email no exista ya
-    const existingUser = users.find(u => u.nickName === userData.nickName);
-    if (existingUser) {
-      throw new Error('El nombre ya está registrado');
+    // === Helpers privados ===
+    function hashPassword(password) {
+        return crypto.createHash('sha256').update(password).digest('hex');
     }
 
-    // 2. Crear objeto usuario con id único y createdAt
-    const newUser = {
-      id: String(nextId),
-      nickName: userData.nickName,
-      winningRounds: userData.winningRounds,
-      createdAt: new Date().toISOString()
+    function stripPassword(user) {
+        // Nunca devolvemos el hash fuera del service
+        const { passwordHash, ...rest } = user;
+        return rest;
+    }
+
+    // === API pública ===
+
+    function createUser(userData) {
+        const { nickName, password, favoriteChar = null } = userData;
+
+        // Validación nombre
+        if (!nickName || typeof nickName !== 'string' || nickName.trim().length === 0) {
+            throw new Error('El nickName es obligatorio');
+        }
+        // Validación contraseña
+        if (!password || typeof password !== 'string') {
+            throw new Error('La contraseña es obligatoria');
+        }
+
+        // Comprobar duplicado
+        if (users.find(u => u.nickName === nickName)) {
+            throw new Error('El nickName ya está registrado');
+        }
+        //crear user
+        const newUser = {
+            id: String(nextId++),
+            nickName: nickName.trim(),
+            passwordHash: hashPassword(password),
+            favoriteChar,
+            maxScore: 0,
+            totalWins: 0,
+            bestTime: null,
+            createdAt: new Date().toISOString()
+        };
+
+        users.push(newUser);
+        return stripPassword(newUser);
+    }
+    
+    function getUserByNickName(nickName) {
+        const user = users.find(u => u.nickName === nickName);
+        return user ? stripPassword(user) : null;
+    }
+
+    function verifyPassword(nickName, password) {
+        const user = users.find(u => u.nickName === nickName);
+        if (!user) return false;
+        return user.passwordHash === hashPassword(password);
+    }
+
+    function getAllUsers() {
+        return users.map(stripPassword);
+    }
+
+    function updateUser(nickName, updates) {
+        const user = users.find(u => u.nickName === nickName);
+        if (!user) return null;
+
+        // Whitelist: nunca dejamos cambiar nickName, id, passwordHash, createdAt desde aquí
+        const allowed = ['favoriteChar', 'maxScore', 'totalWins', 'bestTime'];
+        for (const key of allowed) {
+            if (updates[key] !== undefined) user[key] = updates[key];
+        }
+        return stripPassword(user);
+    }
+
+    function deleteUser(nickName) {
+        const index = users.findIndex(u => u.nickName === nickName);
+        if (index === -1) return false;
+        users.splice(index, 1);
+        return true;
+    }
+
+    function getTopUsers(limit = 10) {
+        return getAllUsers()
+            .sort((a, b) => b.maxScore - a.maxScore)
+            .slice(0, limit);
+    }
+
+    return {
+        createUser,
+        getUserByNickName,
+        verifyPassword,
+        getAllUsers,
+        updateUser,
+        deleteUser,
+        getTopUsers
     };
-
-    // 3. Agregar a la lista de usuarios
-    users.push(newUser);
-
-    // 4. Incrementar nextId
-    nextId++;
-
-    // 5. Retornar el usuario creado
-    return newUser;
-  }
-
-  /**
-   * Obtiene todos los usuarios
-   * @returns {Array} Array de usuarios
-   */
-  function getAllUsers() {
-    // TODO: Implementar
-    // Retornar una copia del array de usuarios
-    throw new Error('getAllUsers() no implementado');
-  }
-
-  /**
-   * Busca un usuario por ID
-   * @param {string} id - ID del usuario
-   * @returns {Object|null} Usuario encontrado o null
-   */
-  function getUserById(id) {
-    const user = users.find(u => u.id === id);
-    return user || null;
-  }
-
-  /**
-   * Busca un usuario por nickname
-   * @param {string} nickName - Nombre del usuario
-   * @returns {Object|null} Usuario encontrado o null
-   */
-  function getUserByNickName(nickName) {
-    // TODO: Implementar
-    // Buscar y retornar el usuario por email, o null si no existe
-    // IMPORTANTE: Esta función será usada por el chat para verificar emails
-    throw new Error('getUserByNickName() no implementado');
-  }
-
-  /**
-   * Actualiza un usuario
-   * @param {string} id - ID del usuario
-   * @param {Object} updates - Campos a actualizar
-   * @returns {Object|null} Usuario actualizado o null si no existe
-   */
-  function updateUser(id, updates) {
-    // TODO: Implementar
-    // 1. Buscar el usuario por id
-    // 2. Si no existe, retornar null
-    // 3. Actualizar solo los campos permitidos (name, avatar, level)
-    // 4. NO permitir actualizar id, email, o createdAt
-    // 5. Retornar el usuario actualizado
-    throw new Error('updateUser() no implementado');
-  }
-
-  /**
-   * Elimina un usuario
-   * @param {string} id - ID del usuario
-   * @returns {boolean} true si se eliminó, false si no existía
-   */
-  function deleteUser(id) {
-    // TODO: Implementar
-    // 1. Buscar el índice del usuario
-    // 2. Si existe, eliminarlo del array
-    // 3. Retornar true si se eliminó, false si no existía
-    throw new Error('deleteUser() no implementado');
-  }
-
-  // Exponer la API pública del servicio
-  return {
-    createUser,
-    getAllUsers,
-    getUserById,
-    getUserByEmail,
-    updateUser,
-    deleteUser
-  };
 }

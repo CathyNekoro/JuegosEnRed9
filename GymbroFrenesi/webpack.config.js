@@ -28,6 +28,6 @@ export default {
     }),
   ],
   externals: {
-  phaser: 'Phaser'
-},
+    phaser: 'Phaser'
+  },
 };
