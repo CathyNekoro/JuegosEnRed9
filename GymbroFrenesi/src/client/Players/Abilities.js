@@ -16,6 +16,7 @@ export default class Abilities
         this.isOnCooldown = false;
         this.cooldownEndTime = 0;
         this.cooldownTimer = null;
+        this.abilityKey = `${type}_ability`; // sleccionar animacion basada en el tipo del personaje
     }
 
 
@@ -28,7 +29,15 @@ export default class Abilities
         this.isOnCooldown = false;
     }
 
-    
+    if(this.scene.anims.exists(this.abilityKey)) {
+        this.player.play(this.abilityKey); // reproducir animacion
+        this.player.once('animationcomplete', () => {
+            if(this.player.isAlive && this.scene.anims.exists(this.player.idleingKey)) {
+                this.player.play(this.player.idleingKey); // volver a animacion idle
+            }
+        });
+    }
+
     this.scene.sound.play(`sfx_${this.type}`, { volume: 0.8 });
 
     if (this.abilityType === "quickAbility") {

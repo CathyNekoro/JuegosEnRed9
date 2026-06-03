@@ -2,7 +2,7 @@ import Abilities from "./Abilities.js";
 
 export default class Player extends Phaser.GameObjects.Sprite
 {
-    constructor(scene, id, type, x, y ,config)
+    constructor(scene, id, type, x, y, config)
     {
         super(scene, x*config.tileSize-config.tileSize/2, y*config.tileSize-config.tileSize/2, config.texture_key);
 

@@ -87,47 +87,47 @@ export default class charSelection extends Phaser.Scene
 
      
         //ANIMACION BRAZOS armDaySelec
-            this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
-            
-            this.buttons[1].on('pointerover', () => {
-                this.previewSprite2.setVisible(true);
-                this.previewSprite2.play(this.selectionAnimKeys['armDay'].preview)
-            });
+        this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
+        
+        this.buttons[1].on('pointerover', () => {
+            this.previewSprite2.setVisible(true);
+            this.previewSprite2.play(this.selectionAnimKeys['armDay'].preview)
+        });
 
-            this.buttons[1].on('pointerdown', () => {
-                this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
-                this.previewSprite2.setTint(0x6E6E6E)
-                
-            });
+        this.buttons[1].on('pointerdown', () => {
+            this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
+            this.previewSprite2.setTint(0x6E6E6E)
+            
+        });
         
         //ANIMACION CORE
+        this.previewSprite3 = this.add.sprite(1292, 805, 'core');
+        
+        this.buttons[2].on('pointerover', () => {
+            this.previewSprite3.setVisible(true);
+            this.previewSprite3.play(this.selectionAnimKeys['coreDay'].preview);
+        });
+
+        this.buttons[2].on('pointerdown', () => {
             this.previewSprite3 = this.add.sprite(1292, 805, 'core');
+            this.previewSprite3.setTint(0x6E6E6E)
             
-            this.buttons[2].on('pointerover', () => {
-                this.previewSprite3.setVisible(true);
-                this.previewSprite3.play(this.selectionAnimKeys['coreDay'].preview);
-            });
+        });
 
-            this.buttons[2].on('pointerdown', () => {
-                this.previewSprite3 = this.add.sprite(1292, 805, 'core');
-                this.previewSprite3.setTint(0x6E6E6E)
-                
-            });
+        //Mewing animation
+        this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
+        
+        this.buttons[3].on('pointerover', () => {
+            this.previewSprite4.setVisible(true);
+            this.previewSprite4.play(this.selectionAnimKeys['mewingDay'].preview);
+        });
 
-            //Mewing animation
+        this.buttons[3].on('pointerdown', () => {
+            
             this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
+            this.previewSprite4.setTint(0x6E6E6E)
             
-            this.buttons[3].on('pointerover', () => {
-                this.previewSprite4.setVisible(true);
-                this.previewSprite4.play(this.selectionAnimKeys['mewingDay'].preview);
-            });
-
-            this.buttons[3].on('pointerdown', () => {
-               
-                this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
-                this.previewSprite4.setTint(0x6E6E6E)
-                
-            });
+        });
 
     }
 ////////// 

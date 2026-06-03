@@ -1,5 +1,5 @@
 import titleButton from "../UI/titleButton.js";
-const SPACING_BUTTONS=200+30;
+const SPACING_BUTTONS=150+30;
 
 export default class pantallaInicio extends Phaser.Scene 
 {
@@ -27,10 +27,21 @@ export default class pantallaInicio extends Phaser.Scene
     this.buttonPlay = new titleButton(
       this,
       this.cameras.main.width / 2-150,
-      this.cameras.main.height / 2 + 300,
+      this.cameras.main.height / 2 + 250,
       "Jugar",
       () => {
         this.scene.launch("charSelection");
+        this.scene.stop();
+      },
+    );
+
+    this.buttonPlay = new titleButton(
+      this,
+      this.cameras.main.width / 2-150,
+      this.buttonPlay.y + SPACING_BUTTONS,
+      "Tutorial",
+      () => {
+        this.scene.launch("tutorialIntroScene");
         this.scene.stop();
       },
     );
