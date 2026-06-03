@@ -1,0 +1,23 @@
+# Dependencias
+node_modules/
+
+# Build output (lo genera webpack)
+dist/
+
+# Datos de runtime del server (se autogeneran)
+src/server/data/users.json
+
+# Logs de npm
+npm-debug.log*
+*.log
+
+# Archivos de IDEs (cada miembro del equipo elige)
+.vscode/
+.idea/
+
+# Archivos basura del SO
+Thumbs.db
+.DS_Store
+
+# Variables de entorno si las usáis en el futuro
+.env

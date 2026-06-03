@@ -4,8 +4,10 @@
   "description": "Juego del equipo 9: Gymbro Frénesi",
   "main": "src/srver/index.js",
   "scripts": {
-    "start": "node src/server/index.js",
-    "dev": "nodemon src/server/index.js"
+    "server": "nodemon src/server/index.js",
+  "watch": "webpack --watch",
+  "build": "webpack",
+  "start": "node src/server/index.js"
   },
   "keywords": [],
   "author": "",
@@ -16,6 +18,10 @@
     "socket.io": "^4.8.0"
   },
   "devDependencies": {
-    "nodemon": "^3.1.0"
+    "copy-webpack-plugin": "^14.0.0",
+    "html-webpack-plugin": "^5.6.7",
+    "nodemon": "^3.1.0",
+    "webpack": "^5.107.2",
+    "webpack-cli": "^7.0.3"
   }
 }
