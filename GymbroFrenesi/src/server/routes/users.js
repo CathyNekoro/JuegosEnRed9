@@ -13,6 +13,7 @@ export function createUsersRouter(userController) {
     router.get('/users', userController.getAllUsers);                 
     router.get('/users/:nickName', userController.getUserByNickName);
     router.put('/users/:nickName', userController.updateUser);
+    router.delete('/users/:nickName', userController.deleteUser);
     
     return router;
 }

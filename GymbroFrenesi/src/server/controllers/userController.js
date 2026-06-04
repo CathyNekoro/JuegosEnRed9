@@ -86,27 +86,23 @@
 
         console.log(`Usuario actualizado: ${nickName}`);
         res.json({ ok: true, user: updated });
+    },
+    // DELETE /users/:nickName
+    deleteUser(req, res) {
+        const { nickName } = req.params;
+        const deleted = userService.deleteUser(nickName);
+
+        if (!deleted) {
+            return res.status(404).json({ 
+                ok: false, 
+                error: 'Usuario no encontrado' 
+            });
+        }
+
+        console.log(`Usuario eliminado: ${nickName}`);
+        res.json({ ok: true, deleted: nickName }); 
     }
   };
-
- 
-
-
-  /**
-   * DELETE /api/users/:id - Eliminar un usuario
-   */
-  async function remove(req, res, next) {
-    try {
-      // TODO: Implementar
-      // 1. Extraer el id de req.params
-      // 2. Llamar a userService.deleteUser()
-      // 3. Si no existía, retornar 404
-      // 4. Si se eliminó, retornar 204 (No Content)
-      throw new Error('remove() no implementado');
-    } catch (error) {
-      next(error);
-    }
-  }
 
   // Exponer la API pública del controlador
   return {
