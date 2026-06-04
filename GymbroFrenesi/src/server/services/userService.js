@@ -45,7 +45,6 @@ export function createUserService() {
             nickName: nickName.trim(),
             passwordHash: hashPassword(password),
             favoriteChar,
-            maxScore: 0,
             totalWins: 0,
             bestTime: null,
             createdAt: new Date().toISOString()
@@ -75,7 +74,7 @@ export function createUserService() {
         if (!user) return null;
 
         // Whitelist: nunca dejamos cambiar nickName, id, passwordHash, createdAt desde aquí
-        const allowed = ['favoriteChar', 'maxScore', 'totalWins', 'bestTime'];
+        const allowed = ['favoriteChar', 'totalWins', 'bestTime'];
         for (const key of allowed) {
             if (updates[key] !== undefined) user[key] = updates[key];
         }
@@ -91,7 +90,7 @@ export function createUserService() {
 
     function getTopUsers(limit = 10) {
         return getAllUsers()
-            .sort((a, b) => b.maxScore - a.maxScore)
+            .sort((a, b) => b.totalWins - a.totalWins)
             .slice(0, limit);
     }
 

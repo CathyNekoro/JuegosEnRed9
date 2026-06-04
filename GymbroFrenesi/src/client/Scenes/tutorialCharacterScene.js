@@ -153,9 +153,7 @@ export default class tutorialCharactersScene extends Phaser.Scene
             }
         });
 
-        this.previewSprite.on('pointerdown', () => {
-            this.previewSprite.setTint(0x6E6E6E);
-        });
+       
 
         // textos de introduccion
         this.nameText = this.add.text(900, 180, charInfo.name, 

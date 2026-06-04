@@ -49,7 +49,7 @@ export default class charSelection extends Phaser.Scene
         "<",
         () => {
             this.scene.start("titleScene");
-            //this.music.stop();
+            
         },
         buttonSize,
         buttonSize

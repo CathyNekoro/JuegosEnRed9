@@ -12,6 +12,9 @@ import { createUserService } from './services/userService.js';
 import { createUserController } from './controllers/userController.js';
 import { createUsersRouter } from './routes/users.js';
 
+import { createLeaderboardController } from './controllers/leaderboardController.js';
+import { createLeaderboardRouter } from './routes/leaderboard.js';
+
 // Recrear __dirname en ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -29,6 +32,8 @@ const connectionController = createConnectionController(connectionService);
 const userService = createUserService();                       
 const userController = createUserController(userService); 
 
+const leaderboardController = createLeaderboardController(userService);
+
 // === Estáticos del cliente ===
 app.use(express.static(path.join(__dirname, '..', '..', 'dist')));
 app.get('/', (req, res) => {
@@ -36,9 +41,9 @@ app.get('/', (req, res) => {
 });
 
 // === Routers REST ===
-app.use('/', createConnectionsRouter(connectionController));
-app.use('/', createUsersRouter(userController));      
-
+app.use('/api', createConnectionsRouter(connectionController));
+app.use('/api', createUsersRouter(userController));      
+app.use('/api', createLeaderboardRouter(leaderboardController));
 // === Sockets (Fase 4, lo dejamos como estaba) ===
 io.on('connection', (socket) => {
   console.log('Nuevo cliente conectado:', socket.id);

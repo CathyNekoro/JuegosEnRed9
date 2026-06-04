@@ -12,7 +12,6 @@ export default class accountRegScene extends Phaser.Scene
 
   preload() 
   {
-    this.load.audio('selecMusic', 'Assets/sounds/djartmusic-i-love-my-8-bit-game-console-301272.mp3');
   }
 
   create() 
@@ -27,9 +26,7 @@ export default class accountRegScene extends Phaser.Scene
 
     this.isConnected = false;
 
-    if(!this.music|| !this.music.isPlaying){
-    this.music = this.sound.add('selecMusic', { loop: true, volume: 0.4 });
-    this.music.play();}
+    
 
     // boton de salida
     this.backButton = new titleButton(

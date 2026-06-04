@@ -9,5 +9,10 @@ import express from 'express';
 export function createUsersRouter(userController) {
     const router = express.Router();
     router.post('/users', userController.register);
+    router.post('/login', userController.login);
+    router.get('/users', userController.getAllUsers);                 
+    router.get('/users/:nickName', userController.getUserByNickName);
+    router.put('/users/:nickName', userController.updateUser);
+    
     return router;
 }
