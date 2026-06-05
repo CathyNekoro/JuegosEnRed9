@@ -4,11 +4,54 @@
  * y proporciona métodos para realizar operaciones CRUD
  */
 import crypto from 'crypto';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const DATA_FILE = path.join(__dirname, '..', 'data', 'users.json');
 
 export function createUserService() {
     // Estado privado
     let users = [];
     let nextId = 1;
+
+    function loadFromDisk() {
+        try {
+            if (fs.existsSync(DATA_FILE)) {
+                const raw = fs.readFileSync(DATA_FILE, 'utf-8');
+                const data = JSON.parse(raw);
+                users = data.users || [];
+                nextId = data.nextId || (users.length+1);
+                console.log(`[userService] Cargados ${users.length} usuarios desde disco`);
+            } else {
+                console.log('[userService] users.json no existe aún, empezamos vacíos');
+            }
+        } catch (err) {
+            // Si el JSON está corrupto, empezamos vacíos sin reventar el server
+            console.error('[userService] Error cargando users.json:', err.message);
+            users = [];
+            nextId = 1;
+        }
+    }
+
+    function persist() {
+        try {
+            // Asegurarse de que la carpeta data/ existe
+            const dir = path.dirname(DATA_FILE);
+            if (!fs.existsSync(dir)) {
+                fs.mkdirSync(dir, { recursive: true });
+            }
+            const data = { users, nextId };
+            fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+        } catch (err) {
+            console.error('[userService] Error guardando users.json:', err.message);
+        }
+    }
+
+    // Cargar al inicializar el service
+    loadFromDisk();
+
 
     // === Helpers privados ===
     function hashPassword(password) {
@@ -49,8 +92,8 @@ export function createUserService() {
             bestTime: null,
             createdAt: new Date().toISOString()
         };
-
         users.push(newUser);
+        persist();
         return stripPassword(newUser);
     }
     
@@ -85,6 +128,7 @@ export function createUserService() {
         const index = users.findIndex(u => u.nickName === nickName);
         if (index === -1) return false;
         users.splice(index, 1);
+        persist();
         return true;
     }
 
@@ -94,6 +138,7 @@ export function createUserService() {
             .slice(0, limit);
     }
 
+    
     return {
         createUser,
         getUserByNickName,

@@ -1,3 +1,10 @@
+import { Api } from './services/Api.js';
+import { keepAlive } from './services/KeepAlive.js';
+
+// Sólo para testing manual desde la consola del navegador. Quitar antes de entregar
+window.Api = Api;
+window.keepAlive = keepAlive;
+
 import pantallaInicio from "./Scenes/titleScene.js";
 import charSelection from "./Scenes/charSelection.js";
 import creditsScene from './Scenes/creditsScene.js';
@@ -7,6 +14,7 @@ import pauseScene from "./Scenes/pauseScene.js";
 import tutorialIntroScene from "./Scenes/tutorialIntroScene.js";
 import tutorialCharacterScene from "./Scenes/tutorialCharacterScene.js";
 import accountRegScene from "./Scenes/accountRegScene.js";
+import noConnectionScene from "./Scenes/noConnectionScene.js";
 
 let config = {
   type: Phaser.AUTO,
@@ -27,12 +35,12 @@ let config = {
     },
     zoom: 1,
   },
-  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene, accountRegScene], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
+  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene, accountRegScene, noConnectionScene], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
   physics: {
     default: "arcade", //Tenemos físicas simple, arcade
     arcade: {
       gravity: { y: 200 }, //Tenemos gravedad, podemos modificarla para aumentar su fuera o disminuirla
-      debug: true, // Aquí indicamos si queremos que Phaser pinte los cuerpos y fuerzas de los objetos con físicas
+      debug: false, // Aquí indicamos si queremos que Phaser pinte los cuerpos y fuerzas de los objetos con físicas
     },
     checkCollision: {
       up: true,
@@ -48,5 +56,38 @@ let config = {
   version: "1.0.0",
 };
 
-new Phaser.Game(config);
+const game = new Phaser.Game(config);
 
+keepAlive.start();
+
+let pausedScenes = [];
+
+keepAlive.on('disconnected', () => {
+    pausedScenes = [];
+    const activeScenes = game.scene.getScenes(true);
+    activeScenes.forEach(scene => {
+        const key = scene.scene.key;
+        if (key !== 'noConnectionScene') {
+            pausedScenes.push(key);
+            scene.scene.pause();
+        }
+    });
+    if (!game.scene.isActive('noConnectionScene')) {
+        const pantalla= game.scene.getScene('noConnectionScene')
+        pantalla.scene.start();
+        pantalla.scene.bringToTop();
+    }
+});
+
+keepAlive.on('connected', () => {
+    if (game.scene.isActive('noConnectionScene')) {
+        game.scene.stop('noConnectionScene');
+    }
+    pausedScenes.forEach(key => {
+        const sceneObj = game.scene.getScene(key);
+        if (sceneObj && sceneObj.scene.isPaused()) {
+            sceneObj.scene.resume();
+        }
+    });
+    pausedScenes = [];
+});

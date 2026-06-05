@@ -77,16 +77,18 @@ html, body
     border-radius: 40%;
     outline: 4px solid white;
     display: block;
-    margin-left: 20px;
+    margin-left: 25%;
     margin-top: 0px;
 }
 
 .equipo
 {
     display: inline-block;
-    font-size: 500%;
+    font-size: 700%;
     margin-left: 2%;
-    font-family: 'something';
+    font-family: 'gunerGrafitti';
+    color: white;
+    -webkit-text-stroke: 2px black;
     
 }
 

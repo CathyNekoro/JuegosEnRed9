@@ -17,7 +17,7 @@ export default class endScene extends Phaser.Scene
 
     create() 
     {
-        
+        console.log("coño")
         const fondo = this.add.image(0, 0, "final").setOrigin(0, 0);
         this.music = this.sound.add('endMusic', { loop: true, volume: 0.4 });
         this.music.play();

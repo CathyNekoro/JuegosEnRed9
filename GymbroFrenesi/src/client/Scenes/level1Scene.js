@@ -459,11 +459,6 @@ export default class level_1 extends Phaser.Scene
             if (slowAbility) {
                 playerNum.slowAbility.useAbility();
             }            
-
-
-           
-            
-
             const badTile = unavailableTiles.find(tile =>
             Phaser.Math.Within(playerNum.x, tile.x, playerNum.tileSize / 2) &&
             Phaser.Math.Within(playerNum.y, tile.y, playerNum.tileSize / 2)
@@ -497,11 +492,6 @@ export default class level_1 extends Phaser.Scene
         if (badTile && playerNum.isAlive) {
             const randomTile = Phaser.Utils.Array.GetRandom(availableTiles);
             playerNum.receiveDamage(randomTile.x, randomTile.y); // si la tile esta ocupada, el jugador recibe daño
-            // if (unavailableTiles.length < 91) {
-            //     // posición real en píxeles
-            //     const respawnX = randomTile.x;
-            //     const respawnY = randomTile.y;     
-            // }   
             return;
         }
         

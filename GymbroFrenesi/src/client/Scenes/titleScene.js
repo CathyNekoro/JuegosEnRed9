@@ -1,4 +1,5 @@
 import titleButton from "../UI/titleButton.js";
+import { keepAlive } from "../services/KeepAlive.js";
 const SPACING_BUTTONS=150+30;
 
 export default class pantallaInicio extends Phaser.Scene 
@@ -12,6 +13,7 @@ export default class pantallaInicio extends Phaser.Scene
   {
     this.load.image("pantallaInicio", "../Assets/Img/pantallaInicio1.png");
     this.load.audio('selecMusic', 'Assets/sounds/djartmusic-i-love-my-8-bit-game-console-301272.mp3');
+    document.fonts.load('1em "Bubble"');
   }
 
   create() 
@@ -57,7 +59,31 @@ export default class pantallaInicio extends Phaser.Scene
       },
     );
 
+    this.serverCountText = this.add.text(
+      this.cameras.main.width - 300,    
+      50,                               
+      `Servidor: ${keepAlive.getCount()} conectados`,
+      {
+          fontFamily: "Bubble",     
+          fontSize: '60px',
+          color: '#ffffff',
+          backgroundColor: '#00000069',
+          padding: { x: 12, y: 6 }
+      }
+    ).setOrigin(1, 0);  
 
-    
+    // Listener para actualizar el texto cuando cambie el conteo
+    this.handleCountChanged = (count) => {
+        if (this.serverCountText && this.serverCountText.active) {
+            this.serverCountText.setText(`Servidor: ${count} conectados`);
+        }
+    };
+    keepAlive.on('countChanged', this.handleCountChanged);
+
+    // Limpieza al salir de la escena 
+    this.events.on('shutdown', () => {
+        keepAlive.off('countChanged', this.handleCountChanged);
+    });
+
   }
 }
