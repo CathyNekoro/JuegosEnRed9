@@ -20,11 +20,23 @@ export default class endScene extends Phaser.Scene
         this.load.image('final', 'Assets/Img/escenarios/victoryScreen.png');
         document.fonts.load('1em "curiosness"');
         this.load.audio('endMusic', 'Assets/sounds/FinalMemeSong.mp3');
+        this.load.image('finalBrazo', 'Assets/Img/escenarios/VictoriaBrazo.png');
+        this.load.image('finalCore', 'Assets/Img/escenarios/VictoriaCore.png');
+        this.load.image('finalMewing', 'Assets/Img/escenarios/VictoriaMewing.png');
+        this.load.image('finalPierna', 'Assets/Img/escenarios/VictoriaPierna.png');
     }
 
     create() 
     {
-        const fondo = this.add.image(0 + OFFSET_X, 0, "final").setOrigin(0, 0);
+        if(this.winnerId == 'player1'){
+            this.backgroundSelect(this.player1Char);
+        }
+        else if(this.winnerId == 'player2'){
+            this.backgroundSelect(this.player2Char);
+        }
+        else{
+            const fondo = this.add.image(0 + OFFSET_X, 0, "final").setOrigin(0, 0);
+        }
         this.music = this.sound.add('endMusic', { loop: true, volume: 0.4 });
         this.music.play();
         // al atualizar meter los fondos de Alex según la key. se puden usar los colores tmb guardados en la key del jugador- mirar en lvl 1 la interfaz cómo lo hace
@@ -94,4 +106,37 @@ console.log("DESPUÉS", result);
     
     
     update(){}
+
+    backgroundSelect(charKey){
+        const charKeys = ['legDay', 'armDay', 'coreDay', 'mewingDay'];
+        let i = 0;
+        while(charKey != charKeys[i] && i < charKeys.length){
+            i++;
+
+        }
+        let imagen, color; 
+        switch (i){
+            case 0:
+                imagen = this.add.image(0 + OFFSET_X, 0, "finalPierna").setOrigin(0, 0);
+                color = "#e46797";
+                break;
+            case 1:
+                this.add.image(0 + OFFSET_X, 0, "finalBrazo").setOrigin(0, 0);
+                color = "#7a99f0";
+                break;
+            case 2:
+                this.add.image(0 + OFFSET_X, 0, "finalCore").setOrigin(0, 0);
+                color = "#7fd457";
+                break;
+            case 3:
+                this.add.image(0 + OFFSET_X, 0, "finalMewing").setOrigin(0, 0);
+                color = "#ac8e3b";
+                break;
+            default: 
+                break;
+        }
+        this.add.text(this.cameras.main.width/2 ,100, "WINNER").setFontSize(167).setFontFamily("curiosness").setColor(color).setOrigin(0.5, 0.5).setStroke('black', 9);
+        return imagen;
+    }
+
 }
