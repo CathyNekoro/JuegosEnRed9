@@ -1,6 +1,7 @@
 import titleButton from "../UI/titleButton.js";
 import { keepAlive } from "../services/KeepAlive.js";
 const SPACING_BUTTONS=150+30;
+const OFFSET_X=95;
 
 export default class pantallaInicio extends Phaser.Scene 
 {
@@ -19,7 +20,8 @@ export default class pantallaInicio extends Phaser.Scene
   create() 
   {
     //fondo
-    this.add.image(0, 0, "pantallaInicio").setOrigin(0, 0);
+    this.add.rectangle(0, 0,  this.cameras.main.width,  this.cameras.main.height, 0x000000).setOrigin(0,0);
+    this.add.image(OFFSET_X, 0, "pantallaInicio").setOrigin(0, 0);
 
     if(!this.music|| !this.music.isPlaying){
     this.music = this.sound.add('selecMusic', { loop: true, volume: 0.4 });
@@ -28,7 +30,7 @@ export default class pantallaInicio extends Phaser.Scene
     ////botón JUGAR//// 
     this.buttonPlay = new titleButton(
       this,
-      this.cameras.main.width / 2-150,
+      (this.cameras.main.width / 2-150)+OFFSET_X,
       this.cameras.main.height / 2 + 250,
       "Jugar",
       () => {
@@ -39,7 +41,7 @@ export default class pantallaInicio extends Phaser.Scene
 
     this.buttonTutorial = new titleButton(
       this,
-      this.cameras.main.width / 2-150,
+      (this.cameras.main.width / 2-150 )+OFFSET_X,
       this.buttonPlay.y + SPACING_BUTTONS,
       "Tutorial",
       () => {
@@ -50,7 +52,7 @@ export default class pantallaInicio extends Phaser.Scene
 
     this.buttonCredits = new titleButton(
       this,
-      this.cameras.main.width / 2 -150,
+      (this.cameras.main.width / 2-150 )+OFFSET_X,
       this.buttonTutorial.y + SPACING_BUTTONS,
       "Créditos",
       () => {

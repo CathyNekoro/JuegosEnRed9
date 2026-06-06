@@ -12,7 +12,7 @@ export default class Player extends Phaser.GameObjects.Sprite
             this.moveDuration = config.moveDuration || 150;
 
             this.isMoving = false;
-            this.direction = null;
+            this.direction = "down";
 
             this.lives = config.lives || 3;
             this.isAlive = true;                //le quedan vidas (no tiene pq estar en la escena)

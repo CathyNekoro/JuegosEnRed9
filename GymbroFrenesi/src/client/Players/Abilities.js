@@ -500,7 +500,7 @@ export default class Abilities
     }
 
     coreSlowAbility(){
-
+        
         // carga en linea recta empujando a un jugador que se encuentre hacia los laterales y parandose tras el impacto, pero no se cae si hay un agujero
         const direction = this.player.direction;
         const tileSize = this.player.tileSize;
@@ -519,7 +519,7 @@ export default class Abilities
 
         // moverse en linea recta hasta chocar contra un enemigo
         while (!targetEnemy) {
-
+            
             let anteriorX = chargeX;
             let anteriorY = chargeY;
 

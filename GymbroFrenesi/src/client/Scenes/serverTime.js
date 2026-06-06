@@ -16,49 +16,29 @@ export default class serverTime extends Phaser.Scene {
     }
 
     create() {
-        // Contador de conectados
-        this.serverCountText = this.add.text(
-            this.cameras.main.width - 30,
-            30,
-            `Servidor: ${keepAlive.getCount()} conectados`,
-            {
-                fontFamily: "something",
-                fontSize: '32px',
-                color: '#ffffff',
-                backgroundColor: '#00000088',
-                padding: { x: 12, y: 6 }
-            }
-        ).setOrigin(1, 0);
+        
 
         // Uptime
         this.uptimeText = this.add.text(
-            this.cameras.main.width - 30,
-            90,
+            this.cameras.main.width-200,
+            this.cameras.main.height-100,
             `Activo: ${formatUptime(keepAlive.getUptime())}`,
             {
-                fontFamily: "something",
-                fontSize: '32px',
+                fontFamily: "Bubble",
+                fontSize: '40px',
                 color: '#ffffff',
-                backgroundColor: '#00000088',
+                backgroundColor: '#0000009d',
                 padding: { x: 12, y: 6 }
             }
         ).setOrigin(1, 0);
-
-        // Listener para actualizar el conteo
-        this.handleCountChanged = (count) => {
-            if (this.serverCountText && this.serverCountText.active) {
-                this.serverCountText.setText(`Servidor: ${count} conectados`);
-            }
-        };
-        keepAlive.on('countChanged', this.handleCountChanged);
-
+        
         // Timer para uptime
         this.uptimeTimer = this.time.addEvent({
             delay: 1000,
             loop: true,
             callback: () => {
                 if (this.uptimeText && this.uptimeText.active) {
-                    this.uptimeText.setText(`Activo: ${formatUptime(keepAlive.getUptime())}`);
+                    this.uptimeText.setText(`Server time: ${formatUptime(keepAlive.getUptime())}`);
                 }
             }
         });

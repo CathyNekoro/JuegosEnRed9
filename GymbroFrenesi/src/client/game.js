@@ -62,10 +62,6 @@ const game = new Phaser.Game(config);
 
 keepAlive.start();
 
-// teminar de meter la pantalla de tiempo global después del commit
-//const servertime = game.scene.getScenes('serverTime');
-// servertime.scene.start();
-// servertime.scene.bringToTop();
 game.scene.start('serverTime');
 game.scene.bringToTop('serverTime');
 

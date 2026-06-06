@@ -38,9 +38,11 @@ const setLoggedInUI = () => {
     this.statusCircle.setFillStyle(0x00ff00);
     this.statusText.setText("Conectado");
     this.isConnected = true;
+    
     this.setButtonEnabled(this.buttonAPI, true);
     this.setButtonEnabled(this.buttonAsync, true);
     this.setButtonEnabled(this.buttonDelete, true);
+    this.setButtonEnabled(this.buttonLocal, false)
 };
 
 const setLoggedOutUI = () => {
@@ -50,6 +52,7 @@ const setLoggedOutUI = () => {
     this.setButtonEnabled(this.buttonAPI, false);
     this.setButtonEnabled(this.buttonAsync, false);
     this.setButtonEnabled(this.buttonDelete, false);
+    this.setButtonEnabled(this.buttonLocal, true)
 };
 
     //botón de borrar
@@ -224,20 +227,20 @@ this.buttonDelete.label.setX(40);
 
     // personalizar boton login para que resalte
     this.buttonLogIn.background.clear();
-    this.buttonLogIn.background.fillStyle(0x4169e1, 0.8);
+    this.buttonLogIn.background.fillStyle(0x366a8a, 0.5);
     this.buttonLogIn.background.fillRoundedRect(-200, -75, 400, 150, 50);
     this.buttonLogIn.background.lineStyle(2, 0xffffff);
 
     this.buttonLogIn.on('pointerover', () => {
         this.buttonLogIn.background.clear();
-        this.buttonLogIn.background.fillStyle(0x4169e1, 0.8);
+        this.buttonLogIn.background.fillStyle(0x366a8a, 0.8);
         this.buttonLogIn.background.fillRoundedRect(-200, -75, 400, 150, 50);
         this.buttonLogIn.background.lineStyle(2, 0xffffff);
     });
 
     this.buttonLogIn.on('pointerout', () => {
         this.buttonLogIn.background.clear();
-        this.buttonLogIn.background.fillStyle(0x4169e1, 0.8);
+        this.buttonLogIn.background.fillStyle(0x366a8a, 0.5);
         this.buttonLogIn.background.fillRoundedRect(-200, -75, 400, 150, 50);
         this.buttonLogIn.background.lineStyle(2, 0xffffff);
     });

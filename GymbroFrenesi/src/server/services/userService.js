@@ -121,6 +121,7 @@ export function createUserService() {
         for (const key of allowed) {
             if (updates[key] !== undefined) user[key] = updates[key];
         }
+        persist();
         return stripPassword(user);
     }
 

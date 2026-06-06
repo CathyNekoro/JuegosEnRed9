@@ -361,8 +361,18 @@ export default class level_1 extends Phaser.Scene
         }
     });
     }
+    endGame(winnerId) {
+        this.music.stop();
+        this.scene.start('endScene', {
+            winner: winnerId,                                  // 'player1' | 'player2' | 'tie'
+            elapsedSecs: Math.floor(this.elapsed / 1000),
+            player1Char: this.player1Key,
+            player2Char: this.player2Key
+        });
+        this.scene.stop();
+    }
 
-    // actualizacion de vidas en pantalla
+        // actualizacion de vidas en pantalla
     scoreLivesOne() {
         const playerOne = this.players.get('player1');
         this.livesOne.setText(playerOne.lives.toString()+'x');
@@ -373,8 +383,8 @@ export default class level_1 extends Phaser.Scene
         this.livesTwo.setText('x'+ playerTwo.lives.toString());
     }
 
-    
-
+    /////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////
     //deteccion de movimiento sin importar el jugador
     update(time,delta)
     {   
@@ -385,20 +395,14 @@ export default class level_1 extends Phaser.Scene
         this.hud.update(this.player1, this.player2, this.elapsed);
         
         if (remaining <= 0) {
-            this.music.stop();
-            if(this.player1.lives > this.player2.lives) {
-                this.scene.start('endScene', 
-                { winner: '             Player 1'}); // cambiar a pantalla de victoria
-            } else if(this.player1.lives < this.player2.lives) {
-                this.scene.start('endScene', 
-                { winner: '             Player 2'}); // cambiar a pantalla de victoria
+            if (this.player1.lives > this.player2.lives) {
+                this.endGame('player1');
+            } else if (this.player1.lives < this.player2.lives) {
+                this.endGame('player2');
             } else {
-                this.scene.start('endScene', 
-                { winner: 'Empate. \n A la proxima \n jugad mejor (o peor)', loser: this.player2Key }); // cambiar a pantalla de victoria
-            } 
-
-            this.scene.stop();
-
+                this.endGame('tie');
+            }
+            return;
         } else {
             // calcular el tiempo restante
             const remaining = Math.ceil((totalTime - this.elapsed) / 1000);
@@ -511,18 +515,12 @@ export default class level_1 extends Phaser.Scene
             this.scoreLivesTwo();
         }
 
-        if (playerNum.isDead) { // si un jugador ha muerto, vamos a la pantalla de victoria
-            this.music.stop();
-            this.scene.stop();
-
-            if(playerNum.id === 'player1') {
-                this.scene.start('endScene', 
-                { winner: '            Jugador 2' }); // cambiar a pantalla de victoria
+        if (playerNum.isDead) {
+            if (playerNum.id === 'player1') {
+                this.endGame('player2');
             } else {
-                this.scene.start('endScene', 
-                { winner: "            Jugador 1" }); // cambiar a pantalla de victoria
+                this.endGame('player1');
             }
-            
         }
         });
     }

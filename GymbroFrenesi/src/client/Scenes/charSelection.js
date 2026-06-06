@@ -1,7 +1,7 @@
 import titleButton from "../UI/titleButton.js";
 import charSelectButton from "../UI/charSelectButton.js";
 import { CHARACTER_CONFIG, registerAnimations } from "../Utils/AnimatorManager.js";
-
+const OFFSET_X = 200;
 export default class charSelection extends Phaser.Scene
 {
     constructor()
@@ -58,10 +58,10 @@ export default class charSelection extends Phaser.Scene
         // crear un array de botones vacío y pushear los correspondentes a cada personaje
         this.buttons = [];
 
-        this.buttons.push(this.createCharButton(325, 805, "legDay"));
-        this.buttons.push(this.createCharButton(815, 805, "armDay"));
-        this.buttons.push(this.createCharButton(1292, 805, "coreDay"));
-        this.buttons.push(this.createCharButton(1781, 805, "mewingDay"));
+        this.buttons.push(this.createCharButton(325 + OFFSET_X, 805, "legDay"));
+        this.buttons.push(this.createCharButton(815 + OFFSET_X, 805, "armDay"));
+        this.buttons.push(this.createCharButton(1292 + OFFSET_X, 805, "coreDay"));
+        this.buttons.push(this.createCharButton(1781 + OFFSET_X, 805, "mewingDay"));
 
         //keys de las animaciones de selección
         const charKeys = ['legDay', 'armDay', 'coreDay', 'mewingDay'];
@@ -72,7 +72,7 @@ export default class charSelection extends Phaser.Scene
         });
         
         //Animación pierna
-        this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
+        this.previewSprite1 = this.add.sprite(325 + OFFSET_X, 805, 'pierna');
     
          this.buttons[0].on('pointerover', () => {
             this.previewSprite1.setVisible(true);
@@ -81,13 +81,13 @@ export default class charSelection extends Phaser.Scene
 
         this.buttons[0].on('pointerdown', () => {
             
-            this.previewSprite1 = this.add.sprite(325, 805, 'pierna');
+            this.previewSprite1 = this.add.sprite(325 + OFFSET_X, 805, 'pierna');
             this.previewSprite1.setTint(0x6E6E6E)
         });
 
      
         //ANIMACION BRAZOS armDaySelec
-        this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
+        this.previewSprite2 = this.add.sprite(815 + OFFSET_X, 805, 'brazo');
         
         this.buttons[1].on('pointerover', () => {
             this.previewSprite2.setVisible(true);
@@ -95,13 +95,13 @@ export default class charSelection extends Phaser.Scene
         });
 
         this.buttons[1].on('pointerdown', () => {
-            this.previewSprite2 = this.add.sprite(815, 805, 'brazo');
+            this.previewSprite2 = this.add.sprite(815 + OFFSET_X, 805, 'brazo');
             this.previewSprite2.setTint(0x6E6E6E)
             
         });
         
         //ANIMACION CORE
-        this.previewSprite3 = this.add.sprite(1292, 805, 'core');
+        this.previewSprite3 = this.add.sprite(1292 + OFFSET_X, 805, 'core');
         
         this.buttons[2].on('pointerover', () => {
             this.previewSprite3.setVisible(true);
@@ -109,13 +109,13 @@ export default class charSelection extends Phaser.Scene
         });
 
         this.buttons[2].on('pointerdown', () => {
-            this.previewSprite3 = this.add.sprite(1292, 805, 'core');
+            this.previewSprite3 = this.add.sprite(1292 + OFFSET_X, 805, 'core');
             this.previewSprite3.setTint(0x6E6E6E)
             
         });
 
         //Mewing animation
-        this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
+        this.previewSprite4 = this.add.sprite(1781 + OFFSET_X, 805, 'mewing');
         
         this.buttons[3].on('pointerover', () => {
             this.previewSprite4.setVisible(true);
@@ -124,7 +124,7 @@ export default class charSelection extends Phaser.Scene
 
         this.buttons[3].on('pointerdown', () => {
             
-            this.previewSprite4 = this.add.sprite(1781, 805, 'mewing');
+            this.previewSprite4 = this.add.sprite(1781 + OFFSET_X, 805, 'mewing');
             this.previewSprite4.setTint(0x6E6E6E)
             
         });
