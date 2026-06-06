@@ -43,6 +43,5 @@ export default class noConnectionScene extends Phaser.Scene {
                 this.dotsText.setText('.'.repeat(dots));
             }
         });
-        
     }
 }

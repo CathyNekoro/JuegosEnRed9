@@ -87,6 +87,11 @@ export default class tutorialIntroScene extends Phaser.Scene
         this.buttons.push(this.createCharButton(1500, 1100, "coreDay"));
         this.buttons.push(this.createCharButton(1950, 1100, "mewingDay"));
 
+        this.buttons[0].setScale(0.6);
+        this.buttons[1].setScale(0.6);
+        this.buttons[2].setScale(0.6);
+        this.buttons[3].setScale(0.6);
+
         //keys de las animaciones de selección
         const charKeys = ['legDay', 'armDay', 'coreDay', 'mewingDay'];
         this.selectionAnimKeys = {};
@@ -98,7 +103,7 @@ export default class tutorialIntroScene extends Phaser.Scene
         //Animacion pierna
         this.previewSprite1 = this.add.sprite(600, 1100, 'pierna');
         this.previewSprite1.setScale(0.6);
-    
+
         this.buttons[0].on('pointerover', () => {
             this.previewSprite1.setVisible(true);
             this.previewSprite1.play(this.selectionAnimKeys['legDay'].preview);

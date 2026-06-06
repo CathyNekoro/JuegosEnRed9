@@ -128,6 +128,15 @@ this.buttonDelete.label.setX(40);
       '<input name="password" style="width: 800px; height: 70px; font-size: 50px;" placeholder="Enter password">'
     );
 
+    this.events.on('pause', () => {
+      this.userInput.setVisible(false);
+      this.passInput.setVisible(false);
+    });
+    this.events.on('resume', () => {
+        this.userInput.setVisible(true);
+        this.passInput.setVisible(true);
+    });
+
     this.feedbackText = this.add.text(650, 420, "", {
     fontFamily: "Bubble",
     fontSize: "40px",
@@ -147,71 +156,71 @@ this.buttonDelete.label.setX(40);
 
     // botones cuenta (primera fila)
     this.buttonSignOut = new titleButton(
-  this,
-  startX,
-  firstRowY,
-  "Sign Out",
-  () => {
-    if(!this.isConnected)
-      { 
-        showFeedback("Sesión sin iniciar", "#f80000");
-        return
-      }
-    Session.clear();
-    setLoggedOutUI();                                                 
-    showFeedback("Sesión cerrada", "#cccccc");
-},
-);
+      this,
+      startX,
+      firstRowY,
+      "Sign Out",
+      () => {
+        if(!this.isConnected)
+          { 
+            showFeedback("Sesión sin iniciar", "#f80000");
+            return
+          }
+        Session.clear();
+        setLoggedOutUI();                                                 
+        showFeedback("Sesión cerrada", "#cccccc");
+    },
+    );
 
     this.buttonRegister = new titleButton(
-  this,
-  startX + SPACING_BUTTONS_X,
-  firstRowY,
-  "Register",
-  async () => {
-      const { nickName, password } = readCredentials();
+      this,
+      startX + SPACING_BUTTONS_X,
+      firstRowY,
+      "Register",
+      async () => {
+          const { nickName, password } = readCredentials();
 
-      if (!nickName || !password) {
-          showFeedback("Rellena usuario y contraseña");
-          return;
-      }
+          if (!nickName || !password) {
+              showFeedback("Rellena usuario y contraseña");
+              return;
+          }
 
-      const result = await Api.register(nickName, password);
+          const result = await Api.register(nickName, password);
 
-      if (result.ok) {
-          showFeedback("Cuenta creada — ya puedes hacer login", "#00cc00");
-      } else {
-          showFeedback(result.error || "Error en el registro");
-      }
-  },
-);
+          if (result.ok) {
+              showFeedback("Cuenta creada — ya puedes hacer login", "#00cc00");
+          } else {
+              showFeedback(result.error || "Error en el registro");
+          }
+      },
+    );
 
     this.buttonLogIn = new titleButton(
-  this,
-  startX + SPACING_BUTTONS_X * 2,
-  firstRowY,
-  "Log In",
-  async () => {
-    const { nickName, password } = readCredentials();
+      this,
+      startX + SPACING_BUTTONS_X * 2,
+      firstRowY,
+      "Log In",
+      async () => {
+        const { nickName, password } = readCredentials();
 
-    if (!nickName || !password) {
-        showFeedback("Rellena usuario y contraseña");
-        return;
-    }
+        if (!nickName || !password) {
+            showFeedback("Rellena usuario y contraseña");
+            return;
+        }
 
-    const result = await Api.login(nickName, password);
-    if(this.isConnected){showFeedback("¡Sesión ya iniciada!", "#ffffff")
-      return;
-    }
-    if (result.ok) {
-        Session.setUser(result.user);
-        setLoggedInUI();                                              // ← una línea
-        showFeedback(`¡Hola ${result.user.nickName}!`, "#00cc00");
-    } else {
-        showFeedback(result.error || "Credenciales incorrectas");
-    }
-},
-);
+        const result = await Api.login(nickName, password);
+        if(this.isConnected){showFeedback("¡Sesión ya iniciada!", "#ffffff")
+          return;
+        }
+        if (result.ok) {
+            Session.setUser(result.user);
+            setLoggedInUI();                                              // ← una línea
+            showFeedback(`¡Hola ${result.user.nickName}!`, "#00cc00");
+        } else {
+            showFeedback(result.error || "Credenciales incorrectas");
+        }
+    },
+    );
 
     // personalizar boton login para que resalte
     this.buttonLogIn.background.clear();
@@ -258,7 +267,7 @@ this.buttonDelete.label.setX(40);
           this.scene.launch("charSelection");
           this.scene.stop();
           console.log("isLoggedIn:", Session.isLoggedIn());
-console.log("user:", Session.getUser());
+          console.log("user:", Session.getUser());
         }
       },
     );
@@ -294,7 +303,6 @@ console.log("user:", Session.getUser());
     
   }
 
-
   setButtonEnabled(button, enabled) {
     if (enabled) {
       button.setInteractive({ useHandCursor: true });
@@ -303,7 +311,5 @@ console.log("user:", Session.getUser());
       button.disableInteractive();
       button.alpha = 0.5;
     }
-  }
-
-  
+  }  
 }
