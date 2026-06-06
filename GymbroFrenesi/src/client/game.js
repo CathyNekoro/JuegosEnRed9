@@ -66,6 +66,8 @@ keepAlive.start();
 //const servertime = game.scene.getScenes('serverTime');
 // servertime.scene.start();
 // servertime.scene.bringToTop();
+game.scene.start('serverTime');
+game.scene.bringToTop('serverTime');
 
 let pausedScenes = [];
 
