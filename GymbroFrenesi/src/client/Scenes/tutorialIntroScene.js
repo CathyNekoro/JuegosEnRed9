@@ -20,7 +20,8 @@ export default class tutorialIntroScene extends Phaser.Scene
 
     create() 
     {
-        document.body.style.backgroundColor = "black";
+        
+        this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.width,  0x000000).setOrigin(0,0); //color provisional
         
         const buttonSize = 100;
         const buttonMargin = 20;
@@ -33,7 +34,7 @@ export default class tutorialIntroScene extends Phaser.Scene
         "<",
         () => {
             this.scene.start("titleScene");
-            //this.music.stop();
+           
         },
         buttonSize,
         buttonSize

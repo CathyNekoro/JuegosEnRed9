@@ -10,8 +10,7 @@ export default class creditsScene extends Phaser.Scene
 
     create()
     {
-        this.background = this.add.rectangle(0, 0, 2360, 1423,  0x656B59); //color provisional
-        this.background.setOrigin(0,0);
+        this.background = this.add.rectangle(0, 0, 2360, 1423,  0x656B59).setOrigin(0,0);
         
         //boton salida (quizas cree un botón salida o retroceder hijo de clase boton AUN no lo se)
         const buttonSize = 100;

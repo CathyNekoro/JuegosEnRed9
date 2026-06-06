@@ -9,6 +9,8 @@ export function createKeepAlive(options = {}) {
     let isConnected = true;       // asumimos conectado al arrancar
     let consecutiveFailures = 0;
     let lastCount = 0;
+    let serverUptime = 0;   //para el marcador de tiempo del server
+    let uptimeReceivedAt = 0;
 
     const listeners = {
         connected: [],
@@ -52,6 +54,11 @@ export function createKeepAlive(options = {}) {
                 lastCount = response.connected;
                 emit('countChanged', response.connected);
             }
+
+            if (response.uptime !== undefined) {
+                serverUptime = response.uptime;
+                uptimeReceivedAt = Date.now();
+            }
         }
     }
 
@@ -87,6 +94,11 @@ export function createKeepAlive(options = {}) {
             if (!listeners[event]) return;
             const i = listeners[event].indexOf(callback);
             if (i !== -1) listeners[event].splice(i, 1);
+        },
+
+        getUptime() {
+            if (uptimeReceivedAt === 0) return 0;
+            return serverUptime + (Date.now() - uptimeReceivedAt);
         }
     };
 }

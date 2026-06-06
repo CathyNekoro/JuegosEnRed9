@@ -15,6 +15,7 @@ import tutorialIntroScene from "./Scenes/tutorialIntroScene.js";
 import tutorialCharacterScene from "./Scenes/tutorialCharacterScene.js";
 import accountRegScene from "./Scenes/accountRegScene.js";
 import noConnectionScene from "./Scenes/noConnectionScene.js";
+import serverTime from "./Scenes/serverTime.js";
 
 let config = {
   type: Phaser.AUTO,
@@ -22,6 +23,7 @@ let config = {
   width: 2550,
   height: 1500,
   pixelArt: true,
+  backgroundColor: '#d5d5d',
   scale: {
     autoCenter: Phaser.Scale.CENTER_HORIZONTALLY,
     mode: Phaser.Scale.FIT,
@@ -35,7 +37,7 @@ let config = {
     },
     zoom: 1,
   },
-  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene, accountRegScene, noConnectionScene], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
+  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene, accountRegScene, noConnectionScene,serverTime], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
   physics: {
     default: "arcade", //Tenemos físicas simple, arcade
     arcade: {
@@ -59,6 +61,11 @@ let config = {
 const game = new Phaser.Game(config);
 
 keepAlive.start();
+
+// teminar de meter la pantalla de tiempo global después del commit
+//const servertime = game.scene.getScenes('serverTime');
+// servertime.scene.start();
+// servertime.scene.bringToTop();
 
 let pausedScenes = [];
 

@@ -79,6 +79,7 @@ export default class pantallaInicio extends Phaser.Scene
         }
     };
     keepAlive.on('countChanged', this.handleCountChanged);
+  
 
     // Limpieza al salir de la escena 
     this.events.on('shutdown', () => {
@@ -87,3 +88,4 @@ export default class pantallaInicio extends Phaser.Scene
 
   }
 }
+

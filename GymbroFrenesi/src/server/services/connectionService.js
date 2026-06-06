@@ -2,6 +2,7 @@
 export function createConnectionService() {
   // Map: sessionId -> timestamp del último ping
   const connectedSessions = new Map();
+  const startedAt = Date.now();
 
   const CONNECTION_TIMEOUT = 5000;   // 5 segundos sin pingar = desconectado
   const CLEANUP_INTERVAL = 2000;     // limpiamos cada 2s
@@ -36,6 +37,10 @@ export function createConnectionService() {
 
     stopCleanup() {
       clearInterval(cleanupInterval);
+    },
+
+    getUptime() {
+      return Date.now() - startedAt;
     }
   };
 }
