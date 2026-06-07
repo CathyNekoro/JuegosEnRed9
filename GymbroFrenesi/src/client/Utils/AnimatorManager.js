@@ -57,7 +57,7 @@ const CHARACTER_CONFIG = {
         selectionAnims: {
             preview: { sheet: 'mewing', start: 0, end: 13, rate: 7, repeat: 0 },
         }
-    }
+    },
 };
 
 function registerAnimations(scene, charKey, group = 'anims') {
@@ -87,5 +87,29 @@ function registerAnimations(scene, charKey, group = 'anims') {
 
     return animationKeys;
 }
+const DEV_CONFIG = {
+    cathy: { sheet: 'Cathy', start: 0, end: 1, rate: 2, repeat: -1 },
+    alex:  { sheet: 'popAnim',  start: 0, end: 5, rate: 8, repeat: -1 },
+    axlin: { sheet: 'axlinAnim', start: 0, end: 5, rate: 8, repeat: -1 }
+};
 
-export { CHARACTER_CONFIG, registerAnimations };
+function registerDevAnimations(scene, devKey) {
+    const config = DEV_CONFIG[devKey];
+    if (!config) return null;
+
+    const key = `dev_${devKey}`;
+    if (!scene.anims.exists(key)) {
+        scene.anims.create({
+            key,
+            frames: scene.anims.generateFrameNumbers(config.sheet, {
+                start: config.start,
+                end: config.end
+            }),
+            frameRate: config.rate,
+            repeat: config.repeat
+        });
+    }
+    return key;
+}
+
+export { CHARACTER_CONFIG, registerDevAnimations, registerAnimations };

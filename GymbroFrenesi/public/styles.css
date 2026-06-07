@@ -44,6 +44,16 @@ html, body
     font-display: block;
 }
 
+  @font-face 
+{
+    font-family: 'Horsemen';
+    src: url('Assets/Fonts/Horsemen.otf');
+    font-weight: normal;
+    font-style: normal;
+    font-display: block;
+}
+ 
+
 .headerPrincipal 
 {
      background: linear-gradient(
