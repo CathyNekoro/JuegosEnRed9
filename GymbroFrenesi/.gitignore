@@ -1,5 +1,5 @@
-# Dependencias
-#node_modules/
+git checkout <nombre-de-rama>
+npm ci
 
 # Build output (lo genera webpack)
 dist/

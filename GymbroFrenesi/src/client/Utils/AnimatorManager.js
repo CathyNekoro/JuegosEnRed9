@@ -89,8 +89,7 @@ function registerAnimations(scene, charKey, group = 'anims') {
 }
 const DEV_CONFIG = {
     cathy: { sheet: 'Cathy', start: 0, end: 1, rate: 2, repeat: -1 },
-    alex:  { sheet: 'popAnim',  start: 0, end: 5, rate: 8, repeat: -1 },
-    axlin: { sheet: 'axlinAnim', start: 0, end: 5, rate: 8, repeat: -1 }
+    alex:  { sheet: 'alexAnim',  start: 0, end: 4, rate: 3, repeat: -1 },
 };
 
 function registerDevAnimations(scene, devKey) {

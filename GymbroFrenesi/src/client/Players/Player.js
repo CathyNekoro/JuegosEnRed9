@@ -125,6 +125,7 @@ export default class Player extends Phaser.GameObjects.Sprite
         this.x=x;
         this.y=y;
         this.isAlive = true;
+        this.direction = "down";
         this.setVisible(true);
         this.setActive(true);   
         this.play(this.idleingKey);

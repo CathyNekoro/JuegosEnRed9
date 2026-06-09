@@ -29,7 +29,7 @@ export default class Abilities
         this.isOnCooldown = false;
     }
 
-    if(this.scene.anims.exists(this.abilityKey)) {
+    if(this.scene.anims.exists(this.abilityKey) && !'coreDay_ability') {
         this.player.play(this.abilityKey); // reproducir animacion
         this.player.once('animationcomplete', () => {
             if(this.player.isAlive && this.scene.anims.exists(this.player.idleingKey)) {
@@ -382,6 +382,8 @@ export default class Abilities
 
             let anteriorX = chargeX;
             let anteriorY = chargeY;
+            
+            this.player.isMoving=false;
 
             // calcular la siguiente posicion
             if (direction === 'up') {
@@ -522,6 +524,8 @@ export default class Abilities
             
             let anteriorX = chargeX;
             let anteriorY = chargeY;
+
+            this.player.isMoving=false;
 
             // calcular la siguiente posicion
             if (direction === 'up') {

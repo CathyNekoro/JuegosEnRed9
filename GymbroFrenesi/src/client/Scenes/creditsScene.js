@@ -14,11 +14,12 @@ export default class creditsScene extends Phaser.Scene
     document.fonts.load('1em "something"');
     document.fonts.load('1em "Horsemen"');
     this.load.spritesheet('Cathy', 'Assets/Img/credits/CathyNekoro.png', {frameWidth:512, frameHeight: 512});
+    this.load.spritesheet('alexAnim', 'Assets/Img/credits/Pop.png', {frameWidth:2048, frameHeight: 2048});
+    this.load.image('Axlin', 'Assets/Img/credits/lacito.png');
   }
 
     create()
     {
-
          
         this.background = this.add.rectangle(0, 0,  this.cameras.main.width,  this.cameras.main.height,  0x000000).setOrigin(100,100);
     
@@ -49,8 +50,7 @@ export default class creditsScene extends Phaser.Scene
         const Axlin= this.add.text(1600, 200, " AXLIN LUENGO ORDoNEZ").setScale(2).setFontFamily("Horsemen").setColor("#fb90ff")
         const infoA2 = this.add.text(1600, 550+OFFSET_Y, "programación \nGithub: CuentaGH \nCorreo: a.luengoo.2023@alumnos.urjc.es").setScale(2).setFontFamily("something").setColor("#fb90ff")
 
-        const Jaime= this.add.text(100, 900, "Créditos especiales a Jaime Nieto Méndez por toda su ayuda en el desarrollo, te queremos guapo @K, @A").setScale(2).setFontFamily("something");
-         const fuentes= this.add.text(100, Jaime.y+100, "Fuentes: \n Something-exquisite-caps: anasfonts \n Curiosness DEMO: bogstav").setScale(2);
+        
         
         
         //animaciones
@@ -58,11 +58,14 @@ export default class creditsScene extends Phaser.Scene
         this.add.sprite(400, 450, 'cathyAnim').play(cathyAnimKey).setScale(0.7);
 
         //Anims resto
-        // const popAnimKey = registerDevAnimations(this, 'popAnim');
-        // this.add.sprite(400, 450, 'cathyAnim').play(popAnimKey).setScale(0.7);
-
-        // const cathyAnimKey = registerDevAnimations(this, 'cathy');
-        // this.add.sprite(400, 450, 'cathyAnim').play(cathyAnimKey).setScale(0.7);
-
+        const alexAnimKey = registerDevAnimations(this, 'alex');
+        this.add.sprite(1200, 450, 'alexAnim').play(alexAnimKey).setScale(0.18);
+        
+        this.add.image(1950, 450, "Axlin").setScale(0.9);
+  
+        
+        const Jaime= this.add.text(300, 900, "Agradecimientos especiales a Janime555 por todo su apoyo en el desarrollo, te queremos guapo.").setScale(2).setFontFamily("something");
+        const fuentes= this.add.text(100, Jaime.y+100, "Fuentes: \n Something-exquisite-caps: anasfonts \n Curiosness DEMO: bogstav \n Horsemen Demo: The Branded Quotes \n Ironik_rotis: Estelle Flores \n Bubble Bobble:  Almarkhatype \n GunnerGraffiti-Regular: Fitrah Type").setScale(2);
+        const musica = this.add.text(1000, Jaime.y+100, "Música: \n Intro: 'I Love My 8-bit Game Console' - DJARTMUSIC \n Partida: 'Retro Arcade Game Music'- MondaMusic \n Pantalla final: 'Phonk Edit'- SolarFLEX").setScale(2)
     }
 }
