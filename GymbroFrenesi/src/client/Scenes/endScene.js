@@ -26,7 +26,7 @@ export default class endScene extends Phaser.Scene
         this.load.image('finalPierna', 'Assets/Img/escenarios/VictoriaPierna.png');
     }
 
-    create() 
+    async create() 
     {
         if(this.winnerId == 'player1'){
             this.backgroundSelect(this.player1Char);
@@ -35,22 +35,13 @@ export default class endScene extends Phaser.Scene
             this.backgroundSelect(this.player2Char);
         }
         else{
-            const fondo = this.add.image(0 + OFFSET_X, 0, "final").setOrigin(0, 0);
+           const fondo = this.add.image(this.cameras.main.width/2, this.cameras.main.height/2,  "final").setOrigin(0.5, 0.6).setScale(1.3);
+            this.add.text(this.cameras.main.width/2 ,200, "EMPATE").setFontSize(175).setFontFamily("curiosness").setColor("white").setOrigin(0.5, 0.5).setStroke('black', 9);
+             this.add.text(220 ,400, "Haber jugado mejor (o peor)").setFontSize(140).setFontFamily("curiosness").setColor("white").setOrigin(0, 0).setStroke('black', 9);
         }
         this.music = this.sound.add('endMusic', { loop: true, volume: 0.4 });
         this.music.play();
-        // al atualizar meter los fondos de Alex según la key. se puden usar los colores tmb guardados en la key del jugador- mirar en lvl 1 la interfaz cómo lo hace
-        let winnerText  = this.winner;
-        
-        
-        this.textEnd = this.add.text(100 + OFFSET_X ,400, winnerText, {
-            fontSize: '200px',     
-            fontStroke: 2,           
-            color: '#FCFEB4',
-            align: 'center',
-            fontFamily: "curiosness"
-        });
-
+    
         // boton para volver al menu principal
         const returnButton = this.add.text(100 + OFFSET_X, 1300, 'Volver al Menú', {
             fontSize: '48px',
@@ -66,6 +57,10 @@ export default class endScene extends Phaser.Scene
         });
 
         this.updateStatsIfLoggedIn();
+        await this.updateStatsIfLoggedIn();
+        if(Session.isLoggedIn()){
+            await this.loadAndShowLeaderboard();
+        }
     }
 
     async updateStatsIfLoggedIn() {
@@ -91,10 +86,7 @@ export default class endScene extends Phaser.Scene
                 updates.bestTime = this.elapsedSecs;
             }
         }
-
-        console.log("ANTES", updates);
         const result = await Api.updateUserStats(user.nickName, updates);
-console.log("DESPUÉS", result);
 
         if (result.ok) {
             console.log('[endScene] Stats actualizadas:', updates);
@@ -135,8 +127,67 @@ console.log("DESPUÉS", result);
             default: 
                 break;
         }
-        this.add.text(this.cameras.main.width/2 ,100, "WINNER").setFontSize(167).setFontFamily("curiosness").setColor(color).setOrigin(0.5, 0.5).setStroke('black', 9);
+        this.add.text(this.cameras.main.width/2 ,100, "WINNER: " + this.winnerId).setFontSize(167).setFontFamily("curiosness").setColor(color).setOrigin(0.5, 0.5).setStroke('black', 9);
         return imagen;
     }
 
+    async loadAndShowLeaderboard() {
+        const lbX =  this.cameras.main.width - 700;   // posición x del ranking, esquina derecha con margen
+        const rect= this.add.rectangle(lbX+380, this.cameras.main.height-380, 800, 500,  0x000000, 0.6)
+        // Texto de carga mientras llega la respuesta
+        const loadingText = this.add.text(lbX, this.cameras.main.height-500, "Cargando ranking...", {
+            fontFamily: "curiosness",
+            fontSize: '60px',
+            color: '#ffffff'
+        });
+
+        const result = await Api.getLeaderboard(3);
+        loadingText.destroy();
+
+        if (!result.ok) {
+            this.add.text(lbX,  this.cameras.main.height-500, "Ranking no disponible", {
+                fontFamily: "curiosness",
+                fontSize: '60px',
+                color: '#ff6666'
+            });
+            return;
+        }
+
+        // Título del ranking
+        this.add.text(lbX, this.cameras.main.height-600, "TOP 3", {
+            fontFamily: "curiosness",
+            fontSize: '120px',
+            color: '#FCFEB4'
+        });
+
+        const leaderboard = result.leaderboard;
+        const currentUser = Session.getUser();
+
+        if (leaderboard.length === 0) {
+            this.add.text(lbX, this.cameras.main.height-500, "Sin datos todavía", {
+                fontFamily: "curiosness",
+                fontSize: '50px',
+                color: '#cccccc'
+            });
+            return;
+        }
+
+        // Pintar cada entrada
+        leaderboard.forEach((user, index) => {
+            const y = this.cameras.main.height-500 + index * 120;
+            const isMe = currentUser && currentUser.nickName === user.nickName;
+            const color = isMe ? '#ffcc00' : '#ffffff';
+
+            const wins = user.totalWins || 0;
+            const bestTime = user.bestTime != null ? ` · ${user.bestTime}s` : '';
+            const text = `${index + 1}. ${user.nickName}: ${wins}W${bestTime}`;
+
+            this.add.text(lbX, y, text, {
+                fontFamily: "curiosness",
+                fontSize: '60px',
+                color: color
+            });
+        });
+    }
 }
+

@@ -124,7 +124,7 @@ this.buttonDelete.label.setX(40);
 
     // text inputs para usuario y contraseña
     this.userInput = this.add.dom(this.userText.x + 800, 235).createFromHTML(
-      '<input name="username" type="text" style="width: 800px; height: 70px; font-size: 50px;" placeholder="Enter username">'
+      '<input name="username" type="text" maxlength="8" style="width: 800px; height: 70px; font-size: 50px;" placeholder="Enter username">'
     );
 
     this.passInput = this.add.dom(this.passText.x + 800, 335).createFromHTML(
@@ -250,7 +250,7 @@ this.buttonDelete.label.setX(40);
       this,
       startX,
       secondRowY,
-      "Jugar \n Local",
+      "Offline \n single",
       () => {
         this.scene.launch("charSelection");
         this.scene.stop();
@@ -261,12 +261,10 @@ this.buttonDelete.label.setX(40);
       this,
       startX + SPACING_BUTTONS_X,
       secondRowY,
-      "Jugar \n API-Rest",
+      "Online \n single",
       () => {
         if (this.isConnected) {
-          /* 
-          logica api rest 
-          */
+          
           this.scene.launch("charSelection");
           this.scene.stop();
           console.log("isLoggedIn:", Session.isLoggedIn());
@@ -279,7 +277,7 @@ this.buttonDelete.label.setX(40);
       this,
       startX + SPACING_BUTTONS_X * 2,
       secondRowY,
-      "Jugar \n Async",
+      "Online \n multi",
       () => {
         if (this.isConnected) {
           /* 

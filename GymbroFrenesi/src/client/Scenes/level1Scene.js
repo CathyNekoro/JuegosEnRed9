@@ -381,6 +381,15 @@ export default class level_1 extends Phaser.Scene
     scoreLivesTwo() {
         const playerTwo = this.players.get('player2');
         this.livesTwo.setText('x'+ playerTwo.lives.toString());
+
+    this.events.on('shutdown', () => {
+        if (this.input && this.input.keyboard) {
+                this.input.keyboard.removeAllKeys();      // borra las keys registradas
+                this.input.keyboard.clearCaptures();      // limpia capturas
+                this.input.keyboard.removeAllListeners(); // borra listeners pendientes
+                this.input.keyboard.resetKeys();          // resetea el estado interno (down/up)
+            }
+        });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////
