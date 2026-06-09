@@ -40,7 +40,7 @@ const setLoggedInUI = () => {
     this.isConnected = true;
     
     this.setButtonEnabled(this.buttonAPI, true);
-    this.setButtonEnabled(this.buttonAsync, true);
+    this.setButtonEnabled(this.buttonAsync, false); //cambiar al meter el modo asíncorno
     this.setButtonEnabled(this.buttonDelete, true);
     this.setButtonEnabled(this.buttonLocal, false)
 };
@@ -279,13 +279,12 @@ this.buttonDelete.label.setX(40);
       secondRowY,
       "Online \n multi",
       () => {
-        if (this.isConnected) {
-          /* 
-          logica async 
-          */
-          this.scene.launch("charSelection");
-          this.scene.stop();
-        }
+        set
+        // if (this.isConnected) {
+          
+        //   this.scene.launch("charSelection");
+        //   this.scene.stop();
+        // }
       },
     );
 
