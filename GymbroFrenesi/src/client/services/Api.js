@@ -4,7 +4,7 @@ export function createApi() {
     /**
      * Helper común para hacer cualquier petición.
      * Devuelve un objeto coherente con la forma { ok, ...data } siempre,
-     * incluso cuando hay error de red o el server responde 4xx/5xx.
+     * incluso cuando hay error de red o el server responde 4xx/5xx
      */
     async function request(path, options = {}) {
         const url = `${API_BASE}${path}`;
@@ -23,17 +23,14 @@ export function createApi() {
 
             const data = await response.json();
 
-            // Si el server respondió con 4xx/5xx, conservamos el body
-            // y añadimos el status para que la escena sepa qué pasó
+            // Si el server respondió con 4xx/5xx, conservamos el body y añadimos el status para que la escena sepa qué pasó
             if (!response.ok) {
                 return { ok: false, status: response.status, ...data };
             }
 
             return data;
         } catch (err) {
-            // Esto sólo entra si NO se pudo contactar con el server
-            // (red caída, server apagado, CORS, etc.). Lo marcamos
-            // específicamente para que KeepAlive.js lo detecte.
+            // Esto sólo entra si NO se pudo contactar con el server (red caída, server apagado, CORS, etc.). Lo marcamos específicamente para que KeepAlive.js lo detecte
             return { 
                 ok: false, 
                 networkError: true, 

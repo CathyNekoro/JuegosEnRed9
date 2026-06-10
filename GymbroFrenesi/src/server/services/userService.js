@@ -53,7 +53,7 @@ export function createUserService() {
     loadFromDisk();
 
 
-    // === Helpers privados ===
+    //  Helpers privados 
     function hashPassword(password) {
         return crypto.createHash('sha256').update(password).digest('hex');
     }
@@ -64,7 +64,7 @@ export function createUserService() {
         return rest;
     }
 
-    // === API pública ===
+    //  API pública 
 
     function createUser(userData) {
         const { nickName, password, favoriteChar = null } = userData;

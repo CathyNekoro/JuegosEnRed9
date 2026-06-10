@@ -1,6 +1,7 @@
 import titleButton from "../UI/titleButton.js";
 import { Api } from "../services/Api.js";
 import { Session } from "../services/Session.js";
+import { SocketClient } from "../services/SocketClient.js";
 
 const SPACING_BUTTONS_X=450+30;
 const SPACING_BUTTONS=150+30;
@@ -40,7 +41,7 @@ const setLoggedInUI = () => {
     this.isConnected = true;
     
     this.setButtonEnabled(this.buttonAPI, true);
-    this.setButtonEnabled(this.buttonAsync, false); //cambiar al meter el modo asíncorno
+    this.setButtonEnabled(this.buttonAsync, true); 
     this.setButtonEnabled(this.buttonDelete, true);
     this.setButtonEnabled(this.buttonLocal, false)
 };
@@ -72,7 +73,8 @@ const setLoggedOutUI = () => {
 
         if (result.ok) {
           Session.clear();
-          setLoggedOutUI();                                                 // ← una línea
+          SocketClient.disconnect();
+          setLoggedOutUI();                                                
           showFeedback(`Cuenta "${user.nickName}" eliminada`, "#cccccc");
           this.userInput.getChildByName('username').value = '';
           this.passInput.getChildByName('password').value = '';
@@ -170,6 +172,7 @@ this.buttonDelete.label.setX(40);
             return
           }
         Session.clear();
+        SocketClient.disconnect(); 
         setLoggedOutUI();                                                 
         showFeedback("Sesión cerrada", "#cccccc");
     },
@@ -217,7 +220,8 @@ this.buttonDelete.label.setX(40);
         }
         if (result.ok) {
             Session.setUser(result.user);
-            setLoggedInUI();                                              // ← una línea
+            SocketClient.connect(result.user.nickName);
+            setLoggedInUI();                                              
             showFeedback(`¡Hola ${result.user.nickName}!`, "#00cc00");
         } else {
             showFeedback(result.error || "Credenciales incorrectas");
@@ -279,12 +283,10 @@ this.buttonDelete.label.setX(40);
       secondRowY,
       "Online \n multi",
       () => {
-        set
-        // if (this.isConnected) {
-          
-        //   this.scene.launch("charSelection");
-        //   this.scene.stop();
-        // }
+        if (this.isConnected) {
+            this.scene.start("waitingRoomScene");
+            this.scene.stop();
+        }    
       },
     );
 
@@ -295,8 +297,10 @@ this.buttonDelete.label.setX(40);
     // Si ya hay sesión activa, restaurar la UI a estado logueado
     if (Session.isLoggedIn()) {
         setLoggedInUI();
-        // Pre-rellenar el campo de usuario para que se vea quién está logueado
         this.userInput.getChildByName('username').value = Session.getNickName();
+        if (!SocketClient.isConnected()) {
+          SocketClient.connect(Session.getNickName());
+        }
     } else {
         setLoggedOutUI();  // estado por defecto explícito
     }
