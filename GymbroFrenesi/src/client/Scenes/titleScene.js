@@ -1,36 +1,44 @@
 import titleButton from "../UI/titleButton.js";
 import { keepAlive } from "../services/KeepAlive.js";
-const SPACING_BUTTONS=150+30;
-const OFFSET_X=95;
+const SPACING_BUTTONS = 150 + 30;
+const OFFSET_X = 95;
 
-export default class pantallaInicio extends Phaser.Scene 
-{
-  constructor() 
-  {
+export default class pantallaInicio extends Phaser.Scene {
+  constructor() {
     super({ key: "titleScene" });
   }
 
-  preload() 
-  {
+  preload() {
     this.load.image("pantallaInicio", "../Assets/Img/pantallaInicio1.png");
-    this.load.audio('selecMusic', 'Assets/sounds/djartmusic-i-love-my-8-bit-game-console-301272.mp3');
+    this.load.audio(
+      "selecMusic",
+      "Assets/sounds/djartmusic-i-love-my-8-bit-game-console-301272.mp3",
+    );
     document.fonts.load('1em "Bubble"');
   }
 
-  create() 
-  {
+  create() {
     //fondo
-    this.add.rectangle(0, 0,  this.cameras.main.width,  this.cameras.main.height, 0x000000).setOrigin(0,0);
+    this.add
+      .rectangle(
+        0,
+        0,
+        this.cameras.main.width,
+        this.cameras.main.height,
+        0x000000,
+      )
+      .setOrigin(0, 0);
     this.add.image(OFFSET_X, 0, "pantallaInicio").setOrigin(0, 0);
 
-    if(!this.music|| !this.music.isPlaying){
-    this.music = this.sound.add('selecMusic', { loop: true, volume: 0.4 });
-    this.music.play();}
+    if (!this.music || !this.music.isPlaying) {
+      this.music = this.sound.add("selecMusic", { loop: true, volume: 0.4 });
+      this.music.play();
+    }
 
-    ////botón JUGAR//// 
+    ////botón JUGAR////
     this.buttonPlay = new titleButton(
       this,
-      (this.cameras.main.width / 2-150)+OFFSET_X,
+      this.cameras.main.width / 2 - 150 + OFFSET_X,
       this.cameras.main.height / 2 + 250,
       "Jugar",
       () => {
@@ -41,7 +49,7 @@ export default class pantallaInicio extends Phaser.Scene
 
     this.buttonTutorial = new titleButton(
       this,
-      (this.cameras.main.width / 2-150 )+OFFSET_X,
+      this.cameras.main.width / 2 - 150 + OFFSET_X,
       this.buttonPlay.y + SPACING_BUTTONS,
       "Tutorial",
       () => {
@@ -52,42 +60,41 @@ export default class pantallaInicio extends Phaser.Scene
 
     this.buttonCredits = new titleButton(
       this,
-      (this.cameras.main.width / 2-150 )+OFFSET_X,
+      this.cameras.main.width / 2 - 150 + OFFSET_X,
       this.buttonTutorial.y + SPACING_BUTTONS,
       "Créditos",
       () => {
-          this.scene.launch("creditsScene");
-          this.scene.stop();
+        this.scene.launch("creditsScene");
+        this.scene.stop();
       },
     );
 
-    this.serverCountText = this.add.text(
-      this.cameras.main.width - 300,    
-      50,                               
-      `Servidor: ${keepAlive.getCount()} conectados`,
-      {
-          fontFamily: "Bubble",     
-          fontSize: '60px',
-          color: '#ffffff',
-          backgroundColor: '#00000069',
-          padding: { x: 12, y: 6 }
-      }
-    ).setOrigin(1, 0);  
+    this.serverCountText = this.add
+      .text(
+        this.cameras.main.width - 300,
+        50,
+        `Servidor: ${keepAlive.getCount()} conectados`,
+        {
+          fontFamily: "Bubble",
+          fontSize: "60px",
+          color: "#ffffff",
+          backgroundColor: "#00000069",
+          padding: { x: 12, y: 6 },
+        },
+      )
+      .setOrigin(1, 0);
 
     // Listener para actualizar el texto cuando cambie el conteo
     this.handleCountChanged = (count) => {
-        if (this.serverCountText && this.serverCountText.active) {
-            this.serverCountText.setText(`Servidor: ${count} conectados`);
-        }
+      if (this.serverCountText && this.serverCountText.active) {
+        this.serverCountText.setText(`Servidor: ${count} conectados`);
+      }
     };
-    keepAlive.on('countChanged', this.handleCountChanged);
-  
+    keepAlive.on("countChanged", this.handleCountChanged);
 
-    // Limpieza al salir de la escena 
-    this.events.on('shutdown', () => {
-        keepAlive.off('countChanged', this.handleCountChanged);
+    // Limpieza al salir de la escena
+    this.events.on("shutdown", () => {
+      keepAlive.off("countChanged", this.handleCountChanged);
     });
-
   }
 }
-

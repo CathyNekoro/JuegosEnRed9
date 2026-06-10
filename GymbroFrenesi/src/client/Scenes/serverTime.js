@@ -43,7 +43,7 @@ export default class serverTime extends Phaser.Scene {
             }
         });
 
-        // Limpieza (por si en algún momento decides parar la escena)
+        // Limpieza por si en algún momento se para la escena
         this.events.on('shutdown', () => {
             keepAlive.off('countChanged', this.handleCountChanged);
             if (this.uptimeTimer) this.uptimeTimer.remove();

@@ -27,7 +27,7 @@ export default class noConnectionScene extends Phaser.Scene {
             color: "#000000"
         }).setOrigin(0.5);
 
-        // Animación de puntos para que se vea que está "intentándolo"
+        // Animación de puntos
         this.dotsText = this.add.text(width / 2, height / 2 + 100, "", {
             fontFamily: "something",
             fontSize: "80px",

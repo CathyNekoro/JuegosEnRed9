@@ -149,6 +149,19 @@ io.on("connection", (socket) => {
     }
   });
 
+  socket.on('playerCommand', (command) => {
+    const room = roomService.getRoomBySocketId(socket.id);
+    if (!room) return;
+
+    const playerSlot = room.players[0].socketId === socket.id ? 'player1' : 'player2';
+
+    // Sólo lo mandamos al OTRO cliente de la sala (el emisor ya lo aplicó local)
+    socket.to(room.id).emit('applyCommand', {
+        playerId: playerSlot,
+        command: command
+    });
+});
+
   socket.on("leaveQueue", () => {
     roomService.leaveQueue(socket.id);
     socket.emit("queueLeft");

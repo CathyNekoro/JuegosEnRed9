@@ -18,7 +18,7 @@ import noConnectionScene from "./Scenes/noConnectionScene.js";
 import serverTime from "./Scenes/serverTime.js";
 import waitingRoomScene from "./Scenes/waitingRoomScene.js";
 import charSelectionMulti from './Scenes/charSelectionMulti.js';
-//import level1Multi from "./Scenes/level1Multi.js";
+import level1Multi from "./Scenes/level1Multi.js";
 
 let config = {
   type: Phaser.AUTO,
@@ -40,7 +40,7 @@ let config = {
     },
     zoom: 1,
   },
-  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene, accountRegScene, noConnectionScene,serverTime, waitingRoomScene, charSelectionMulti], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
+  scene: [pantallaInicio, charSelection, creditsScene, level1Scene, endScene, pauseScene, tutorialIntroScene, tutorialCharacterScene, accountRegScene, noConnectionScene,serverTime, waitingRoomScene, charSelectionMulti, level1Multi], //Aquí metemos todas las escenas que tendrá nuestro juego (su clase, luego cambiaremos de una a otra mediante el id)
   physics: {
     default: "arcade", //Tenemos físicas simple, arcade
     arcade: {
