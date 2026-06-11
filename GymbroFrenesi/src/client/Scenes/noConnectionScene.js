@@ -5,7 +5,6 @@ export default class noConnectionScene extends Phaser.Scene {
     }
 
     create() {
-        console.log("coño")
         const width = this.cameras.main.width;
         const height = this.cameras.main.height;
 

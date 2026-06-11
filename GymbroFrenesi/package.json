@@ -2,7 +2,7 @@
   "name": "gymbrofrenesi",
   "version": "1.0.0",
   "description": "Juego del equipo 9: Gymbro Frénesi",
-  "main": "src/srver/index.js",
+  "main": "src/server/index.js",
   "scripts": {
     "server": "nodemon src/server/index.js",
     "watch": "webpack --watch",

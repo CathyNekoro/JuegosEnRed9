@@ -5,15 +5,15 @@ export class MoveCommand extends Command {
         super();
         this.player = player;
         this.direction = direction;
-        this.scene = scene;  // necesario para comprobar colisión con el otro jugador
+        this.scene = scene;
     }
 
     execute() {
-        if (!this.player.isAlive) return;
+        if (!this.player.isAlive) return false;
 
+        // Calcular target y aplicar dirección + ángulo (SIEMPRE, aunque luego no se mueva)
         let newX = this.player.x;
         let newY = this.player.y;
-
         switch (this.direction) {
             case 'up':    newY -= this.player.tileSize; this.player.setAngle(180); break;
             case 'down':  newY += this.player.tileSize; this.player.setAngle(0);   break;
@@ -22,7 +22,7 @@ export class MoveCommand extends Command {
         }
         this.player.direction = this.direction;
 
-        // Comprobar colisión con el otro jugador
+        // ¿Ocupado por el otro jugador?
         let occupied = false;
         this.scene.players.forEach(p => {
             if (p === this.player) return;
@@ -34,14 +34,14 @@ export class MoveCommand extends Command {
         });
 
         if (!occupied) {
+            this.player.isMoving = false;   // bypass del tween-stalled guard
             this.player.update(newX, newY, this.scene.fallingPlatforms, this.direction);
         }
+        // Siempre return true para que la dirección se emita, ocupado o no
+        return true;
     }
 
     serialize() {
-        return {
-            type: 'move',
-            direction: this.direction
-        };
+        return { type: 'move', direction: this.direction };
     }
 }

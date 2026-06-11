@@ -61,25 +61,30 @@ export default class Player extends Phaser.GameObjects.Sprite
 
     moveTo(targetX, targetY)
     {
-        this.isMoving=true;
+        this.isMoving = true;
         this.x = targetX;
         this.y = targetY;
 
-        let worldX = this.x;
-        let worldY = this.y;
-
-        if(this.scene.anims.exists(this.walkingKey)){
-            this.play(this.walkingKey);
+        // Sólo reproducir la anim si NO está ya en walking (evita restart visible)
+        if (this.scene.anims.exists(this.walkingKey)) {
+            const playing = this.anims.currentAnim?.key === this.walkingKey && this.anims.isPlaying;
+            if (!playing) {
+                this.play(this.walkingKey);
+            }
         }
 
-        this.scene.tweens.add({
+        // Cancelar tween anterior si seguía corriendo (evita stacking de onComplete)
+        if (this.moveTween) this.moveTween.stop();
+
+        this.moveTween = this.scene.tweens.add({
             targets: this,
-            x: worldX,
-            y: worldY,
+            x: this.x,
+            y: this.y,
             duration: this.moveDuration,
             onComplete: () => {
                 this.isMoving = false;
                 this.stop();
+                this.moveTween = null;
             }
         });
     }

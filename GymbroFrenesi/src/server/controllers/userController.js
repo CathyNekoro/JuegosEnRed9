@@ -34,9 +34,7 @@
           }
 
           if (!userService.verifyPassword(nickName, password)) {
-              // Mismo mensaje tanto si el usuario no existe como si la contraseña 
-              // está mal. Es buena práctica: si los mensajes son distintos, 
-              // un atacante puede saber qué nicks existen.
+              // Mismo mensaje tanto si el usuario no existe como si la contraseña está mal. Si los mensajes son distintos, un atacante puede saber qué nicks existen.
               return res.status(401).json({ 
                   ok: false, 
                   error: 'Credenciales incorrectas' 

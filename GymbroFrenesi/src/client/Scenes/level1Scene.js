@@ -262,11 +262,7 @@ export default class level_1 extends Phaser.Scene {
     let tileSpawn2Y = Math.floor(posSpawnP2.y / tileSize);
 
     const p1AnimKeys = registerAnimations(this, this.player1Key);
-    // console.log('Anim keys:', p1AnimKeys);
-    // console.log('Jump existe:', this.anims.exists(p1AnimKeys.jump));
-    // console.log('Textura cargada:', this.textures.exists('PiernaSalto'));
-    // console.log('Frames:', this.textures.get('PiernaSalto').getFrameNames());
-
+    
     // definicion y creacion del jugador uno
     var config = {
       texture_key: CHARACTER_CONFIG[this.player1Key].texture,
@@ -442,12 +438,13 @@ export default class level_1 extends Phaser.Scene {
   }
   endGame(winnerId) {
     this.music.stop();
-    this.scene.start("endScene", {
-      winner: winnerId, // 'player1' | 'player2' | 'tie'
-      elapsedSecs: Math.floor(this.elapsed / 1000),
-      player1Char: this.player1Key,
-      player2Char: this.player2Key,
-    });
+    this.scene.start('endScene', {
+    winner: 'player1',                     // 'player1' | 'player2' | 'tie'
+    elapsedSecs: Math.floor(this.elapsed / 1000),
+    player1Char: this.player1Key,
+    player2Char: this.player2Key,
+    isMultiplayer: false
+});
     this.scene.stop();
   }
 

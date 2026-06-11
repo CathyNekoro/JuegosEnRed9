@@ -4,8 +4,6 @@
 export function createConnectionController(connectionService) {
   return {
     getConnected(req, res) {
-      // Por ahora usamos la IP como sessionId. Más adelante,
-      // cuando tengamos login, podemos cambiar a un session real.
       const sessionId = req.ip || req.connection.remoteAddress;
       const count = connectionService.updateConnection(sessionId);
       res.json({ connected: count });
@@ -14,10 +12,10 @@ export function createConnectionController(connectionService) {
     getConnected(req, res) {
       const sessionId = req.ip || req.connection.remoteAddress;
       const count = connectionService.updateConnection(sessionId);
-      res.json({ 
-          connected: count, 
-          uptime: connectionService.getUptime() 
+      res.json({
+        connected: count,
+        uptime: connectionService.getUptime(),
       });
-    }
+    },
   };
 }

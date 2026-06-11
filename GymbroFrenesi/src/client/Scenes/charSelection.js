@@ -177,13 +177,11 @@ export default class charSelection extends Phaser.Scene
         btn.locked = true;
         btn.disableInteractive();
         this.sound.stopByKey('selecMusic');
-//implementar contador?
 
         this.scene.start("level1Scene", {
             player1: this.selected.p1,
             player2: this.selected.p2
         });
-        
         
         this.scene.stop();
         
