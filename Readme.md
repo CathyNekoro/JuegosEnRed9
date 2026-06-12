@@ -327,6 +327,13 @@ Además, tendremos una demo gratuita con el modo local para recibir feedback e i
 Por último, haremos colaboraciones con creadores de contenidos para atraer a sus espectadores hacia nuestro juego. 
 ***
 ***
+## Links:
+**Itchio**: https://catherinenekoro.itch.io/gymbro-frenesi
+**Newgrounds**: https://www.newgrounds.com/portal/view/1036639
+**Gamejolt**: https://gamejolt.com/games/gymbrofrenesi/1076360
+
+***
+***
 ## Créditos
 
 ![Diseño Win](./ImgGDD/credits.png)
