@@ -23,8 +23,9 @@ export default class level1SceneMulti extends Phaser.Scene {
     this.player2Key = data.player2;
     this.roomId = data.roomId;
     this.yourId = data.yourId; // 'player1' | 'player2'
-    this.myNickName = data.myNickName;
-    this.opponentNickName = data.opponentNickName;
+    this.player1Nick = data.player1Nick;       
+    this.player2Nick = data.player2Nick; 
+   
     console.log(
       `[level1Multi] init: soy ${this.yourId} (${this.myNickName}) vs ${this.opponentNickName}`,
     );
@@ -315,9 +316,9 @@ export default class level1SceneMulti extends Phaser.Scene {
         elapsedSecs: Math.floor(data.elapsedMs / 1000),
         player1Char: this.player1Key,
         player2Char: this.player2Key,
-        player1Nick: this.players.get("player1")?.nickName || this.myNickName,
-        player2Nick:
-          this.players.get("player2")?.nickName || this.opponentNickName,
+        player1Nick: this.player1Nick,       
+        player2Nick: this.player2Nick, 
+        
         isMultiplayer: true,
         yourId: this.yourId,
       });
@@ -534,5 +535,8 @@ export default class level1SceneMulti extends Phaser.Scene {
       );
     if (sab)
       this.commandProcessor.process(new AbilityCommand(myPlayer, "slow", this));
+
+    
   }
+  
 }

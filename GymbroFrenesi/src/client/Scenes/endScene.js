@@ -88,40 +88,41 @@ export default class endScene extends Phaser.Scene {
 
   async updateStatsIfLoggedIn() {
     if (!Session.isLoggedIn()) {
-      console.log("[endScene] Sin sesión, no se envían stats");
-      return;
+        console.log('[endScene] Sin sesión, no se envían stats');
+        return;
     }
 
     const user = Session.getUser();
 
-    // Determinar si el usuario logueado ganó, y con qué personaje jugó
+    // Determinar si el usuario logueado ganó y con qué personaje jugó
     let userWon, myChar;
     if (this.isMultiplayer) {
-      userWon = this.winnerId === this.yourId;
-      myChar = this.yourId === "player1" ? this.player1Char : this.player2Char;
+        userWon = this.winnerId === this.yourId;
+        myChar = this.yourId === 'player1' ? this.player1Char : this.player2Char;
     } else {
-      // En local, el usuario logueado es siempre P1
-      userWon = this.winnerId === "player1";
-      myChar = this.player1Char;
+        // Modo local: el usuario logueado es siempre P1
+        userWon = this.winnerId === 'player1';
+        myChar = this.player1Char;
     }
 
     const updates = { favoriteChar: myChar };
 
     if (userWon) {
-      updates.totalWins = (user.totalWins || 0) + 1;
-      if (user.bestTime == null || this.elapsedSecs < user.bestTime) {
-        updates.bestTime = this.elapsedSecs;
-      }
+        updates.totalWins = (user.totalWins || 0) + 1;
+        if (user.bestTime == null || this.elapsedSecs < user.bestTime) {
+            updates.bestTime = this.elapsedSecs;
+        }
     }
 
     const result = await Api.updateUserStats(user.nickName, updates);
+
     if (result.ok) {
-      console.log("[endScene] Stats actualizadas:", updates);
-      Session.setUser(result.user);
+        console.log('[endScene] Stats actualizadas:', updates);
+        Session.setUser(result.user);
     } else {
-      console.error("[endScene] Error actualizando stats:", result);
+        console.error('[endScene] Error actualizando stats:', result);
     }
-  }
+}
 
   update() {}
 
@@ -152,8 +153,11 @@ export default class endScene extends Phaser.Scene {
       default:
         break;
     }
-    const winnerNick =
-      this.winnerId === "player1" ? this.player1Nick : this.player2Nick;
+    let winnerNick;
+      if(this.winnerId === "player1" ){  winnerNick = this.player1Nick;}
+      else {winnerNick = this.player2Nick;}
+      
+      console.log(this.winnerId, this.player1Nick, this.player2Nick, "winner")
     this.add
       .text(
         this.cameras.main.width / 2,

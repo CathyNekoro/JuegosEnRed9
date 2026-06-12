@@ -126,6 +126,7 @@ export function createGameSessionService(io) {
         cleanupTimers(session);
 
         io.to(roomId).emit('gameOver', {
+        
             winner,
             reason: 'death',
             lives: session.lives,

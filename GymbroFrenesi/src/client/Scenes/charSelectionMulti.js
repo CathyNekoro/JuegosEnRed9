@@ -149,10 +149,10 @@ export default class charSelectionMulti extends Phaser.Scene {
       this.scene.start("level1SceneMulti", {
         player1: data.players.player1.character,
         player2: data.players.player2.character,
+        player1Nick: data.players.player1.nickName,   
+        player2Nick: data.players.player2.nickName,
         roomId: data.roomId,
         yourId: data.yourId,
-        myNickName: this.myNickName,
-        opponentNickName: this.opponentNickName,
       });
     };
 
