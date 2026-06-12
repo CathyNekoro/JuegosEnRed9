@@ -49,7 +49,7 @@ export default class waitingRoomScene extends Phaser.Scene {
         .setInteractive()
         .on('pointerdown', () => {
             SocketClient.emit('leaveQueue');
-            this.scene.start("accountRegScene");
+            this.scene.start("titleScene");
         });
 
         //Listeners de eventos del server 
@@ -67,13 +67,32 @@ export default class waitingRoomScene extends Phaser.Scene {
             console.log("[waitingRoom] En cola, esperando otro jugador...");
         };
 
+        this.handleSocketDisconnect = (reason) => {
+            console.warn('[waitingRoom] Socket desconectado, reason:', reason);
+            // Overlay con mensaje
+            const cx = this.cameras.main.width / 2;
+            const cy = this.cameras.main.height / 2;
+            this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000, 0.85)
+                .setOrigin(0, 0).setDepth(100);
+            this.add.text(cx, cy - 50, "Se perdió la conexión con el servidor", {
+                fontFamily: "Bubble", fontSize: "70px", color: "#ffffff"
+            }).setOrigin(0.5).setDepth(101);
+            this.add.text(cx, cy + 50, "Volviendo al menú...", {
+                fontFamily: "Bubble", fontSize: "50px", color: "#cccccc"
+            }).setOrigin(0.5).setDepth(101);
+
+            this.time.delayedCall(5000, () => this.scene.start('titleScene'));
+        };
+
         SocketClient.on('matchFound', this.handleMatchFound);
         SocketClient.on('queueJoined', this.handleQueueJoined);
+        SocketClient.on('disconnect', this.handleSocketDisconnect);
 
         // Cleanup al salir
         this.events.on('shutdown', () => {
             SocketClient.off('matchFound', this.handleMatchFound);
             SocketClient.off('queueJoined', this.handleQueueJoined);
+            SocketClient.off('disconnect', this.handleSocketDisconnect);
             if (this.dotsTimer) this.dotsTimer.remove();
         });
 

@@ -75,7 +75,7 @@ export default class charSelectionMulti extends Phaser.Scene {
       "<",
       () => {
         SocketClient.emit("leaveRoom");
-        this.scene.start("accountRegScene");
+        this.scene.start("titleScene");
       },
       buttonSize,
       buttonSize,
@@ -155,6 +155,24 @@ export default class charSelectionMulti extends Phaser.Scene {
         yourId: data.yourId,
       });
     };
+    this.handleSocketDisconnect = (reason) => {
+    console.warn('[charSelectionMulti] Socket desconectado, reason:', reason);
+    this.exitButton.disableInteractive();
+    // Overlay con mensaje
+            const cx = this.cameras.main.width / 2;
+            const cy = this.cameras.main.height / 2;
+            this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000, 0.85)
+                .setOrigin(0, 0).setDepth(100);
+            this.add.text(cx, cy - 50, "Se perdió la conexión con el servidor", {
+                fontFamily: "Bubble", fontSize: "70px", color: "#ffffff"
+            }).setOrigin(0.5).setDepth(101);
+            this.add.text(cx, cy + 50, "Volviendo al menú...", {
+                fontFamily: "Bubble", fontSize: "50px", color: "#cccccc"
+            }).setOrigin(0.5).setDepth(101);
+
+            this.time.delayedCall(5000, () => this.scene.start('titleScene'));
+    
+  };
 
     this.handleSelectionRejected = (data) => {
       console.warn("[charSelectionMulti] selectionRejected:", data.reason);
@@ -169,12 +187,15 @@ export default class charSelectionMulti extends Phaser.Scene {
     SocketClient.on("gameStart", this.handleGameStart);
     SocketClient.on("selectionRejected", this.handleSelectionRejected);
     SocketClient.on("opponentLeft", this.handleOpponentLeft);
+    SocketClient.on('disconnect', this.handleSocketDisconnect);
 
     this.events.on("shutdown", () => {
       SocketClient.off("selectionUpdated", this.handleSelectionUpdated);
       SocketClient.off("gameStart", this.handleGameStart);
       SocketClient.off("selectionRejected", this.handleSelectionRejected);
       SocketClient.off("opponentLeft", this.handleOpponentLeft);
+      SocketClient.off('disconnect', this.handleSocketDisconnect);
+      
       this.buttons = null;
       this.previewByChar = null;
       this.selected = { player1: null, player2: null };
@@ -272,7 +293,7 @@ export default class charSelectionMulti extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.time.delayedCall(3000, () => {
-      this.scene.start("accountRegScene");
+      this.scene.start("titleScene");
     });
   }
 }

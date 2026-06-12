@@ -168,7 +168,7 @@ export default class level1SceneMulti extends Phaser.Scene {
       () => {
         this.music.stop();
         SocketClient.emit("leaveRoom");
-        this.scene.start("accountRegScene");
+        this.scene.start("titleScene");
       },
       buttonSize,
       buttonSize,
@@ -282,10 +282,11 @@ export default class level1SceneMulti extends Phaser.Scene {
       console.log("[level1Multi] opponentLeft:", data);
       this.music.stop();
       this.showOpponentLeftMessage();
+      this.scene.start("titleScene");
     };
 
     this.handleTileFalling = ({ tileIndex }) => {
-      console.log(`[level1Multi] tileFalling: ${tileIndex}`);
+      
       this.animateTileFall(tileIndex);
     };
 
@@ -323,6 +324,29 @@ export default class level1SceneMulti extends Phaser.Scene {
         yourId: this.yourId,
       });
     };
+    this.handleSocketDisconnect = (reason) => {
+    console.warn('[level1Multi] Socket desconectado, reason:', reason);
+    this.sound.stopAll();
+    this.exitButton.disableInteractive();
+    this.sceneEnding = true;
+
+    // Overlay con mensaje
+    const cx = this.cameras.main.width / 2;
+    const cy = this.cameras.main.height / 2;
+    this.add.rectangle(0, 0, this.cameras.main.width, this.cameras.main.height, 0x000000, 0.85)
+        .setOrigin(0, 0).setDepth(100);
+    this.add.text(cx, cy - 50, "Se perdió la conexión con el servidor", {
+        fontFamily: "Bubble", fontSize: "70px", color: "#ffffff"
+    }).setOrigin(0.5).setDepth(101);
+    this.add.text(cx, cy + 50, "Volviendo al menú...", {
+        fontFamily: "Bubble", fontSize: "50px", color: "#cccccc"
+    }).setOrigin(0.5).setDepth(101);
+    
+    this.time.delayedCall(5000, () => this.scene.start('titleScene'));
+};
+
+    
+
     this.handleGameSessionStarted = (data) => {
       console.log("[level1Multi] gameSessionStarted:", data);
       this.gameStartedAt = Date.now();
@@ -338,6 +362,7 @@ export default class level1SceneMulti extends Phaser.Scene {
 
     SocketClient.on("applyCommand", this.handleApplyCommand);
     SocketClient.on("opponentLeft", this.handleOpponentLeft);
+    SocketClient.on('disconnect', this.handleSocketDisconnect);
 
     this.events.on("shutdown", () => {
       SocketClient.off("applyCommand", this.handleApplyCommand);
@@ -346,6 +371,7 @@ export default class level1SceneMulti extends Phaser.Scene {
       SocketClient.off("playerDamaged", this.handlePlayerDamaged);
       SocketClient.off("gameSessionStarted", this.handleGameSessionStarted);
       SocketClient.off("gameOver", this.handleGameOver);
+      SocketClient.off('disconnect', this.handleSocketDisconnect);
 
       // Limpiar referencias a players para que el GC pueda recogerlos
       if (this.players) this.players.clear();
@@ -440,13 +466,14 @@ export default class level1SceneMulti extends Phaser.Scene {
       .setOrigin(0.5);
 
     this.time.delayedCall(3000, () => {
-      this.scene.start("accountRegScene");
+      this.scene.start("titleScene");
     });
   }
 
   update(time, delta) {
     // === Mantener this.elapsed actualizado en tiempo real ===
     // Lo usan los cooldowns de habilidades (Abilities.js) y pendingDestroys.
+      if (this.sceneEnding) return;
     if (this.gameStartedAt) {
       this.elapsed = Date.now() - this.gameStartedAt;
     } else {
