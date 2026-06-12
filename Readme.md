@@ -30,30 +30,34 @@ Github:*JediAlex18*
 
 **3. [Aspectos Técnicos](#aspectos-técnicos)**
 
-**4. [Imagen y Diseño Visual](#imagen-y-diseño-visual)**
+**4. [Infraestuctura de Red](#infraestructura-de-red)**
+- [API-Rest](#api-rest)
+- [WebSockets](#websockets)
+
+**5. [Imagen y Diseño Visual](#imagen-y-diseño-visual)**
 - [*Descripción y Estilo Visual*](#descripción-visual) 
 - [Logotipo](#logotipo) 
 - [*Inspiración*](#inspiración) 
 
-**5. [Jugabilidad](#jugabilidad)**
+**6. [Jugabilidad](#jugabilidad)**
 - [*Objetivo del Juego*](#objetivo-del-juego) 
 - [*Controles*](#controles) 
 - [*Mecánicas y Físicas*](#mecánicas-y-físicas) 
   
 
-**6. [Narrativa](#narrativa)**
+**7. [Narrativa](#narrativa)**
 
-**7. [Sonido](#sonido)** 
+**8. [Sonido](#sonido)** 
 
 - [Música](#música)
 
 -  [Efectos Sonoros](#efectos-sonoros) 
 
-**8.[Marketing](#marketing)**
+**9.[Marketing](#marketing)**
 
-**9.[Créditos](#créditos)** 
+**10.[Créditos](#créditos)** 
 
-**10.[Bibliografía](#bibliografía)** 
+**11.[Bibliografía](#bibliografía)** 
 
 ***
 
@@ -71,8 +75,6 @@ Secundariamente queremos apelar a los fans de Nintendo que estén insastisfechos
 
 El juego está diseñado para ***Ordenadores / PC***. 
 
-
-
 ####  Diagrama de Flujo
 ![Diagrama de Flujo](./ImgGDD/DiagramaFinal.png)
 
@@ -80,6 +82,43 @@ El juego está diseñado para ***Ordenadores / PC***.
 
 ## Aspectos Técnicos
 Cámara 2D al estilo de “Vista de Pájaro”.
+
+***
+## Infraestructura de Red
+
+#### API-REST
+
+La arquitectura del juego implementa un **servidor robusto** que gestiona la lógica y el estado de las partidas. La comunicación entre cliente y servidor se realiza mediante una **API REST** que utiliza correctamente los verbos HTTP:
+
+- **GET**: Obtención de datos (perfiles de usuarios, leaderboard, estado de salas)
+- **POST**: Creación de recursos (registro de usuarios, inicio de sesiones)
+- **PUT**: Actualización de datos (puntuaciones, datos de perfil)
+- **DELETE**: Eliminación de recursos (borrado de usuarios, cierre de sesiones)
+
+El sistema gestiona usuarios con un sistema de login, a base de un _nickname_ y una contraseña, almacenando además de las credenciales, datos adicionales del jugador como:
+
+- **Número de Victorias** del usuario alcanzadas entre todas las partidas
+- **Personaje Favorito** del usuario basado en su uso
+- **Historial del mejor tiempo** del usuario
+
+El servidor monitorea constantemente las **conexiones y desconexiones** tanto en el lado del servidor como en el de los clientes, asegurando la consistencia del estado de la partida y reaccionando adecuadamente ante caídas de conexión. Implementa un **sistema de logging completo para depuración**, permitiendo un rastreo detallado de eventos del juego.
+
+El **manejo de errores** es robusto, con _fallbacks_ y pantallas intermediarias cuando el servidor se cae o hay problemas de conexión, garantizando que los jugadores reciban _feedback_ claro sobre el estado de la partida.
+
+#### WebSockets
+
+Para la experiencia multijugador, el juego utiliza **WebSockets** que permiten comunicación bidireccional en tiempo real entre cliente y servidor:
+
+- **Sistema de salas**: Soporte para múltiples salas independientes, permitiendo que varios grupos de jugadores jueguen simultáneamente
+- **Sincronización instantánea de movimientos**: Cada acción del jugador (movimiento de casilla, activación de habilidad) se transmite y se refleja para todos los clientes conectados
+- **Actualización de estado en vivo**: La vida, puntuación, y posición de cada jugador se actualiza instantáneamente para todos los los clientes conectados
+- **Detección de victoria/derrota**: El servidor asegura que se cumplen las condiciones de victoria y derrota, y comunica el resultado a todos los clientes de forma sincronizada
+- **Transmisión de inputs de teclado**: Cada comando del jugador se envía a través de WebSockets y se procesa en el servidor, asegurando consistencia
+- **Sincronización de eventos dinámicos**: Los eventos del mapa e interacciones (desaparición de tiles, efectos especiales de las habilidades de personajes) se sincronizan entre todos los clientes conectados, garantizando que todos los jugadores vean el mismo estado del mapa en todo momento.
+
+Para jugar un partida online, primero un jugador debera iniciar sesión y selecciónar 'Online Multi', y abrir en su navegador 'localhost:nPuerto'; tras esto el otro jugador abrira en su navegador 'ipDelOtroJugador:nPuerto', e iniciara sesión y selecciónara 'Online Multi', esto iniciara la pantalla de selección tras la cual los jugadores podran empezar a jugar. La partida se podra abandonar en cualquier momento pulsando el botón X, abajo a la izquierda en la pantalla del nivel.
+
+###
 
 ***
 ## Imagen y Diseño Visual
@@ -187,21 +226,12 @@ Movimiento general:
 
 En caso de juego local, se plantean 2 opciones de controles para cada jugador:
 
-Teclado: capacidad para 2 jugadores.
-
 Movimiento general (J1)
 
 Movimiento (J2)
 - **⬅⬆⬇⮕** - Movimiento básico.
 - **,** - Habilidad rápida.
 - **.** - Habilidad lenta.
-
-Movimiento (J3-J4)
-(Los jugadores 3 y 4 serán implementados a la hora de implementar el servicio de multijugador a través de un servidor).
-
-Mando: (según la implementación de la librería se hará el mapeado de una forma u otra para los mandos)
-Si no hay ningún mando conectado, el máximo de jugadores será de 2. Si se detecta un mando el límite aumenta por cada mando metido. No hace falta que estén el número máximo de jugadores siempre en la partida (por ejemplo uno de los jugadores prefiere usar mando y no teclado)
-(La implementación del uso de uno o varios mandos aun no es definitiva, en caso de abordarla su implementación vendra a la hora de implementar el servicio de multijugador a través de un servidor).
 
 #### Mecánicas y Físicas
 ##### Físicas del escenario: 
