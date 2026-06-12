@@ -439,7 +439,7 @@ export default class level_1 extends Phaser.Scene {
   endGame(winnerId) {
     this.music.stop();
     this.scene.start('endScene', {
-    winner: 'player1',                     // 'player1' | 'player2' | 'tie'
+    winner: winnerId,                     // 'player1' | 'player2' | 'tie'
     elapsedSecs: Math.floor(this.elapsed / 1000),
     player1Char: this.player1Key,
     player2Char: this.player2Key,
