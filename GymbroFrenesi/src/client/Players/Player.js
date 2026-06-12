@@ -59,6 +59,38 @@ export default class Player extends Phaser.GameObjects.Sprite
         return true;
     }   
 
+    isPositionOccupiedByOther(x, y) {
+    if (!this.scene.players) return false;
+    for (const p of this.scene.players.values()) {
+        if (p === this || !p.isAlive) continue;
+        if (Phaser.Math.Within(p.x, x, this.tileSize / 2) &&
+            Phaser.Math.Within(p.y, y, this.tileSize / 2)) {
+            return true;
+        }
+    }
+    return false;
+}
+
+findAlternativeSafeTile(preferredX, preferredY) {
+    if (!this.map) return null;
+
+    // Tiles válidas: no caídas y no ocupadas por otro jugador
+    const candidates = this.map.getChildren().filter(tile =>
+        !tile.fallen &&
+        !this.isPositionOccupiedByOther(tile.x, tile.y)
+    );
+    if (candidates.length === 0) return null;
+
+    // Búsqueda determinista
+    candidates.sort((a, b) => {
+        const distA = Math.abs(a.x - preferredX) + Math.abs(a.y - preferredY);
+        const distB = Math.abs(b.x - preferredX) + Math.abs(b.y - preferredY);
+        if (distA !== distB) return distA - distB;
+        if (a.x !== b.x) return a.x - b.x;
+        return a.y - b.y;
+    });
+    return candidates[0];
+}
     moveTo(targetX, targetY)
     {
         this.isMoving = true;
@@ -127,6 +159,13 @@ export default class Player extends Phaser.GameObjects.Sprite
     }
 
     respawn(x, y) {
+        if (this.isPositionOccupiedByOther(x, y)) {
+            const safe = this.findAlternativeSafeTile(x, y);
+            if (safe) {
+                x = safe.x;
+                y = safe.y;
+            }
+        }
         this.x=x;
         this.y=y;
         this.isAlive = true;
