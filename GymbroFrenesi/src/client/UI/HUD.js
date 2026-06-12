@@ -1,7 +1,7 @@
 import { CHARACTER_CONFIG, registerAnimations } from "../Utils/AnimatorManager.js";
 
 export default class HUD {
-    constructor(scene, player1Key, player2Key) {
+    constructor(scene, player1Key, player2Key, isOnlineMulti = false) {
         this.scene = scene;
 
         this.p1Color = CHARACTER_CONFIG[player1Key].color;
@@ -9,10 +9,12 @@ export default class HUD {
         this.p1Hex = CHARACTER_CONFIG[player1Key].colorHex;
         this.p2Hex = CHARACTER_CONFIG[player2Key].colorHex;
 
-        // --- Barras de habilidad J1 ---
-        
-this.p1Bars = this.createAbilityBars(500, 50, this.p1Color, 'F', 'G');
-this.p2Bars = this.createAbilityBars(1650, 50, this.p2Color, ',', '.');
+        // --- Barras de habilidad J2 ---
+        const p2quickKey = isOnlineMulti ? 'F' : ',';
+        const p2slowKey = isOnlineMulti ? 'G' : '.';
+
+        this.p1Bars = this.createAbilityBars(500, 50, this.p1Color, 'F', 'G');
+        this.p2Bars = this.createAbilityBars(1650, 50, this.p2Color, p2quickKey, p2slowKey);
       }
 
     createAbilityBars(x, y, color, quickKey, slowKey) {

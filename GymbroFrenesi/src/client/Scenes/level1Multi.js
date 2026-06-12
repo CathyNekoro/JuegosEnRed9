@@ -149,7 +149,7 @@ export default class level1SceneMulti extends Phaser.Scene {
     this.add.rectangle(2275, 30, 95, 240, baseColor2).setOrigin(0, 0);
     this.add.image(2260, 10, "VidasMarco").setScale(0.56).setOrigin(0, 0);
 
-    this.hud = new HUD(this, this.player1Key, this.player2Key);
+    this.hud = new HUD(this, this.player1Key, this.player2Key, true);
 
     this.timer = this.add.text(1080, 50, "120", {
       fontSize: "200px",
